@@ -105,6 +105,7 @@ class UAC extends Controller
     public function SaveNewUser(Request $request){
 
         $check = DB::table('d3s3m_user')->where('EMAIL', $request->inputEmail)->count('ID');
+        $otp = rand(123456,654321);
 
         if( $check == 0 ){
             DB::table('d3s3m_user')->insert([
@@ -114,7 +115,7 @@ class UAC extends Controller
                 "ID_DIVISION" => $request->selectDivision,
                 "ID_ROLE" => $request->selectRole,
                 "IS_ACTIVE" => $request->checkboxIsActive,
-                "PASSWORD" => md5('password')
+                "PASSWORD" => md5($otp)
             ]);
             $new_id = DB::getPdo()->lastInsertId();
 
@@ -124,6 +125,27 @@ class UAC extends Controller
 		        	"TRAINING_TARGET" => $request->numberTargetTraining
 		        ]);
 	        }
+
+
+
+            // SEND OTP
+            $to_name = $request->inputFullname;
+            $to_email = $request->inputEmail;
+            $message_subheader = 'Welcome to DISMI System';
+            $message_title = 'Your New Account Has Been Made';
+            $message_caption = 'Please use this OTP below in order to gain access for your account. Please do not forget to change your password after login.';
+            $parameter_CTA_text = $otp;
+            $parameter_CTA_url = '#';
+
+            $data = array('name'=> $to_name , 'message_subheader' => $message_subheader, 'message_title' => $message_title, 'message_caption' => $message_caption, "parameter_CTA_text" => $parameter_CTA_text, 'parameter_CTA_url' => $parameter_CTA_url);
+            Mail::send("emails.reset_password.index", $data, function($message) use ($to_name, $to_email, $message_title) {
+            $message->to($to_email, $to_name)
+            ->subject("[NO-REPLY] Your user credential for DISMI system");
+            $message->from("dismi.mailer@gmail.com","DISMI Mailer");
+            });
+            // END SEND OTP
+
+
 
             Session::put('popup_status', 1);
             Session::put('popup_type', 'success');
