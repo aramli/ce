@@ -1,11 +1,20 @@
 @extends('master_template')
 @section('content')
+
+				<link href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css" rel="stylesheet"/>
+				<script src="https://cdn.webdatarocks.com/latest/webdatarocks.toolbar.min.js"></script>
+				<script src="https://cdn.webdatarocks.com/latest/webdatarocks.js"></script>
+				<script src="https://cdn.webdatarocks.com/latest/webdatarocks.googlecharts.js"></script>
+				<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+
 				<div class="page-content">
 					<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
 						<div>
-							<h4 class="mb-3 mb-md-0">Welcome to Dashboard</h4>
+							<h4 class="mb-3 mb-md-0">Event Creation Dashboard</h4>
 						</div>
-						<div class="d-flex align-items-center flex-wrap text-nowrap">
+						<div class="d-flex align-items-center flex-wrap text-nowrap" style="display:none!important;">
 							<div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">
 								<span class="input-group-addon bg-transparent"><i data-feather="calendar" class=" text-primary"></i></span>
 								<input type="text" class="form-control">
@@ -25,7 +34,415 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-12 col-xl-12 stretch-card">
+						<div class="col-6">
+							<div id="wdr-component__event_creation"></div>
+						</div>
+						<div class="col-6">
+							<div id="googlechart-container__event_creation" style="width:750px;height:550px;"></div>
+						</div>
+
+
+						<div class="col-12">
+							
+							<script>
+							var pivot__event_creation = new WebDataRocks({
+							    container: "#wdr-component__event_creation",
+							    toolbar: true,
+							    report: {
+							        dataSource: {
+							            filename: "<?php echo asset('SYSTEM/reporting/event__event_creation.json'); ?>"
+							        },
+							        formats: [{
+							            maxDecimalPlaces: 2
+							        }],
+							        "slice": {
+								        "rows": [
+								            {
+								                "uniqueName": "ORGANIZER"
+								            },
+								            {
+								                "uniqueName": "COMPANY"
+								            },
+								            {
+								                "uniqueName": "DIVISION"
+								            },
+								            {
+								                "uniqueName": "CATEGORY"
+								            },
+								            {
+								                "uniqueName": "ROOM"
+								            }
+								        ],
+								        "columns": [
+								            {
+								                "uniqueName": "Measures"
+								            }
+								        ],
+								        "measures": [
+								            {
+								                "uniqueName": "ORGANIZER",
+								                "aggregation": "count",
+								                "availableAggregations": [
+								                    "count",
+								                    "distinctcount"
+								                ]
+								            }
+								        ]
+								    }
+							    },
+							    reportcomplete: function() {
+							        pivot__event_creation.off("reportcomplete");
+							        pivot__event_creationTableReportComplete = true;
+							        createGoogleChart__event_creation();
+							    }
+							});
+
+							var pivot__event_creationTableReportComplete = false;
+							var googleChartsLoaded = false;
+
+							google.charts.load('current', {
+							    'packages': ['corechart']
+							});
+							google.charts.setOnLoadCallback(onGoogleChartsLoaded__event_creation);
+
+							function onGoogleChartsLoaded__event_creation() {
+							    googleChartsLoaded = true;
+							    if (pivot__event_creationTableReportComplete) {
+							        createGoogleChart__event_creation();
+							    }
+							}
+
+							function createGoogleChart__event_creation() {
+							    if (googleChartsLoaded) {
+							        pivot__event_creation.googlecharts.getData({
+							                type: "column"
+							            },
+							            drawChart__event_creation,
+							            drawChart__event_creation
+							        );
+							    }
+							}
+
+							function drawChart__event_creation(_data) {
+							    var data = google.visualization.arrayToDataTable(_data.data);
+
+							    var options = {
+							        title: "Event creation statistic",
+							        legend: {
+							            position: 'top'
+							        },
+							        is3D: true,
+							        colors: ['#66ccff', '#e0440e']
+							    };
+
+							    var chart = new google.visualization.ColumnChart(document.getElementById('googlechart-container__event_creation'));
+							    chart.draw(data, options);
+							}
+							</script>
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin" style="margin-top:50px;">
+						<div>
+							<h4 class="mb-3 mb-md-0">Over Target Duration Dashboard</h4>
+						</div>
+						<div class="d-flex align-items-center flex-wrap text-nowrap" style="display:none!important;">
+							<div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">
+								<span class="input-group-addon bg-transparent"><i data-feather="calendar" class=" text-primary"></i></span>
+								<input type="text" class="form-control">
+							</div>
+							<button type="button" class="btn btn-outline-info btn-icon-text mr-2 d-none d-md-block">
+							<i class="btn-icon-prepend" data-feather="download"></i>
+							Import
+							</button>
+							<button type="button" class="btn btn-outline-primary btn-icon-text mr-2 mb-2 mb-md-0">
+							<i class="btn-icon-prepend" data-feather="printer"></i>
+							Print
+							</button>
+							<button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+							<i class="btn-icon-prepend" data-feather="download-cloud"></i>
+							Download Report
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<div id="wdr-component__over_target_duration"></div>
+						</div>
+						<div class="col-6">
+							<div id="googlechart-container__over_target_duration" style="width:750px;height:550px;"></div>
+						</div>
+
+
+						<div class="col-12">
+							
+							<script>
+							var pivot__over_target_duration = new WebDataRocks({
+							    container: "#wdr-component__over_target_duration",
+							    toolbar: true,
+							    report: {
+							        dataSource: {
+							            filename: "<?php echo asset('SYSTEM/reporting/event__over_target_duration.json'); ?>"
+							        },
+							        formats: [{
+							            maxDecimalPlaces: 2
+							        }],
+							        "slice": {
+								        "rows": [
+								            {
+								                "uniqueName": "EVENT TITLE"
+								            }
+								        ],
+								        "columns": [
+								            {
+								                "uniqueName": "Measures"
+								            }
+								        ],
+								        "measures": [
+								            {
+								                "uniqueName": "OVERTIME DURATION (Minute)",
+								                "aggregation": "sum"
+								            },
+								            {
+								                "uniqueName": "EVENT TITLE",
+								                "aggregation": "count",
+								                "availableAggregations": [
+								                    "count",
+								                    "distinctcount"
+								                ]
+								            }
+								        ]
+								    }
+							    },
+							    reportcomplete: function() {
+							        pivot__over_target_duration.off("reportcomplete");
+							        pivot__over_target_durationTableReportComplete = true;
+							        createGoogleChart__over_target_duration();
+							    }
+							});
+
+							var pivot__over_target_durationTableReportComplete = false;
+							var googleChartsLoaded = false;
+
+							google.charts.load('current', {
+							    'packages': ['corechart']
+							});
+							google.charts.setOnLoadCallback(onGoogleChartsLoaded__over_target_duration);
+
+							function onGoogleChartsLoaded__over_target_duration() {
+							    googleChartsLoaded = true;
+							    if (pivot__over_target_durationTableReportComplete) {
+							        createGoogleChart__over_target_duration();
+							    }
+							}
+
+							function createGoogleChart__over_target_duration() {
+							    if (googleChartsLoaded) {
+							        pivot__over_target_duration.googlecharts.getData({
+							                type: "column"
+							            },
+							            drawChart__over_target_duration,
+							            drawChart__over_target_duration
+							        );
+							    }
+							}
+
+							function drawChart__over_target_duration(_data) {
+							    var data = google.visualization.arrayToDataTable(_data.data);
+
+							    var options = {
+							        title: "Over target duration event statistic",
+							        legend: {
+							            position: 'top'
+							        },
+							        is3D: true,
+							        colors: ['#66ccff', '#e0440e']
+							    };
+
+							    var chart = new google.visualization.ColumnChart(document.getElementById('googlechart-container__over_target_duration'));
+							    chart.draw(data, options);
+							}
+							</script>
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin" style="margin-top:50px;">
+						<div>
+							<h4 class="mb-3 mb-md-0">Energy Consumption Dashboard</h4>
+						</div>
+						<div class="d-flex align-items-center flex-wrap text-nowrap" style="display:none!important;">
+							<div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">
+								<span class="input-group-addon bg-transparent"><i data-feather="calendar" class=" text-primary"></i></span>
+								<input type="text" class="form-control">
+							</div>
+							<button type="button" class="btn btn-outline-info btn-icon-text mr-2 d-none d-md-block">
+							<i class="btn-icon-prepend" data-feather="download"></i>
+							Import
+							</button>
+							<button type="button" class="btn btn-outline-primary btn-icon-text mr-2 mb-2 mb-md-0">
+							<i class="btn-icon-prepend" data-feather="printer"></i>
+							Print
+							</button>
+							<button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+							<i class="btn-icon-prepend" data-feather="download-cloud"></i>
+							Download Report
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<div id="wdr-component__energy_consumption"></div>
+						</div>
+						<div class="col-6">
+							<div id="googlechart-container__energy_consumption" style="width:750px;height:550px;"></div>
+						</div>
+
+
+						<div class="col-12">
+							
+							<script>
+							var pivot__energy_consumption = new WebDataRocks({
+							    container: "#wdr-component__energy_consumption",
+							    toolbar: true,
+							    report: {
+							        dataSource: {
+							            filename: "<?php echo asset('SYSTEM/reporting/energy__energy_consumption_rank.json'); ?>"
+							        },
+							        formats: [{
+							            maxDecimalPlaces: 2
+							        }],
+							        "slice": {
+								        "rows": [
+								            {
+								                "uniqueName": "ORGANIZER"
+								            },
+								            {
+								                "uniqueName": "COMPANY"
+								            },
+								            {
+								                "uniqueName": "DIVISION"
+								            },
+								            {
+								                "uniqueName": "CATEGORY"
+								            }
+								        ],
+								        "columns": [
+								            {
+								                "uniqueName": "Measures"
+								            }
+								        ],
+								        "measures": [
+								            {
+								                "uniqueName": "ENERGY CONSUMPTION (kWh)",
+								                "aggregation": "sum"
+								            }
+								        ],
+								    }
+							    },
+							    reportcomplete: function() {
+							        pivot__energy_consumption.off("reportcomplete");
+							        pivot__energy_consumptionTableReportComplete = true;
+							        createGoogleChart__energy_consumption();
+							    }
+							});
+
+							var pivot__energy_consumptionTableReportComplete = false;
+							var googleChartsLoaded = false;
+
+							google.charts.load('current', {
+							    'packages': ['corechart']
+							});
+							google.charts.setOnLoadCallback(onGoogleChartsLoaded__energy_consumption);
+
+							function onGoogleChartsLoaded__energy_consumption() {
+							    googleChartsLoaded = true;
+							    if (pivot__energy_consumptionTableReportComplete) {
+							        createGoogleChart__energy_consumption();
+							    }
+							}
+
+							function createGoogleChart__energy_consumption() {
+							    if (googleChartsLoaded) {
+							        pivot__energy_consumption.googlecharts.getData({
+							                type: "column"
+							            },
+							            drawChart__energy_consumption,
+							            drawChart__energy_consumption
+							        );
+							    }
+							}
+
+							function drawChart__energy_consumption(_data) {
+							    var data = google.visualization.arrayToDataTable(_data.data);
+
+							    var options = {
+							        title: "Over target duration event statistic",
+							        legend: {
+							            position: 'top'
+							        },
+							        is3D: true,
+							        colors: ['#66ccff', '#e0440e']
+							    };
+
+							    var chart = new google.visualization.ColumnChart(document.getElementById('googlechart-container__energy_consumption'));
+							    chart.draw(data, options);
+							}
+							</script>
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div class="row" style="display:none;">
+						<div class="col-12 col-xl-12 stretch-card" style="display:none;">
 							<div class="row flex-grow">
 								<div class="col-md-4 grid-margin stretch-card">
 									<div class="card">
@@ -136,7 +553,7 @@
 						</div>
 					</div>
 					<!-- row -->
-					<div class="row">
+					<div class="row" style="display:none;">
 						<div class="col-12 col-xl-12 grid-margin stretch-card">
 							<div class="card overflow-hidden">
 								<div class="card-body">
@@ -176,7 +593,7 @@
 						</div>
 					</div>
 					<!-- row -->
-					<div class="row">
+					<div class="row" style="display:none;">
 						<div class="col-lg-7 col-xl-8 grid-margin stretch-card">
 							<div class="card">
 								<div class="card-body">
@@ -241,7 +658,7 @@
 						</div>
 					</div>
 					<!-- row -->
-					<div class="row">
+					<div class="row" style="display:none;">
 						<div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
 							<div class="card">
 								<div class="card-body">
