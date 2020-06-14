@@ -40,6 +40,19 @@
 												<img src="{{ asset('MEDIA/logo_denso.png') }}" style="height:50px;width:auto;margin-bottom:20px;" />
 											</div>
 											<h5 class="text-muted font-weight-normal mb-4">Welcome back! Log in to your account.</h5>
+											@if( Session::get('popup_status') == 1 )
+											<div style="margin-bottom:20px;">
+												<?php
+												if( Session::get('popup_type') == 'success' ){
+													$alert_color = 'primary';
+												} else {
+													$alert_color = 'danger';
+												}
+												?>
+												<span class="badge badge-<?php echo $alert_color;?>">{{ Session::get('popup_message') }}</span>
+											</div>
+											<?php Session::put('popup_status', 0); ?>
+											@endif
 											<form class="forms-sample" action="VerifyLogin" method="post">
 												{{ csrf_field() }}
 												<div class="form-group">

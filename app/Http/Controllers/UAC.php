@@ -150,7 +150,7 @@ class UAC extends Controller
             Session::put('popup_status', 1);
             Session::put('popup_type', 'success');
             Session::put('popup_title', 'Success');
-            Session::put('popup_message', 'Your new user has been successfully registered to the system.');
+            Session::put('popup_message', 'Please check your email for OTP.');
 
             return redirect('/user/detail/'.$new_id);
         } else {
