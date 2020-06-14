@@ -31,7 +31,7 @@ class Dashboard extends Controller
 
     	$json_report = json_encode($report_data);
 
-    	file_put_contents(base_path('/public/SYSTEM/reporting/event__event_creation.json'), stripslashes($json_report));
+    	file_put_contents(base_path('public/SYSTEM/reporting/event__event_creation.json'), stripslashes($json_report));
     	// END EVENT CREATION
 
 
@@ -60,7 +60,7 @@ class Dashboard extends Controller
 
     	$json_report = json_encode($report_data);
 
-    	file_put_contents(base_path('/public/SYSTEM/reporting/event__over_target_duration.json'), stripslashes($json_report));
+    	file_put_contents(base_path('public/SYSTEM/reporting/event__over_target_duration.json'), stripslashes($json_report));
     	// END OVER TARGET DURATION
 
 
@@ -93,7 +93,7 @@ class Dashboard extends Controller
 
         $json_report = json_encode($report_data);
 
-        file_put_contents(base_path('/public/SYSTEM/reporting/energy__energy_consumption_rank.json'), stripslashes($json_report));
+        file_put_contents(base_path('public/SYSTEM/reporting/energy__energy_consumption_rank.json'), stripslashes($json_report));
     	// END ENERGY CONSUMPTION
 
     	return view('dashboard.index');
