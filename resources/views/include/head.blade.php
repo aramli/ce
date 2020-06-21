@@ -19,5 +19,5 @@
   	<!-- Layout styles -->  
 	<link rel="stylesheet" href="{{ asset('ASSET/assets/css/demo_5/style.css') }}">
   	<!-- End layout styles -->
-  	<link rel="shortcut icon" href="{{ asset('ASSET/assets/images/favicon.png') }}" />
+  	<!-- <link rel="shortcut icon" href="{{ asset('ASSET/assets/images/favicon.png') }}" /> -->
 </head>
