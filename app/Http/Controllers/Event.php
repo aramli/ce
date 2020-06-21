@@ -452,7 +452,7 @@ class Event extends Controller
             </div>
             ';
             $parameter_CTA_text = 'Click here to generate your QR code';
-            $parameter_CTA_url = 'http://localhost/development_site/DISMI/public/LIBRARY/qrcode/QRG.php?command_signal='.base64_encode($this_event_detail->COMMAND_SIGNAL).'&eid='.base64_encode($this_event_detail->ID).'&uid='.base64_encode($this_event_detail->ID_ATTENDEE);
+            $parameter_CTA_url = 'https://dismi-denso.com/app/public/LIBRARY/qrcode/QRG.php?action='.base64_encode($this_event_detail->COMMAND_SIGNAL).'&eid='.base64_encode($this_event_detail->ID).'&uid='.base64_encode($this_event_detail->ID_ATTENDEE);
 
             $data = array('name'=> $to_name , 'message_subheader' => $message_subheader, 'message_title' => $message_title, 'message_caption' => $message_caption, "parameter_CTA_text" => $parameter_CTA_text, 'parameter_CTA_url' => $parameter_CTA_url);
             Mail::send("emails.invitation.index", $data, function($message) use ($to_name, $to_email, $message_title) {

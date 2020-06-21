@@ -14,7 +14,7 @@
 				    $event_id_signal = '12';
 				    $user_id_signal = '12';
 
-				    $command_signal = base64_decode($_GET['command_signal']);
+				    $command_signal = base64_decode($_GET['action']);
 				    $event_id_signal = base64_decode($_GET['eid']);
 				    $user_id_signal = base64_decode($_GET['uid']);
 				    // END INPUT PARAMETER
