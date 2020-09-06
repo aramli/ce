@@ -9,6 +9,7 @@ use Session;
 
 class UAC extends Controller
 {
+
     public function login(){
     	return view('UAC.login');
     }
@@ -595,5 +596,12 @@ class UAC extends Controller
     public function test(){
         return view('emails.reset_password.index');
     }
+
+
+
+
+
+
+
 
 }
