@@ -11,7 +11,12 @@ class Company extends Controller
 {
     public function index(){
     	$company = DB::table('d3s3m_company')->get();
-
+        if( count($company) > 0 ){
+            $json_table['ALL_REGISTERED_COMPANIES'] = json_encode($company);
+        } else {
+            $json_table['ALL_REGISTERED_COMPANIES'] = '{}';
+        }
+        /*
     	$company = DB::select(DB::raw('
     		select
     			t1.ID as ID,
@@ -19,9 +24,10 @@ class Company extends Controller
     			(select count(ID) from d3s3m_user where ID_COMPANY = t1.ID) as TOTAL_USER,
     			(select count(ID) from d3s3m_user where ID_COMPANY = t1.ID and IS_ACTIVE = 1) as ACTIVE_USER
     		from d3s3m_company t1
-    		'));
+            '));
+        */
 
-    	return view('company.index', compact('company'));
+    	return view('company.index', compact('json_table'));
     }
 
     public function add(){
@@ -31,11 +37,11 @@ class Company extends Controller
 
     public function SaveNewCompany(Request $request){
 
-        $check = DB::table('d3s3m_company')->where('NAME', $request->NAME)->count('ID');
+        $check = DB::table('d3s3m_company')->where('com_NAME', $request->NAME)->count('com_ID');
 
         if( $check == 0 ){
             DB::table('d3s3m_company')->insert([
-                "NAME" => $request->NAME
+                "com_NAME" => $request->NAME
             ]);
             $new_id = DB::getPdo()->lastInsertId();
 
@@ -49,7 +55,7 @@ class Company extends Controller
             Session::put('popup_status', 1);
             Session::put('popup_type', 'error');
             Session::put('popup_title', 'Registration Failed');
-            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->NAME.'</strong> &nbsp; is already registered.');
+            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->com_NAME.'</strong> &nbsp; is already registered.');
 
             return redirect('/company/add');
         }
@@ -60,25 +66,25 @@ class Company extends Controller
 
     public function detail($id){
 
-    	$company = DB::table('d3s3m_company')->where('ID', $id)->get();
+    	$company = DB::table('d3s3m_company')->where('com_ID', $id)->get();
 
     	return view('company.detail', compact('company'));
     }
 
     public function UpdateCompanyDetail(Request $request){
 
-		$check_name = DB::table('d3s3m_company')->where('NAME', $request->NAME)->count('ID');
+		$check_name = DB::table('d3s3m_company')->where('com_NAME', $request->NAME)->count('com_ID');
 
 		if( $check_name > 0 ){
 			Session::put('popup_status', 1);
             Session::put('popup_type', 'error');
             Session::put('popup_title', 'Registration Failed');
-            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->NAME.'</strong> &nbsp; is already registered.');
+            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->com_NAME.'</strong> &nbsp; is already registered.');
 
 		} else {
-			DB::table('d3s3m_company')->where('ID', $request->currentID)->update([
-                "NAME" => $request->NAME,
-                "DATE_MODIFIED" => date('Y-m-d H:i:s')
+			DB::table('d3s3m_company')->where('com_ID', $request->currentID)->update([
+                "com_NAME" => $request->NAME,
+                "com_DATE_MODIFIED" => date('Y-m-d H:i:s')
             ]);
 
 	        Session::put('popup_status', 1);
@@ -95,7 +101,7 @@ class Company extends Controller
 
     public function DeleteCompany($id){
 
-        DB::table('d3s3m_company')->where('ID', $id)->delete();
+        DB::table('d3s3m_company')->where('com_ID', $id)->delete();
 
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');

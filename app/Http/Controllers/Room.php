@@ -11,17 +11,13 @@ class Room extends Controller
 {
     public function index(){
         $room = DB::table('d3s3m_room')->get();
+        if( count($room) > 0 ){
+            $json_table['ALL_REGISTERED_ROOM'] = json_encode($room);
+        } else {
+            $json_table['ALL_REGISTERED_ROOM'] = '{}';
+        }
 
-        $room = DB::select(DB::raw('
-            select
-                t1.ID as ID,
-                t1.NAME as NAME,
-                (select count(ID) from d3s3m_user where ID_COMPANY = t1.ID) as TOTAL_USER,
-                (select count(ID) from d3s3m_user where ID_COMPANY = t1.ID and IS_ACTIVE = 1) as ACTIVE_USER
-            from d3s3m_room t1
-            '));
-
-        return view('room.index', compact('room'));
+        return view('room.index', compact('json_table'));
     }
 
     public function add(){
@@ -31,14 +27,14 @@ class Room extends Controller
 
     public function SaveNewRoom(Request $request){
 
-        $check = DB::table('d3s3m_room')->where('NAME', $request->NAME)->count('ID');
+        $check = DB::table('d3s3m_room')->where('roo_NAME', $request->NAME)->count('roo_ID');
 
         if( $check == 0 ){
             DB::table('d3s3m_room')->insert([
-                "NAME" => $request->NAME,
-                "CAPACITY" => $request->CAPACITY,
-                "KWH_STANDARD" => $request->KWH_STANDARD,
-                "IS_ACTIVE" => $request->IS_ACTIVE
+                "roo_NAME" => $request->NAME,
+                "roo_CAPACITY" => $request->CAPACITY,
+                "roo_KWH_STANDARD" => $request->KWH_STANDARD,
+                "roo_IS_ACTIVE" => $request->IS_ACTIVE
             ]);
             $new_id = DB::getPdo()->lastInsertId();
 
@@ -52,7 +48,7 @@ class Room extends Controller
             Session::put('popup_status', 1);
             Session::put('popup_type', 'error');
             Session::put('popup_title', 'Registration Failed');
-            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->NAME.'</strong> &nbsp; is already registered.');
+            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->roo_NAME.'</strong> &nbsp; is already registered.');
 
             return redirect('/room/add');
         }
@@ -63,7 +59,7 @@ class Room extends Controller
 
     public function detail($id){
 
-        $room = DB::table('d3s3m_room')->where('ID', $id)->get();
+        $room = DB::table('d3s3m_room')->where('roo_ID', $id)->get();
 
         return view('room.detail', compact('room'));
     }
@@ -72,11 +68,11 @@ class Room extends Controller
 
         if( $request->currentName == $request->NAME ){
 
-            DB::table('d3s3m_room')->where('ID', $request->currentID)->update([
-                "CAPACITY" => $request->CAPACITY,
-                "KWH_STANDARD" => $request->KWH_STANDARD,
-                "IS_ACTIVE" => $request->IS_ACTIVE,
-                "DATE_MODIFIED" => date('Y-m-d H:i:s')
+            DB::table('d3s3m_room')->where('roo_ID', $request->currentID)->update([
+                "roo_CAPACITY" => $request->CAPACITY,
+                "roo_KWH_STANDARD" => $request->KWH_STANDARD,
+                "roo_IS_ACTIVE" => $request->IS_ACTIVE,
+                "roo_DATE_MODIFIED" => date('Y-m-d H:i:s')
             ]);
 
             Session::put('popup_status', 1);
@@ -86,21 +82,21 @@ class Room extends Controller
 
         } else {
 
-           $check_name = DB::table('d3s3m_room')->where('NAME', $request->NAME)->count('ID');
+           $check_name = DB::table('d3s3m_room')->where('roo_NAME', $request->NAME)->count('roo_ID');
 
             if( $check_name > 0 ){
                 Session::put('popup_status', 1);
                 Session::put('popup_type', 'error');
                 Session::put('popup_title', 'Registration Failed');
-                Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->NAME.'</strong> &nbsp; is already registered.');
+                Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->roo_NAME.'</strong> &nbsp; is already registered.');
 
             } else {
-                DB::table('d3s3m_room')->where('ID', $request->currentID)->update([
-                    "NAME" => $request->NAME,
-                    "CAPACITY" => $request->CAPACITY,
-                    "KWH_STANDARD" => $request->KWH_STANDARD,
-                    "IS_ACTIVE" => $request->IS_ACTIVE,
-                    "DATE_MODIFIED" => date('Y-m-d H:i:s')
+                DB::table('d3s3m_room')->where('roo_ID', $request->currentID)->update([
+                    "roo_NAME" => $request->NAME,
+                    "roo_CAPACITY" => $request->CAPACITY,
+                    "roo_KWH_STANDARD" => $request->KWH_STANDARD,
+                    "roo_IS_ACTIVE" => $request->IS_ACTIVE,
+                    "roo_DATE_MODIFIED" => date('Y-m-d H:i:s')
                 ]);
 
                 Session::put('popup_status', 1);
@@ -121,7 +117,7 @@ class Room extends Controller
 
     public function DeleteRoom($id){
 
-        DB::table('d3s3m_room')->where('ID', $id)->delete();
+        DB::table('d3s3m_room')->where('roo_ID', $id)->delete();
 
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');
