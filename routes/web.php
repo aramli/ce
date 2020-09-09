@@ -145,6 +145,7 @@ Route::get('/event/add/{id}/attendee/{id_attendee}/register', 'Event@register_at
 Route::get('/event/add/{id}/attendee/{id_attendee}/remove', 'Event@remove_attendee');
 Route::post('/event/add/{id}/SaveNewEvent', 'Event@SaveNewEvent');
 Route::post('/event/add/{id}/SubmitForReview', 'Event@SubmitForReview');
+Route::get('/event/add/{id}/SubmitForReviewGet', 'Event@SubmitForReviewGet');
 
 Route::get('/event/all', 'Event@all')->name('view_all_event');
 Route::get('/event/today', 'Event@today')->name('view_today_event');

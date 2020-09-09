@@ -43,6 +43,7 @@ class UAC extends Controller
             Session::put('ID_DIVISION', $this_user->use_d3s3m_division_div_ID);
             Session::put('ID_ROLE', $this_user->use_d3s3m_role_rol_ID);
             Session::put('ROLE_NAME', $this_user->rol_NAME);
+            Session::put('IS_LOGIN', 1);
 
 
             // Session::put('ROOT_URL', 'http://localhost/development_site/rules');

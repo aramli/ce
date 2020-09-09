@@ -1,3 +1,9 @@
+<?php
+if( Session::get('IS_LOGIN') != 1 ){
+	header("Location:".route('login'));
+	exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	@include('include_new.head')

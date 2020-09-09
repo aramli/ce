@@ -14,16 +14,16 @@ class Event extends Controller
 
     	// CREATE TEMPORARY EVENT
     	DB::table('d3s3m_event')->insert([
-    		"ID_USER" => Session::get('ID'),
-    		"STATUS" => 0
+    		"eve_d3s3m_user_use_ID" => Session::get('ID'),
+    		"eve_STATUS" => 0
     	]);
 		$new_id = DB::getPdo()->lastInsertId();
 
 		// AUTOMATIC ADD ATTENDEE
 		DB::table('d3s3m_attendee')->insert([
-			"ID_EVENT" => $new_id,
-			"ID_USER" => Session::get('ID'),
-            "COMMAND_SIGNAL" => 'StartEvent'
+			"att_d3s3m_event_eve_ID" => $new_id,
+			"att_d3s3m_user_use_ID" => Session::get('ID'),
+            "att_COMMAND_SIGNAL" => 'StartEvent'
 		]);
 		
 		// DELETE YESTERDAY BLANK EVENT
@@ -31,20 +31,21 @@ class Event extends Controller
 		/*
 		$query_delete = "delete from d3s3m_event where STATUS = 0 and DATE(DATE_CREATED) < '".date('Y-m-d')."' ";
 		$result_delete = $db->query($query_delete);
-		*/
-		DB::select(DB::raw("delete from d3s3m_event where STATUS = 0 and DATE(DATE_CREATED) < '".date('Y-m-d')."' "));
+        */
+        
+        DB::select(DB::raw("delete from d3s3m_event where eve_STATUS = 0 and DATE(eve_DATE_CREATED) < '".date('Y-m-d')."' "));
 
 		return redirect('/event/add/'.$new_id.'/basic');
     }
 
     public function add_basic($id){
 
-    	$category = DB::table('d3s3m_category')->get();
-    	$room = DB::table('d3s3m_room')->where('IS_ACTIVE', 1)->get();
-
         $id = $id;
 
-        $basic_info = DB::table('d3s3m_event')->where('ID', $id)->get();
+    	$category = DB::table('d3s3m_category')->get();
+    	$room = DB::table('d3s3m_room')->where('roo_IS_ACTIVE', 1)->get();
+
+        $basic_info = DB::table('d3s3m_event')->where('eve_ID', $id)->get();
 
     	// $attendee = DB::table('d3s3m_user')->where('IS_ACTIVE', 1)->get();
         /*
@@ -70,20 +71,9 @@ class Event extends Controller
 
         $id = $id;
 
-        $user_list = DB::select(DB::raw("
-            select
-                t1.ID as ID,
-                t1.FULLNAME as FULLNAME,
-                t1.EMAIL as EMAIL,
-                t2.NAME as COMPANY_NAME,
-                t3.NAME as DIVISION_NAME
-            from d3s3m_user t1
-                left join d3s3m_company t2 on t2.ID = t1.ID_COMPANY
-                left join d3s3m_division t3 on t3.ID = t1.ID_COMPANY
-            where
-                t1.IS_ACTIVE = 1
-            "));
 
+
+        /*
         $attendee = DB::select(DB::raw("
             select
                 t4.ID as ID,
@@ -98,34 +88,102 @@ class Event extends Controller
             where
                 t1.ID_EVENT = ".$id."
             "));
-
-        foreach( $attendee as $this_attendee ){
-            $array_existing_attendee[] = $this_attendee->ID;
+        */
+        $attendee = DB::table('d3s3m_attendee')
+                    ->leftJoin('d3s3m_user', 'use_ID', '=', 'att_d3s3m_user_use_ID')
+                    ->leftJoin('d3s3m_company', 'com_ID', '=', 'use_d3s3m_company_com_ID')
+                    ->leftJoin('d3s3m_division', 'div_ID', '=', 'use_d3s3m_division_div_ID')
+                    ->where('att_d3s3m_event_eve_ID', $id)
+                    ->get();
+        if( count($attendee) > 0 ){
+            $json_table['ATTENDEE_LIST'] = json_encode($attendee);
+        } else {
+            $json_table['ATTENDEE_LIST'] = '{}';
         }
 
-        return view('event.add_attendee', compact('id', 'user_list', 'attendee', 'array_existing_attendee'));
+        foreach( $attendee as $this_attendee ){
+            $array_existing_attendee[] = $this_attendee->att_d3s3m_user_use_ID;
+        }
+
+
+
+
+
+
+
+
+        /*
+        $user_list = DB::select(DB::raw("
+            select
+                t1.ID as ID,
+                t1.FULLNAME as FULLNAME,
+                t1.EMAIL as EMAIL,
+                t2.NAME as COMPANY_NAME,
+                t3.NAME as DIVISION_NAME
+            from d3s3m_user t1
+                left join d3s3m_company t2 on t2.ID = t1.ID_COMPANY
+                left join d3s3m_division t3 on t3.ID = t1.ID_COMPANY
+            where
+                t1.IS_ACTIVE = 1
+            "));
+        */
+        if( count($array_existing_attendee) > 0 ){
+            $query_user_list = "
+                select
+                    *
+                from d3s3m_user
+                    left join d3s3m_company on com_ID = use_d3s3m_company_com_ID
+                    left join d3s3m_division on div_ID = use_d3s3m_division_div_ID
+                where
+                    use_IS_ACTIVE = 1
+            ";
+
+            for( $i=0;$i<count($array_existing_attendee);$i++ ){
+                $extended_query[] = "use_ID != ".$array_existing_attendee[$i];
+            }
+            $implode_extended_query = implode(" and ", $extended_query);
+            $query_user_list .= " and (".$implode_extended_query.")";
+
+            $user_list = DB::select(DB::raw($query_user_list));
+
+        } else {
+            $user_list = DB::table('d3s3m_user')
+                    ->leftJoin('d3s3m_company', 'com_ID', '=', 'use_d3s3m_company_com_ID')
+                    ->leftJoin('d3s3m_division', 'div_ID', '=', 'use_d3s3m_division_div_ID')
+                    ->where('use_IS_ACTIVE', 1)
+                    ->get();
+        }
+        
+        if( count($user_list) > 0 ){
+            $json_table['USER_LIST'] = json_encode($user_list);
+        } else {
+            $json_table['USER_LIST'] = '{}';
+        }
+
+        return view('event.add_attendee', compact('id', 'json_table', 'array_existing_attendee'));
     }
 
     public function SaveNewEvent(Request $request){
 
-        $event_start_schedule = $request->EVENT_START_DATE.' '.$request->EVENT_START_TIME.':00';
-        $event_finish_schedule = $request->EVENT_START_DATE.' '.$request->EVENT_FINISH_TIME.':00';
+
+        $event_start_schedule = $request->EVENT_START_DATE.' '.str_replace(" ","",$request->EVENT_START_TIME).':00';
+        $event_finish_schedule = $request->EVENT_START_DATE.' '.str_replace(" ","",$request->EVENT_FINISH_TIME).':00';
 
         $convert_datetime_to_second = strtotime($event_start_schedule);
         $minus_preparation_time = $convert_datetime_to_second - ( $request->EVENT_PREPARATION * 60 );
         $event_initiation = date("Y-m-d H:i", $minus_preparation_time);
 
-        DB::table('d3s3m_event')->where('ID', $request->currentID)->update([
-            "TITLE" => $request->TITLE,
-            "ID_CATEGORY" => $request->ID_CATEGORY,
-            "EVENT_PREPARATION" => $request->EVENT_PREPARATION,
-            "EVENT_INITIATION" =>$event_initiation,
-            "EVENT_START" => $event_start_schedule,
-            "EVENT_FINISH" => $event_finish_schedule,
-            "ID_ROOM" => $request->ID_ROOM,
-            "SUMMARY" => $request->SUMMARY,
-            "DESCRIPTION" => $request->DESCRIPTION,
-            "DATE_MODIFIED" => date('Y-m-d H:i:s')
+        DB::table('d3s3m_event')->where('eve_ID', $request->currentID)->update([
+            "eve_TITLE" => $request->TITLE,
+            "eve_d3s3m_category_cat_ID" => $request->ID_CATEGORY,
+            "eve_EVENT_PREPARATION" => $request->EVENT_PREPARATION,
+            "eve_EVENT_INITIATION" =>$event_initiation,
+            "eve_EVENT_START" => $event_start_schedule,
+            "eve_EVENT_FINISH" => $event_finish_schedule,
+            "eve_d3s3m_room_roo_ID" => $request->ID_ROOM,
+            "eve_SUMMARY" => $request->SUMMARY,
+            "eve_DESCRIPTION" => $request->DESCRIPTION,
+            "eve_DATE_MODIFIED" => date('Y-m-d H:i:s')
         ]);
 
         /*
@@ -141,10 +199,10 @@ class Event extends Controller
     public function register_attendee($id, $id_attendee){
 
         DB::table('d3s3m_attendee')->insert([
-            "ID_EVENT" => $id,
-            "ID_USER" => $id_attendee,
-            "COMMAND_SIGNAL" => 'AttendEvent',
-            "IS_ATTEND" => 0
+            "att_d3s3m_event_eve_ID" => $id,
+            "att_d3s3m_user_use_ID" => $id_attendee,
+            "att_COMMAND_SIGNAL" => 'AttendEvent',
+            "att_IS_ATTEND" => 0
         ]);
 
         Session::put('popup_status', 1);
@@ -157,7 +215,7 @@ class Event extends Controller
 
     public function remove_attendee($id, $id_attendee){
 
-        DB::table('d3s3m_attendee')->where('ID_EVENT', $id)->where('ID_USER', $id_attendee)->delete();
+        DB::table('d3s3m_attendee')->where('att_d3s3m_event_eve_ID', $id)->where('att_d3s3m_user_use_ID', $id_attendee)->delete();
 
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');
@@ -182,9 +240,25 @@ class Event extends Controller
         return redirect('/event/all');
     }
 
+    public function SubmitForReviewGet($id){
+
+        DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_STATUS" => 1,
+            "eve_DATE_MODIFIED" => date('Y-m-d H:i:s')
+        ]);
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Event Creation Success');
+        Session::put('popup_message', 'Your event registration has been sent for review.');
+
+        return redirect('/event/all');
+    }
+
     public function all(){
 
         // $event = DB::table('d3s3m_event')->where('STATUS', 1)->orderBy('DATE_CREATED', 'DESC')->get();
+        /*
         $event = DB::select(DB::raw(
             "
             select
@@ -203,9 +277,23 @@ class Event extends Controller
                 t1.STATUS > 0
             "
         ));
+        */
+
+        $event = DB::table('d3s3m_event')
+                    ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                    ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                    ->leftJoin('d3s3m_category', 'cat_ID', '=', 'eve_d3s3m_category_cat_ID')
+                    ->where('eve_STATUS', '>', 0)
+                    ->get();
+        if( count($event) > 0 ){
+            $json_table['ALL_REGISTERED_EVENTS'] = json_encode($event);
+        } else {
+            $json_table['ALL_REGISTERED_EVENTS'] = '{}';
+        }
         // print_r($event);exit;
 
-        return view('event.view_all', compact('event'));
+        // return view('event.view_all', compact('json_table'));
+        return view('event.index', compact('json_table'));
     }
 
     public function today(){

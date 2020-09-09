@@ -1,134 +1,226 @@
-@extends('master_template')
+@extends('master_template_new')
 @section('content')
-<?php
-foreach( $basic_info as $this_basic_info ){
-	$this_basic_info = $this_basic_info;
-}
-?>
-			<form action="SaveNewEvent" method="post" class="forms-sample">
-				{{ csrf_field() }}
-				<div class="page-content">
-					<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-						<div>
-							<h4 class="mb-3 mb-md-0">Add New Event - Basic (1/2)</h4>
+			
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="subheader py-2 py-lg-4 subheader-transparent" id="kt_subheader">
+							<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+								<!--begin::Details-->
+								<div class="d-flex align-items-center flex-wrap mr-2">
+									<!--begin::Title-->
+									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Add New Event</h5>
+									<!--end::Title-->
+									<!--begin::Separator-->
+									<div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+									<!--end::Separator-->
+									<!--begin::Search Form-->
+									<div class="d-flex align-items-center" id="kt_subheader_search">
+										<span class="text-dark-50 font-weight-bold" id="kt_subheader_total">Basic Info (1 of 2)</span>
+									</div>
+									<!--end::Search Form-->
+								</div>
+								<!--end::Details-->
+								<!--begin::Toolbar-->
+								<div class="d-flex align-items-center">
+									<!--begin::Button-->
+									<a href="{{ route('view_all_event') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
+									<!--end::Button-->
+									<!--begin::Dropdown-->
+									<div class="btn-group ml-2">
+										
+										<button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" onclick="SubmitNewUser();">Continue</button>
+									</div>
+									<!--end::Dropdown-->
+								</div>
+								<!--end::Toolbar-->
+							</div>
 						</div>
-						<div class="d-flex align-items-center flex-wrap text-nowrap">
-							<a href="{{ route('view_all_event') }}" class="btn btn-outline-light btn-icon-text mr-2 mb-2 mb-md-0" style="color:#000;">
-								<i class="btn-icon-prepend" data-feather="arrow-left"></i>
-								Back
-							</a>
-							<button type="submit" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-								<i class="btn-icon-prepend" data-feather="user"></i>
-								Continue
-							</button>
+						<!--end::Subheader-->
+						<!--begin::Entry-->
+						<div class="d-flex flex-column-fluid">
+							<!--begin::Container-->
+							<div class="container-fluid">
+								<!--begin::Card-->
+								<div class="card card-custom card-transparent">
+									<div class="card-body p-0">
+										<!--begin::Wizard-->
+										<div class="wizard wizard-4">
+											<!--begin::Card-->
+											<div class="card card-custom card-shadowless rounded-top-0">
+												<!--begin::Body-->
+												<div class="card-body p-0">
+													<div class="row justify-content-center py-8 px-8 py-lg-15 px-lg-10">
+														<div class="col-xl-12 col-xxl-10">
+															<!--begin::Wizard Form-->
+															<form class="form" id="kt_form" method="post" action="../../../../public/event/add/{{ $id }}/SaveNewEvent">
+																{{ csrf_field() }}
+																<div class="row justify-content-center">
+																	<div class="col-xl-9">
+																		<!--begin::Wizard Step 1-->
+																		<div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
+																			<h5 class="text-dark font-weight-bold mb-10">BASIC INFORMATION</h5>
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label">Organizer</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" type="text" value="{{ Session::get('FULLNAME') }}" disabled />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Title</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="TITLE" type="text" value="" required placeholder="Enter event name" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Training Package</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<select class="form-control form-control-solid form-control-lg m-input" name="ID_CATEGORY" style="color:#333;" required>
+																						<option value="">--Choose Training Package--</option>
+																						@foreach( $category as $this_category )
+																							<option value="{{ $this_category->cat_ID }}" >{{ $this_category->cat_NAME }}</option>
+																						@endforeach
+																					</select>
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+
+
+
+
+																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:50px!important;">DATE AND TIME</h5>
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Date</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="EVENT_START_DATE" required type="date" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Start Time (format 24h)</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="EVENT_START_TIME" required type="time" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Finish Time (format 24h)</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="EVENT_FINISH_TIME" required type="time" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Preparation Time (minute)</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="EVENT_PREPARATION" required type="number" value="0" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+
+
+
+
+																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:50px!important;">VENUE</h5>
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Room</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<select class="form-control form-control-solid form-control-lg m-input" name="ID_ROOM" style="color:#333;" required>
+																						<option value="">--Choose Room--</option>
+																						@foreach( $room as $this_room )
+																							<option value="{{ $this_room->roo_ID }}" >{{ $this_room->roo_NAME }}</option>
+																						@endforeach
+																					</select>
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+
+
+
+
+																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:50px!important;">SUMMARY</h5>
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Summary</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="SUMMARY" required type="text" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Description</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<textarea class="form-control form-control-solid form-control-lg" name="DESCRIPTION" required style="min-height:200px;"></textarea>
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+
+
+
+
+
+																		</div>
+																		<!--end::Wizard Step 1-->
+																	</div>
+																</div>
+																<input type="hidden" name="currentID" value="{{ $id }}" />
+															</form>
+															<!--end::Wizard Form-->
+														</div>
+													</div>
+												</div>
+												<!--end::Body-->
+											</div>
+											<!--end::Card-->
+										</div>
+										<!--end::Wizard-->
+									</div>
+								</div>
+								<!--end::Card-->
+							</div>
+							<!--end::Container-->
 						</div>
+						<!--end::Entry-->
 					</div>
-
-					<div class="row">
-						<div class="col-md-12 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<h6 class="card-title">Basic Information</h6>
-									
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Organizer:</label>
-										<input type="text" class="form-control m-input" value="{{ Session::get('FULLNAME') }}" disabled >
-									</div>
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Event Title:</label>
-										<input type="text" class="form-control m-input" placeholder="Enter event name" value="{{ $this_basic_info->TITLE }}" name="TITLE" required >
-									</div>
-									<div class="form-group m-form__group">
-										<label><span style="color:red;">*</span> Training Package:</label>
-										<select class="form-control m-input" name="ID_CATEGORY" style="color:#333;">
-											<option value="">--Choose Training Package--</option>
-											@foreach( $category as $this_category )
-												<?php
-												if( $this_basic_info->ID_CATEGORY == $this_category->ID ){
-													$selected_category = ' selected ';
-												} else {
-													$selected_category = '';
-												}
-												?>
-												<option value="{{ $this_category->ID }}" {{ $selected_category }} >{{ $this_category->NAME }}</option>
-											@endforeach
-										</select>
-									</div>
-
-
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<h6 class="card-title">Date and Time</h6>
-										
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Event Date:</label>
-										<input type="date" class="form-control m-input" placeholder="Choose event date" value="{{ substr($this_basic_info->EVENT_START,0,10) }}" name="EVENT_START_DATE" required >
-									</div>
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Event Start Time (format 24h):</label>
-										<input type="time" class="form-control m-input" placeholder="Ex: 13.00" value="{{ substr($this_basic_info->EVENT_START,11,5) }}" name="EVENT_START_TIME" required >
-									</div>
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Event Finish Time (format 24h):</label>
-										<input type="time" class="form-control m-input" placeholder="Ex: 15.00" value="{{ substr($this_basic_info->EVENT_FINISH,11,5) }}" name="EVENT_FINISH_TIME" required >
-									</div>
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Preparation Time (minute):</label>
-										<input type="number" class="form-control m-input" placeholder="Ex: 15" value="{{ $this_basic_info->EVENT_PREPARATION }}" name="EVENT_PREPARATION" required >
-									</div>
-
-
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<h6 class="card-title">Venue</h6>
-										
-									<div class="form-group m-form__group">
-										<label><span style="color:red;">*</span> Room:</label>
-										<select class="form-control m-input" name="ID_ROOM" style="color:#333;">
-											<option value="">--Choose Room--</option>
-											@foreach( $room as $this_room )
-												<?php
-												if( $this_basic_info->ID_ROOM == $this_room->ID ){
-													$selected_room = ' selected ';
-												} else {
-													$selected_room = '';
-												}
-												?>
-												<option value="{{ $this_room->ID }}" {{ $selected_room }} >{{ $this_room->NAME }}</option>
-											@endforeach
-										</select>
-									</div>
-
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 grid-margin stretch-card">
-							<div class="card">
-								<div class="card-body">
-									<h6 class="card-title">Summary</h6>
-										
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Summary:</label>
-										<input type="text" class="form-control m-input" placeholder="Choose event date" value="{{ $this_basic_info->SUMMARY }}" name="SUMMARY" required >
-									</div>
-									<div class="form-group m-form__group">
-										<label for="example_input_full_name"><span style="color:red;">*</span> Event Description:</label>
-										<textarea class="form-control m-input" name="DESCRIPTION" required>{{ $this_basic_info->DESCRIPTION }}</textarea>
-									</div>
-
-								</div>
-							</div>
-						</div>
-					</div>
+					<!--end::Content-->
+					@include('include_new.footer')
 				</div>
-				<input type="hidden" name="currentID" value="{{ $id }}" />
-			</form>
+				<!--end::Wrapper-->
+				@include('include_new.aside_secondary')
+				
 @endsection
+
+<script>
+	function SubmitNewUser(){
+		var form = document.getElementById('kt_form');
+		if( form.checkValidity() ){
+			form.submit();
+		} else {
+			alert('Please fill all required fields.');
+		}
+	}
+</script>
+
+
+
