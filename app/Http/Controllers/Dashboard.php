@@ -96,7 +96,9 @@ class Dashboard extends Controller
 		$json_report = json_encode('{}');
 
         file_put_contents(base_path('public/SYSTEM/reporting/energy__energy_consumption_rank.json'), stripslashes($json_report));
-    	// END ENERGY CONSUMPTION
+		// END ENERGY CONSUMPTION
+		
+		$json_table[''] = '{}';
 
     	return view('dashboard.index');
     }
