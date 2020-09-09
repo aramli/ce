@@ -25,7 +25,7 @@
 											<tr>
 												<th>System ID</th>
 												<th>Title</th>
-												<th>Type</th>
+												<th>Training Package</th>
 												<th>Event Start</th>
 												<th>Room</th>
 												<th>Organizer</th>

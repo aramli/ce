@@ -165,7 +165,7 @@ foreach( $basic_info as $this_basic_info ){
 									</div>
 									
 									<div class="form-group row">
-										<label for="exampleInputUsername2" class="col-sm-3 col-form-label">Category</label>
+										<label for="exampleInputUsername2" class="col-sm-3 col-form-label">Training Package</label>
 										<div class="col-sm-9">
 											<input type="text" class="form-control" id="exampleInputUsername2" placeholder="Email" value="{{ $this_basic_info->CATEGORY_NAME }}" disabled style="background:#fff;">
 										</div>

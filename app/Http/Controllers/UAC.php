@@ -23,20 +23,26 @@ class UAC extends Controller
 
     public function VerifyLogin(Request $request){
 
-        $check = DB::table('d3s3m_user')->where('EMAIL', $request->email)->where('PASSWORD', md5($request->password))->count('ID');
+        $check = DB::table('d3s3m_user')->where('use_EMAIL', $request->email)->where('use_PASSWORD', md5($request->password))->count('use_ID');
+        // print_r($check);exit;
         if( $check == 1 ){
 
-            $user = DB::table('d3s3m_user')->where('EMAIL', $request->email)->where('PASSWORD', md5($request->password))->get();
+            $user = DB::table('d3s3m_user')
+                        ->leftJoin('d3s3m_role', 'rol_ID', '=', 'use_d3s3m_role_rol_ID')
+                        ->where('use_EMAIL', $request->email)
+                        ->where('use_PASSWORD', md5($request->password))
+                        ->get();
             foreach( $user as $this_user ){
                 $this_user = $this_user;
             }
 
-            Session::put('ID', $this_user->ID);
-            Session::put('FULLNAME', $this_user->FULLNAME);
-            Session::put('EMAIL', $this_user->EMAIL);
-            Session::put('ID_COMPANY', $this_user->ID_COMPANY);
-            Session::put('ID_DIVISION', $this_user->ID_DIVISION);
-            Session::put('ID_ROLE', $this_user->ID_ROLE);
+            Session::put('ID', $this_user->use_ID);
+            Session::put('FULLNAME', $this_user->use_FULLNAME);
+            Session::put('EMAIL', $this_user->use_EMAIL);
+            Session::put('ID_COMPANY', $this_user->use_d3s3m_company_com_ID);
+            Session::put('ID_DIVISION', $this_user->use_d3s3m_division_div_ID);
+            Session::put('ID_ROLE', $this_user->use_d3s3m_role_rol_ID);
+            Session::put('ROLE_NAME', $this_user->rol_NAME);
 
 
             // Session::put('ROOT_URL', 'http://localhost/development_site/rules');
@@ -45,11 +51,11 @@ class UAC extends Controller
             Session::put('popup_status', 1);
             Session::put('popup_type', 'success');
             Session::put('popup_title', 'Login Success');
-            Session::put('popup_message', 'Welcome back, '.$this_user->FULLNAME);
+            Session::put('popup_message', 'Welcome back, '.$this_user->use_FULLNAME);
 
             // UPDATE LAST LOGIN
-            DB::table('d3s3m_user')->where('ID', $this_user->ID)->update([
-                "LAST_LOGIN" => date('Y-m-d H:i:s')
+            DB::table('d3s3m_user')->where('use_ID', $this_user->use_ID)->update([
+                "use_LAST_LOGIN" => date('Y-m-d H:i:s')
             ]);
 
             return redirect('/dashboard');
@@ -66,22 +72,33 @@ class UAC extends Controller
     
     public function index(){
 
-        $user = DB::table('d3s3m_user')->get();
-
+        // $user = DB::table('d3s3m_user')->get();
+        /*
         $user = DB::select(DB::raw('
-        	select
-        		t1.ID as ID,
-        		t1.FULLNAME as FULLNAME,
-        		t1.EMAIL as EMAIL,
-        		t1.ID_DIVISION as ID_DIVISION,
-        		t1.ID_COMPANY as ID_COMPANY,
-        		t2.NAME as ROLE_NAME,
-        		t1.LAST_LOGIN as LAST_LOGIN,
-        		t1.IS_ACTIVE as IS_ACTIVE,
-        		t1.DATE_CREATED as DATE_CREATED
-        	from d3s3m_user t1
-        		left join d3s3m_role t2 on t2.ID = t1.ID_ROLE
-        	'));
+            select
+                use_ID as ID,
+                use_FULLNAME as FULLNAME,
+                use_EMAIL as EMAIL,
+                use_d3s3m_division_div_ID as ID_DIVISION,
+                use_d3s3m_company_com_ID as ID_COMPANY,
+                rol_NAME as ROLE_NAME,
+                use_LAST_LOGIN as LAST_LOGIN,
+                use_IS_ACTIVE as IS_ACTIVE,
+                use_DATE_CREATED as DATE_CREATED
+            from d3s3m_user t1
+                left join d3s3m_role t2 on rol_ID = use_d3s3m_role_rol_ID
+            '));
+            */
+        $user = DB::table('d3s3m_user')
+                ->leftJoin('d3s3m_company', 'com_ID', '=', 'use_d3s3m_company_com_ID')
+                ->leftJoin('d3s3m_division', 'div_ID', '=', 'use_d3s3m_division_div_ID')
+                ->leftJoin('d3s3m_role', 'rol_ID', '=', 'use_d3s3m_role_rol_ID')
+                ->get();
+        if( count($user) > 0 ){
+            $json_table['ALL_REGISTERED_USER'] = json_encode($user);
+        } else {
+            $json_table['ALL_REGISTERED_USER'] = '{}';
+        }
 
         /*
         $total_user = DB::table('mdb_user')->count('ID');
@@ -91,41 +108,36 @@ class UAC extends Controller
 
         return view('user.index', compact('user', 'total_user', 'total_administrator', 'total_analyst', 'total_guest'));
         */
-        return view('UAC.index', compact('user'));
+        return view('UAC.index', compact('json_table'));
     }
 
     public function add(){
 
     	$company = DB::table('d3s3m_company')->get();
     	$division = DB::table('d3s3m_division')->get();
-    	$role = DB::table('d3s3m_role')->get();
-
+        $role = DB::table('d3s3m_role')->get();
+        
     	return view('UAC.add', compact('company', 'division', 'role'));
     }
 
     public function SaveNewUser(Request $request){
 
-        $check = DB::table('d3s3m_user')->where('EMAIL', $request->inputEmail)->count('ID');
+        $check = DB::table('d3s3m_user')->where('use_EMAIL', $request->inputEmail)->count('use_ID');
         $otp = rand(123456,654321);
 
         if( $check == 0 ){
             DB::table('d3s3m_user')->insert([
-                "FULLNAME" => $request->inputFullname,
-                "EMAIL" => $request->inputEmail,
-                "ID_COMPANY" => $request->selectCompany,
-                "ID_DIVISION" => $request->selectDivision,
-                "ID_ROLE" => $request->selectRole,
-                "IS_ACTIVE" => $request->checkboxIsActive,
-                "PASSWORD" => md5($otp)
+                "use_FULLNAME" => $request->inputFullname,
+                "use_EMAIL" => $request->inputEmail,
+                "use_d3s3m_company_com_ID" => $request->selectCompany,
+                "use_d3s3m_division_div_ID" => $request->selectDivision,
+                "use_d3s3m_role_rol_ID" => $request->selectRole,
+                "use_IS_ACTIVE" => $request->checkboxIsActive,
+                "use_PASSWORD" => md5($otp),
+                "use_TRAINING_TARGET" => $request->numberTargetTraining
             ]);
             $new_id = DB::getPdo()->lastInsertId();
 
-	        if( $request->selectRole == 2 ){
-		        DB::table('d3s3m_training_target')->insert([
-		        	"ID_USER" => $new_id,
-		        	"TRAINING_TARGET" => $request->numberTargetTraining
-		        ]);
-	        }
 
 
 
@@ -171,21 +183,12 @@ class UAC extends Controller
     	$role = DB::table('d3s3m_role')->get();
     	// $user = DB::table('d3s3m_user')->where('ID', $id)->get();
 
-    	$user = DB::select(DB::raw('
-    		select
-    			t1.ID as ID,
-    			t1.FULLNAME as FULLNAME,
-    			t1.EMAIL as EMAIL,
-    			t1.ID_COMPANY as ID_COMPANY,
-    			t1.ID_DIVISION as ID_DIVISION,
-    			t1.ID_ROLE as ID_ROLE,
-    			t1.IS_ACTIVE as IS_ACTIVE,
-    			t2.TRAINING_TARGET as TRAINING_TARGET
-    		from d3s3m_user t1
-    			left join d3s3m_training_target t2 on t1.ID = t2.ID_USER
-    		where
-    			t1.ID = "'.$id.'"
-    		'));
+    	$user = DB::table('d3s3m_user')
+            ->leftJoin('d3s3m_company', 'com_ID', '=', 'use_d3s3m_company_com_ID')
+            ->leftJoin('d3s3m_division', 'div_ID', '=', 'use_d3s3m_division_div_ID')
+            ->leftJoin('d3s3m_role', 'rol_ID', '=', 'use_d3s3m_role_rol_ID')
+            ->where('use_ID', $id)
+            ->get();
 
     	return view('UAC.detail', compact('user', 'company', 'division', 'role'));
     }
@@ -194,25 +197,16 @@ class UAC extends Controller
 
     	if( $request->currentEmail == $request->inputEmail ){
 
-    		DB::table('d3s3m_user')->where('ID', $request->currentID)->update([
-                "FULLNAME" => $request->inputFullname,
-                "EMAIL" => $request->inputEmail,
-                "ID_COMPANY" => $request->selectCompany,
-                "ID_DIVISION" => $request->selectDivision,
-                "ID_ROLE" => $request->selectRole,
-                "IS_ACTIVE" => $request->checkboxIsActive,
-                "DATE_MODIFIED" => date('Y-m-d H:i:s')
+    		DB::table('d3s3m_user')->where('use_ID', $request->currentID)->update([
+                "use_FULLNAME" => $request->inputFullname,
+                "use_EMAIL" => $request->inputEmail,
+                "use_d3s3m_company_com_ID" => $request->selectCompany,
+                "use_d3s3m_division_div_ID" => $request->selectDivision,
+                "use_d3s3m_role_rol_ID" => $request->selectRole,
+                "use_IS_ACTIVE" => $request->checkboxIsActive,
+                "use_TRAINING_TARGET" => $request->numberTargetTraining,
+                "use_DATE_MODIFIED" => date('Y-m-d H:i:s')
             ]);
-
-            if( $request->selectRole == 2 ){
-
-            	DB::table('d3s3m_training_target')->where('ID_USER', $request->currentID)->delete();
-
-		        DB::table('d3s3m_training_target')->insert([
-		        	"ID_USER" => $request->currentID,
-		        	"TRAINING_TARGET" => $request->numberTargetTraining
-		        ]);
-	        }
 
 	        Session::put('popup_status', 1);
             Session::put('popup_type', 'success');
@@ -221,39 +215,30 @@ class UAC extends Controller
 
     	} else {
 
-    		$check_email = DB::table('d3s3m_user')->where('EMAIL', $request->inputEmail)->count('ID');
+    		$check_email = DB::table('d3s3m_user')->where('use_EMAIL', $request->inputEmail)->count('use_ID');
 
     		if( $check_email > 0 ){
     			Session::put('popup_status', 1);
 	            Session::put('popup_type', 'error');
-	            Session::put('popup_title', 'Registration Failed');
-	            Session::put('popup_message', 'Please try again with another email because &nbsp; <strong>'.$request->inputEmail.'</strong> &nbsp; is already registered.');
+	            Session::put('popup_title', 'Update Failed');
+	            Session::put('popup_message', 'Please try again with another email because &nbsp; <strong>'.$request->inputEmail.'</strong> &nbsp; is already used by other account.');
 
     		} else {
-    			DB::table('d3s3m_user')->where('ID', $request->currentID)->update([
-	                "FULLNAME" => $request->inputFullname,
-	                "EMAIL" => $request->inputEmail,
-	                "ID_COMPANY" => $request->selectCompany,
-	                "ID_DIVISION" => $request->selectDivision,
-	                "ID_ROLE" => $request->selectRole,
-	                "IS_ACTIVE" => $request->checkboxIsActive,
-	                "DATE_MODIFIED" => date('Y-m-d H:i:s')
+    			DB::table('d3s3m_user')->where('use_ID', $request->currentID)->update([
+	                "use_FULLNAME" => $request->inputFullname,
+	                "use_EMAIL" => $request->inputEmail,
+	                "use_d3s3m_company_com_ID" => $request->selectCompany,
+	                "use_d3s3m_division_div_ID" => $request->selectDivision,
+	                "use_d3s3m_role_rol_ID" => $request->selectRole,
+	                "use_IS_ACTIVE" => $request->checkboxIsActive,
+                    "use_TRAINING_TARGET" => $request->numberTargetTraining,
+	                "use_DATE_MODIFIED" => date('Y-m-d H:i:s')
 	            ]);
-
-	            if( $request->selectRole == 2 ){
-
-			        DB::table('d3s3m_training_target')->where('ID_USER', $request->currentID)->delete();
-
-			        DB::table('d3s3m_training_target')->insert([
-			        	"ID_USER" => $request->currentID,
-			        	"TRAINING_TARGET" => $request->numberTargetTraining
-			        ]);
-		        }
 
 		        Session::put('popup_status', 1);
 	            Session::put('popup_type', 'success');
 	            Session::put('popup_title', 'Success');
-	            Session::put('popup_message', 'Your new user has been successfully registered to the system.');
+	            Session::put('popup_message', 'Your new user has been successfully updated to the system.');
     		}
 
     	}
@@ -263,8 +248,7 @@ class UAC extends Controller
 
     public function DeleteUser($id){
 
-        DB::table('d3s3m_user')->where('ID', $id)->delete();
-        DB::table('d3s3m_training_target')->where('ID_USER', $id)->delete();
+        DB::table('d3s3m_user')->where('use_ID', $id)->delete();
 
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');
@@ -301,34 +285,31 @@ class UAC extends Controller
 			  	$user_parameter['EMAIL'] = $line[1];
 				$user_parameter['ID_COMPANY'] = $line[2];
 				$user_parameter['ID_DIVISION'] = $line[3];
-				$user_parameter['ID_ROLE'] = $line[4];
-				$user_parameter['IS_ACTIVE'] = $line[5];
+                $user_parameter['ID_ROLE'] = $line[4];
+                $user_parameter['TRAINING_TARGET'] = $line[5];
+				$user_parameter['IS_ACTIVE'] = $line[6];
+				$user_parameter['IS_VIP'] = $line[7];
 				$user_parameter['PASSWORD'] = 'password';
 				$user_parameter['CONFIRM_PASSWORD'] = 'password';
-				$user_parameter['TARGET_TRAINING'] = 0;
 				
 				if( $user_parameter['FULLNAME'] != "FULLNAME" ){
 					
-					$check = DB::table('d3s3m_user')->where('EMAIL', $user_parameter['EMAIL'])->count('ID');
+					$check = DB::table('d3s3m_user')->where('use_EMAIL', $user_parameter['EMAIL'])->count('use_ID');
 
 			        if( $check == 0 ){
 			            DB::table('d3s3m_user')->insert([
-			                "FULLNAME" => $user_parameter['FULLNAME'],
-			                "EMAIL" => $user_parameter['EMAIL'],
-			                "ID_COMPANY" => $user_parameter['ID_COMPANY'],
-			                "ID_DIVISION" => $user_parameter['ID_DIVISION'],
-			                "ID_ROLE" => $user_parameter['ID_ROLE'],
-			                "IS_ACTIVE" => $user_parameter['IS_ACTIVE'],
-			                "PASSWORD" => md5('password')
+			                "use_FULLNAME" => $user_parameter['FULLNAME'],
+			                "use_EMAIL" => $user_parameter['EMAIL'],
+			                "use_d3s3m_company_com_ID" => $user_parameter['ID_COMPANY'],
+			                "use_d3s3m_division_div_ID" => $user_parameter['ID_DIVISION'],
+                            "use_d3s3m_role_rol_ID" => $user_parameter['ID_ROLE'],
+                            "use_TRAINING_TARGET" => $user_parameter['TRAINING_TARGET'],
+			                "use_IS_ACTIVE" => $user_parameter['IS_ACTIVE'],
+			                "use_IS_VIP" => $user_parameter['IS_VIP'],
+                            "use_PASSWORD" => md5('password'),
+                            "use_DATE_CREATED" => date('Y-m-d H:i:s')
 			            ]);
 			            $new_id = DB::getPdo()->lastInsertId();
-
-				        if( $request->selectRole == 2 ){
-					        DB::table('d3s3m_training_target')->insert([
-					        	"ID_USER" => $new_id,
-					        	"TRAINING_TARGET" => 0
-					        ]);
-				        }
 
 				        if( $new_id > 0 ){
 				        	$success_query++;

@@ -39,9 +39,9 @@ foreach( $basic_info as $this_basic_info ){
 										<input type="text" class="form-control m-input" placeholder="Enter event name" value="{{ $this_basic_info->TITLE }}" name="TITLE" required >
 									</div>
 									<div class="form-group m-form__group">
-										<label><span style="color:red;">*</span> Category:</label>
+										<label><span style="color:red;">*</span> Training Package:</label>
 										<select class="form-control m-input" name="ID_CATEGORY" style="color:#333;">
-											<option value="">--Choose Category--</option>
+											<option value="">--Choose Training Package--</option>
 											@foreach( $category as $this_category )
 												<?php
 												if( $this_basic_info->ID_CATEGORY == $this_category->ID ){
