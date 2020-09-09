@@ -11,7 +11,13 @@ class Division extends Controller
 {
     public function index(){
     	$division = DB::table('d3s3m_division')->get();
+        if( count($division) > 0 ){
+            $json_table['ALL_REGISTERED_DIVISION'] = json_encode($division);
+        } else {
+            $json_table['ALL_REGISTERED_DIVISION'] = '{}';
+        }
 
+        /*
     	$division = DB::select(DB::raw('
     		select
     			t1.ID as ID,
@@ -19,9 +25,10 @@ class Division extends Controller
     			(select count(ID) from d3s3m_user where ID_COMPANY = t1.ID) as TOTAL_USER,
     			(select count(ID) from d3s3m_user where ID_COMPANY = t1.ID and IS_ACTIVE = 1) as ACTIVE_USER
     		from d3s3m_division t1
-    		'));
+            '));
+        */
 
-    	return view('division.index', compact('division'));
+    	return view('division.index', compact('json_table'));
     }
 
     public function add(){
@@ -31,11 +38,11 @@ class Division extends Controller
 
     public function SaveNewDivision(Request $request){
 
-        $check = DB::table('d3s3m_division')->where('NAME', $request->NAME)->count('ID');
+        $check = DB::table('d3s3m_division')->where('div_NAME', $request->NAME)->count('div_ID');
 
         if( $check == 0 ){
             DB::table('d3s3m_division')->insert([
-                "NAME" => $request->NAME
+                "div_NAME" => $request->NAME
             ]);
             $new_id = DB::getPdo()->lastInsertId();
 
@@ -49,7 +56,7 @@ class Division extends Controller
             Session::put('popup_status', 1);
             Session::put('popup_type', 'error');
             Session::put('popup_title', 'Registration Failed');
-            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->NAME.'</strong> &nbsp; is already registered.');
+            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->div_NAME.'</strong> &nbsp; is already registered.');
 
             return redirect('/division/add');
         }
@@ -60,25 +67,25 @@ class Division extends Controller
 
     public function detail($id){
 
-    	$division = DB::table('d3s3m_division')->where('ID', $id)->get();
+    	$division = DB::table('d3s3m_division')->where('div_ID', $id)->get();
 
     	return view('division.detail', compact('division'));
     }
 
     public function UpdateDivisionDetail(Request $request){
 
-		$check_name = DB::table('d3s3m_division')->where('NAME', $request->NAME)->count('ID');
+		$check_name = DB::table('d3s3m_division')->where('div_NAME', $request->NAME)->count('div_ID');
 
 		if( $check_name > 0 ){
 			Session::put('popup_status', 1);
             Session::put('popup_type', 'error');
             Session::put('popup_title', 'Registration Failed');
-            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->NAME.'</strong> &nbsp; is already registered.');
+            Session::put('popup_message', 'Please try again with another name because &nbsp; <strong>'.$request->div_NAME.'</strong> &nbsp; is already registered.');
 
 		} else {
-			DB::table('d3s3m_division')->where('ID', $request->currentID)->update([
-                "NAME" => $request->NAME,
-                "DATE_MODIFIED" => date('Y-m-d H:i:s')
+			DB::table('d3s3m_division')->where('div_ID', $request->currentID)->update([
+                "div_NAME" => $request->NAME,
+                "div_DATE_MODIFIED" => date('Y-m-d H:i:s')
             ]);
 
 	        Session::put('popup_status', 1);
@@ -95,7 +102,7 @@ class Division extends Controller
 
     public function DeleteDivision($id){
 
-        DB::table('d3s3m_division')->where('ID', $id)->delete();
+        DB::table('d3s3m_division')->where('div_ID', $id)->delete();
 
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');
