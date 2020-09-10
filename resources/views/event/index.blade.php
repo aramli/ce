@@ -128,10 +128,6 @@
 					title: 'Title',
 				}, 
 				{
-					field: 'cat_NAME',
-					title: 'Package',
-				}, 
-				{
 					field: 'eve_EVENT_START',
 					title: 'Event Start',
 				}, 
@@ -145,7 +141,7 @@
 				}, 
 				{
 					field: 'eve_STATUS',
-					title: 'Organizer',
+					title: 'Status',
 					template: function(row){
 						var output = '';
 						if( row.eve_STATUS == 1 ){
@@ -161,6 +157,10 @@
 						}
 
 					}
+				}, 
+				{
+					field: 'cat_NAME',
+					title: 'Package',
 				}, 
 				{
 					field: 'Actions',

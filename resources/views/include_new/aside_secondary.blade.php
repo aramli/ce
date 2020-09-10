@@ -50,22 +50,22 @@
 					<!--begin::Aside Secondary Content-->
 					<div class="sidebar-content flex-column-fluid pb-10 pt-9 px-5 px-lg-10">
 						<!--begin::Stats Widget 13-->
-						<a href="#" class="card card-custom bg-danger bg-hover-state-danger card-shadowless gutter-b">
+						<a  class="card card-custom bg-danger bg-hover-state-danger card-shadowless gutter-b">
 							<!--begin::Body-->
 							<div class="card-body">
 								<span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
 									<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Cart3.svg-->
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-											<rect x="0" y="0" width="24" height="24" />
-											<path d="M12,4.56204994 L7.76822128,9.6401844 C7.4146572,10.0644613 6.7840925,10.1217854 6.3598156,9.76822128 C5.9355387,9.4146572 5.87821464,8.7840925 6.23177872,8.3598156 L11.2317787,2.3598156 C11.6315738,1.88006147 12.3684262,1.88006147 12.7682213,2.3598156 L17.7682213,8.3598156 C18.1217854,8.7840925 18.0644613,9.4146572 17.6401844,9.76822128 C17.2159075,10.1217854 16.5853428,10.0644613 16.2317787,9.6401844 L12,4.56204994 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-											<path d="M3.5,9 L20.5,9 C21.0522847,9 21.5,9.44771525 21.5,10 C21.5,10.132026 21.4738562,10.2627452 21.4230769,10.3846154 L17.7692308,19.1538462 C17.3034221,20.271787 16.2111026,21 15,21 L9,21 C7.78889745,21 6.6965779,20.271787 6.23076923,19.1538462 L2.57692308,10.3846154 C2.36450587,9.87481408 2.60558331,9.28934029 3.11538462,9.07692308 C3.23725479,9.02614384 3.36797398,9 3.5,9 Z M12,17 C13.1045695,17 14,16.1045695 14,15 C14,13.8954305 13.1045695,13 12,13 C10.8954305,13 10,13.8954305 10,15 C10,16.1045695 10.8954305,17 12,17 Z" fill="#000000" />
+											<rect x="0" y="0" width="24" height="24"/>
+											<circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+											<path d="M12.4208204,17.1583592 L15.4572949,11.0854102 C15.6425368,10.7149263 15.4923686,10.2644215 15.1218847,10.0791796 C15.0177431,10.0271088 14.9029083,10 14.7864745,10 L12,10 L12,7.17705098 C12,6.76283742 11.6642136,6.42705098 11.25,6.42705098 C10.965921,6.42705098 10.7062236,6.58755277 10.5791796,6.84164079 L7.5427051,12.9145898 C7.35746316,13.2850737 7.50763142,13.7355785 7.87811529,13.9208204 C7.98225687,13.9728912 8.09709167,14 8.21352549,14 L11,14 L11,16.822949 C11,17.2371626 11.3357864,17.572949 11.75,17.572949 C12.034079,17.572949 12.2937764,17.4124472 12.4208204,17.1583592 Z" fill="#000000"/>
 										</g>
 									</svg>
 									<!--end::Svg Icon-->
 								</span>
-								<div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">Shopping Cart</div>
-								<div class="font-weight-bold text-inverse-danger font-size-sm">Lands, Houses, Ranchos, Farms</div>
+								<div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">Event Title</div>
+								<div class="font-weight-bold text-inverse-danger font-size-sm">Click here to see your ongoing event panel</div>
 							</div>
 							<!--end::Body-->
 						</a>
@@ -75,85 +75,9 @@
 							<!--begin::Header-->
 							<div class="card-header border-0 pt-5">
 								<h3 class="card-title align-items-start flex-column">
-									<span class="card-label font-weight-bolder text-dark">Tasks Overview</span>
-									<span class="text-muted mt-3 font-weight-bold font-size-sm">Pending 10 tasks</span>
+									<span class="card-label font-weight-bolder text-dark">Upcoming Event</span>
+									<span class="text-muted mt-3 font-weight-bold font-size-sm">Next 5 events</span>
 								</h3>
-								<div class="card-toolbar">
-									<div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
-										<a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<i class="ki ki-bold-more-ver"></i>
-										</a>
-										<div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-											<!--begin::Navigation-->
-											<ul class="navi navi-hover py-5">
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-drop"></i>
-														</span>
-														<span class="navi-text">New Group</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-list-3"></i>
-														</span>
-														<span class="navi-text">Contacts</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-rocket-1"></i>
-														</span>
-														<span class="navi-text">Groups</span>
-														<span class="navi-link-badge">
-															<span class="label label-light-primary label-inline font-weight-bold">new</span>
-														</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-bell-2"></i>
-														</span>
-														<span class="navi-text">Calls</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-gear"></i>
-														</span>
-														<span class="navi-text">Settings</span>
-													</a>
-												</li>
-												<li class="navi-separator my-3"></li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-magnifier-tool"></i>
-														</span>
-														<span class="navi-text">Help</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-bell-2"></i>
-														</span>
-														<span class="navi-text">Privacy</span>
-														<span class="navi-link-badge">
-															<span class="label label-light-danger label-rounded font-weight-bold">5</span>
-														</span>
-													</a>
-												</li>
-											</ul>
-											<!--end::Navigation-->
-										</div>
-									</div>
-								</div>
 							</div>
 							<!--end::Header-->
 							<!--begin::Body-->
@@ -179,7 +103,7 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Project Briefing</a>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Project Briefing</a>
 										<span class="text-muted">Project Manager</span>
 									</div>
 									<!--end::Text-->
@@ -206,7 +130,7 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a href="#" class="text-dark-75 text-hover-primary mb-1 font-size-lg">Concept Design</a>
+										<a  class="text-dark-75 text-hover-primary mb-1 font-size-lg">Concept Design</a>
 										<span class="text-muted">Art Director</span>
 									</div>
 									<!--end::Text-->
@@ -233,7 +157,7 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Functional Logics</a>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Functional Logics</a>
 										<span class="text-muted">Lead Developer</span>
 									</div>
 									<!--end::Text-->
@@ -262,7 +186,7 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Development</a>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Development</a>
 										<span class="text-muted">DevOps</span>
 									</div>
 									<!--end::Text-->
@@ -290,7 +214,7 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Testing</a>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Testing</a>
 										<span class="text-muted">QA Managers</span>
 									</div>
 									<!--end::Text-->
@@ -301,7 +225,7 @@
 						</div>
 						<!--end::List Widget 1-->
 						<!--begin::List Widget 9-->
-						<div class="card card-custom card-shadowless bg-white">
+						<div class="card card-custom card-shadowless bg-white" style="display:none;">
 							<!--begin::Header-->
 							<div class="card-header align-items-center border-0 mt-4">
 								<h3 class="card-title align-items-start flex-column">
@@ -310,7 +234,7 @@
 								</h3>
 								<div class="card-toolbar">
 									<div class="dropdown dropdown-inline">
-										<a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<a  class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<i class="ki ki-bold-more-hor"></i>
 										</a>
 										<div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
@@ -322,35 +246,35 @@
 												</li>
 												<li class="navi-separator mb-3 opacity-70"></li>
 												<li class="navi-item">
-													<a href="#" class="navi-link">
+													<a  class="navi-link">
 														<span class="navi-text">
 															<span class="label label-xl label-inline label-light-success">Customer</span>
 														</span>
 													</a>
 												</li>
 												<li class="navi-item">
-													<a href="#" class="navi-link">
+													<a  class="navi-link">
 														<span class="navi-text">
 															<span class="label label-xl label-inline label-light-danger">Partner</span>
 														</span>
 													</a>
 												</li>
 												<li class="navi-item">
-													<a href="#" class="navi-link">
+													<a  class="navi-link">
 														<span class="navi-text">
 															<span class="label label-xl label-inline label-light-warning">Suplier</span>
 														</span>
 													</a>
 												</li>
 												<li class="navi-item">
-													<a href="#" class="navi-link">
+													<a  class="navi-link">
 														<span class="navi-text">
 															<span class="label label-xl label-inline label-light-primary">Member</span>
 														</span>
 													</a>
 												</li>
 												<li class="navi-item">
-													<a href="#" class="navi-link">
+													<a  class="navi-link">
 														<span class="navi-text">
 															<span class="label label-xl label-inline label-light-dark">Staff</span>
 														</span>
@@ -358,7 +282,7 @@
 												</li>
 												<li class="navi-separator mt-3 opacity-70"></li>
 												<li class="navi-footer py-4">
-													<a class="btn btn-clean font-weight-bold btn-sm" href="#">
+													<a class="btn btn-clean font-weight-bold btn-sm" >
 													<i class="ki ki-plus icon-sm"></i>Add new</a>
 												</li>
 											</ul>
@@ -415,7 +339,7 @@
 										<!--end::Badge-->
 										<!--begin::Desc-->
 										<div class="timeline-content font-weight-bolder font-size-lg text-dark-75 pl-3">Make deposit
-										<a href="#" class="text-primary">USD 700</a>. to ESL</div>
+										<a  class="text-primary">USD 700</a>. to ESL</div>
 										<!--end::Desc-->
 									</div>
 									<!--end::Item-->
@@ -446,7 +370,7 @@
 										<!--end::Badge-->
 										<!--begin::Desc-->
 										<div class="timeline-content font-weight-bolder text-dark-75 pl-3 font-size-lg">New order placed
-										<a href="#" class="text-primary">#XF-2356</a>.</div>
+										<a  class="text-primary">#XF-2356</a>.</div>
 										<!--end::Desc-->
 									</div>
 									<!--end::Item-->
@@ -492,7 +416,7 @@
 										<!--end::Badge-->
 										<!--begin::Desc-->
 										<div class="timeline-content font-weight-bolder font-size-lg text-dark-75 pl-3">New order placed
-										<a href="#" class="text-primary">#XF-2356</a>.</div>
+										<a  class="text-primary">#XF-2356</a>.</div>
 										<!--end::Desc-->
 									</div>
 									<!--end::Item-->

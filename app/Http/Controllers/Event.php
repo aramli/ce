@@ -325,6 +325,7 @@ class Event extends Controller
 
     public function detail($id){
 
+        /*
         $basic_info = DB::select(DB::raw(
             "
             select
@@ -350,7 +351,16 @@ class Event extends Controller
                 and t1.ID = '".$id."'
             "
         ));
+        */
+        $basic_info = DB::table('d3s3m_event')
+                        ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                        ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                        ->leftJoin('d3s3m_category', 'cat_ID', '=', 'eve_d3s3m_category_cat_ID')
+                        ->where('eve_STATUS', '>', '0')
+                        ->where('eve_ID', $id)
+                        ->get();
 
+        /*
         $attendee = DB::select(DB::raw("
             select
                 t4.ID as ID,
@@ -365,6 +375,13 @@ class Event extends Controller
             where
                 t1.ID_EVENT = ".$id."
             "));
+        */
+        $attendee = DB::table('d3s3m_attendee')
+                    ->leftJoin('d3s3m_user', 'att_d3s3m_user_use_ID', '=', 'use_ID')
+                    ->leftJoin('d3s3m_company', 'use_d3s3m_company_com_ID', '=', 'com_ID')
+                    ->leftJoin('d3s3m_division', 'use_d3s3m_division_div_ID', '=', 'div_ID')
+                    ->where('att_d3s3m_event_eve_ID', $id)
+                    ->get();
 
         return view('event.detail', compact('basic_info', 'attendee'));
     }
@@ -385,13 +402,14 @@ class Event extends Controller
 
     public function RejectEvent($id){
 
-        DB::table('d3s3m_event')->where('ID', $id)->update([
-            "STATUS" => 5,
-            "DATE_MODIFIED" => date('Y-m-d H:i:s')
+        DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_STATUS" => 5,
+            "eve_DATE_MODIFIED" => date('Y-m-d H:i:s')
         ]);
 
 
         // SEND EMAIL
+        /*
         $event_detail = DB::select(DB::raw("
             select
                 t1.TITLE as TITLE,
@@ -405,23 +423,28 @@ class Event extends Controller
             where
                 t1.ID = '".$id."'
             "));
+        */
+        $event_detail = DB::table('d3s3m_event')
+                            ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                            ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                            ->where('eve_ID', $id)
+                            ->get();
         foreach( $event_detail as $this_event_detail ){
             $this_event_detail = $this_event_detail;
         }
 
-        $to_name = $this_event_detail->CREATOR_NAME;
-        $to_email = $this_event_detail->CREATOR_EMAIL;
-        $message_subheader = $this_event_detail->TITLE;
+        $to_name = $this_event_detail->use_FULLNAME;
+        $to_email = $this_event_detail->use_EMAIL;
+        $message_subheader = $this_event_detail->eve_TITLE;
         $message_title = 'Your event has been rejected';
         $message_caption = 'We are sorry to inform you that your event has been reviewed by trainer and rejected. You can login to your account and submit a new event.';
         $data = array('name'=> $to_name , 'message_subheader' => $message_subheader, 'message_title' => $message_title, 'message_caption' => $message_caption);
-        /*
+
         Mail::send("emails.event_rejection.index", $data, function($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
             ->subject("[NO-REPLY] Your event has been rejected by trainier.");
             $message->from("dismi.mailer@gmail.com","DISMI Mailer");
         });
-        */
         // END SEND EMAIL
 
         Session::put('popup_status', 1);
@@ -434,13 +457,14 @@ class Event extends Controller
 
     public function ApproveEvent($id){
 
-        DB::table('d3s3m_event')->where('ID', $id)->update([
-            "STATUS" => 2,
-            "DATE_MODIFIED" => date('Y-m-d H:i:s')
+        DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_STATUS" => 2,
+            "eve_DATE_MODIFIED" => date('Y-m-d H:i:s')
         ]);
 
 
         // SEND EMAIL
+        /*
         $event_detail = DB::select(DB::raw("
             select
                 t1.TITLE as TITLE,
@@ -454,23 +478,28 @@ class Event extends Controller
             where
                 t1.ID = '".$id."'
             "));
+        */
+        $event_detail = DB::table('d3s3m_event')
+                            ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                            ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                            ->where('eve_ID', $id)
+                            ->get();
         foreach( $event_detail as $this_event_detail ){
             $this_event_detail = $this_event_detail;
         }
 
-        $to_name = $this_event_detail->CREATOR_NAME;
-        $to_email = $this_event_detail->CREATOR_EMAIL;
-        $message_subheader = $this_event_detail->TITLE;
+        $to_name = $this_event_detail->use_FULLNAME;
+        $to_email = $this_event_detail->use_EMAIL;
+        $message_subheader = $this_event_detail->eve_TITLE;
         $message_title = 'Your event has been approved';
         $message_caption = 'Your event has been reviewed by trainer and approved. You can now login to your account, and send your event invitation to all participants.';
         $data = array('name'=> $to_name , 'message_subheader' => $message_subheader, 'message_title' => $message_title, 'message_caption' => $message_caption);
-        /*
+        
         Mail::send("emails.event_approval.index", $data, function($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
             ->subject("[NO-REPLY] Your event has been approved by trainier.");
             $message->from("dismi.mailer@gmail.com","DISMI Mailer");
         });
-        */
         // END SEND EMAIL
 
         Session::put('popup_status', 1);
@@ -483,6 +512,7 @@ class Event extends Controller
 
     public function BlastInvitation($id){
 
+        /*
         $event_detail = DB::select(DB::raw("
             select
                 t1.ID as ID,
@@ -505,16 +535,22 @@ class Event extends Controller
             where
                 t1.ID = '".$id."'
             "));
-
+        */
+        $event_detail = DB::table('d3s3m_event')
+                        ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                        ->leftJoin('d3s3m_attendee', 'att_d3s3m_event_eve_ID', '=', 'eve_ID')
+                        ->leftJoin('d3s3m_user', 'use_ID', '=', 'att_d3s3m_user_use_ID')
+                        ->where('eve_ID', $id)
+                        ->get();
         //print_r($event_detail);exit;
 
 
         foreach( $event_detail as $this_event_detail ){
 
-            $to_name = $this_event_detail->ATTENDEE_NAME;
-            $to_email = $this_event_detail->ATTENDEE_EMAIL;
+            $to_name = $this_event_detail->use_FULLNAME;
+            $to_email = $this_event_detail->use_EMAIL;
             $message_subheader = 'Event e-Invitation';
-            $message_title = $this_event_detail->TITLE;
+            $message_title = $this_event_detail->eve_TITLE;
             $message_caption = '
             <div style="text-align:left;margin-bottom:20px;">
             You are invited to this event. Please find the information below regarding the event detail.
@@ -523,19 +559,19 @@ class Event extends Controller
                 <table>
                     <tr>
                         <td>Event Start</td>
-                        <td>: '.$this_event_detail->EVENT_START.'</td>
+                        <td>: '.$this_event_detail->eve_EVENT_START.'</td>
                     </tr>
                     <tr>
                         <td>Event Finish</td>
-                        <td>: '.$this_event_detail->EVENT_FINISH.'</td>
+                        <td>: '.$this_event_detail->eve_EVENT_FINISH.'</td>
                     </tr>
                     <tr>
                         <td>Room Name</td>
-                        <td>: '.$this_event_detail->ROOM_NAME.'</td>
+                        <td>: '.$this_event_detail->roo_NAME.'</td>
                     </tr>
                     <tr>
                         <td>SUMMARY</td>
-                        <td>: '.$this_event_detail->SUMMARY.'</td>
+                        <td>: '.$this_event_detail->eve_SUMMARY.'</td>
                     </tr>
                 </table>
             </div>
@@ -544,16 +580,16 @@ class Event extends Controller
             </div>
             ';
             $parameter_CTA_text = 'Click here to generate your QR code';
-            $parameter_CTA_url = 'https://dismi-denso.com/app/public/LIBRARY/qrcode/QRG.php?action='.base64_encode($this_event_detail->COMMAND_SIGNAL).'&eid='.base64_encode($this_event_detail->ID).'&uid='.base64_encode($this_event_detail->ID_ATTENDEE);
+            $parameter_CTA_url = 'https://dismi-denso.com/app/public/LIBRARY/qrcode/QRG.php?action='.base64_encode($this_event_detail->att_COMMAND_SIGNAL).'&eid='.base64_encode($this_event_detail->eve_ID).'&uid='.base64_encode($this_event_detail->use_ID);
 
             $data = array('name'=> $to_name , 'message_subheader' => $message_subheader, 'message_title' => $message_title, 'message_caption' => $message_caption, "parameter_CTA_text" => $parameter_CTA_text, 'parameter_CTA_url' => $parameter_CTA_url);
-            /*
+            
             Mail::send("emails.invitation.index", $data, function($message) use ($to_name, $to_email, $message_title) {
                 $message->to($to_email, $to_name)
                 ->subject("[NO-REPLY] Your e-invitation for event: ".$message_title);
                 $message->from("dismi.mailer@gmail.com","DISMI Mailer");
             });
-            */
+
 
         }
 
@@ -564,8 +600,30 @@ class Event extends Controller
         Session::put('popup_title', 'Blast e-Invitation Success');
         Session::put('popup_message', 'e-invitation has been blasted to all participants.');
 
-        return redirect('/event/detail/'.$this_event_detail->ID);
+        return redirect('/event/detail/'.$this_event_detail->eve_ID);
 
+    }
+
+    public function EventPanel($id){
+
+        $basic_info = DB::table('d3s3m_event')
+                        ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                        ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                        ->leftJoin('d3s3m_category', 'cat_ID', '=', 'eve_d3s3m_category_cat_ID')
+                        ->where('eve_STATUS', '>', '0')
+                        ->where('eve_ID', $id)
+                        ->get();
+                        
+        $attendee = DB::table('d3s3m_attendee')
+                    ->leftJoin('d3s3m_user', 'att_d3s3m_user_use_ID', '=', 'use_ID')
+                    ->leftJoin('d3s3m_company', 'use_d3s3m_company_com_ID', '=', 'com_ID')
+                    ->leftJoin('d3s3m_division', 'use_d3s3m_division_div_ID', '=', 'div_ID')
+                    ->leftJoin('d3s3m_role', 'use_d3s3m_role_rol_ID', '=', 'rol_ID')
+                    ->where('att_d3s3m_event_eve_ID', $id)
+                    ->get();
+
+
+        return view('event.event_panel', compact('basic_info', 'attendee'));
     }
 
 

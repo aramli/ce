@@ -156,6 +156,8 @@ Route::get('/event/detail/{id}/RejectEvent', 'Event@RejectEvent');
 Route::get('/event/detail/{id}/ApproveEvent', 'Event@ApproveEvent');
 Route::get('/event/detail/{id}/BlastInvitation', 'Event@BlastInvitation');
 
+Route::get('/event/panel/{id}', 'Event@EventPanel');
+
 
 
 
