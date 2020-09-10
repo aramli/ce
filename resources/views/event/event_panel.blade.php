@@ -55,12 +55,12 @@ foreach( $basic_info as $this_basic_info ){
 												<div class="d-flex align-items-center justify-content-between flex-wrap">
 													<div class="mr-3">
 														<!--begin::Name-->
-														<a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">{{ $this_basic_info->eve_TITLE }}
+														<a  class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">{{ $this_basic_info->eve_TITLE }}
 														<i class="flaticon2-correct text-success icon-md ml-2"></i></a>
 														<!--end::Name-->
 														<!--begin::Contacts-->
 														<div class="d-flex flex-wrap my-2">
-															<a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+															<a  class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
 															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -72,7 +72,7 @@ foreach( $basic_info as $this_basic_info ){
 																</svg>
 																<!--end::Svg Icon-->
 															</span>{{ $this_basic_info->use_FULLNAME }}</a>
-															<a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+															<a  class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
 															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/General/Lock.svg-->
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -83,7 +83,7 @@ foreach( $basic_info as $this_basic_info ){
 																</svg>
 																<!--end::Svg Icon-->
 															</span>{{ $this_basic_info->cat_NAME }}</a>
-															<a href="#" class="text-muted text-hover-primary font-weight-bold">
+															<a  class="text-muted text-hover-primary font-weight-bold">
 															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Map/Marker2.svg-->
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -98,9 +98,15 @@ foreach( $basic_info as $this_basic_info ){
 														<!--end::Contacts-->
 													</div>
 													<div class="my-lg-0 my-1">
-														<a href="#" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Start Event</a>
-														<a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Stop Event</a>
-														<a href="#" class="btn btn-sm btn-warning font-weight-bolder text-uppercase">Extend Event</a>
+														@if( $this_basic_info->eve_IS_START != 1 )
+															<a href="../../../../public/event/panel/{{ $this_basic_info->eve_ID }}/Panel_StartEvent" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Start Event</a>
+														@endif
+														@if( $this_basic_info->eve_IS_START == 1 && $this_basic_info->eve_IS_FINISH != 1 )
+															<a href="../../../../public/event/panel/{{ $this_basic_info->eve_ID }}/Panel_StopEvent" class="btn btn-sm btn-info font-weight-bolder text-uppercase mr-3">Stop Event</a>
+															@if( $this_basic_info->eve_IS_EXTENDED != 1 )
+															<a href="../../../../public/event/panel/{{ $this_basic_info->eve_ID }}/Panel_ExtendEvent" class="btn btn-sm btn-warning font-weight-bolder text-uppercase">Extend Event</a>
+															@endif
+														@endif
 													</div>
 												</div>
 												<!--end: Title-->
@@ -133,8 +139,7 @@ foreach( $basic_info as $this_basic_info ){
 												</span>
 												<div class="d-flex flex-column text-dark-75">
 													<span class="font-weight-bolder font-size-sm">Actual kWh</span>
-													<span class="font-weight-bolder font-size-h5">
-													<span class="text-dark-50 font-weight-bold">$</span>249,500</span>
+													<span class="font-weight-bolder font-size-h5">0</span>
 												</div>
 											</div>
 											<!--end: Item-->
@@ -145,8 +150,7 @@ foreach( $basic_info as $this_basic_info ){
 												</span>
 												<div class="d-flex flex-column text-dark-75">
 													<span class="font-weight-bolder font-size-sm">Estimation kWh</span>
-													<span class="font-weight-bolder font-size-h5">
-													<span class="text-dark-50 font-weight-bold">$</span>164,700</span>
+													<span class="font-weight-bolder font-size-h5">{{ number_format($kwh_estimation,2) }}</span>
 												</div>
 											</div>
 											<!--end: Item-->
@@ -157,41 +161,19 @@ foreach( $basic_info as $this_basic_info ){
 												</span>
 												<div class="d-flex flex-column text-dark-75">
 													<span class="font-weight-bolder font-size-sm">Ratio</span>
-													<span class="font-weight-bolder font-size-h5">
-													<span class="text-dark-50 font-weight-bold">$</span>782,300</span>
-												</div>
-											</div>
-											<!--end: Item-->
-											<!--begin: Item-->
-											<div class="d-flex align-items-center flex-lg-fill mr-5 my-1" style="display:none!important;">
-												<span class="mr-4">
-													<i class="flaticon-file-2 icon-2x text-muted font-weight-bold"></i>
-												</span>
-												<div class="d-flex flex-column flex-lg-fill">
-													<span class="text-dark-75 font-weight-bolder font-size-sm">73 Tasks</span>
-													<a href="#" class="text-primary font-weight-bolder">View</a>
-												</div>
-											</div>
-											<!--end: Item-->
-											<!--begin: Item-->
-											<div class="d-flex align-items-center flex-lg-fill mr-5 my-1" style="display:none!important;">
-												<span class="mr-4">
-													<i class="flaticon-chat-1 icon-2x text-muted font-weight-bold"></i>
-												</span>
-												<div class="d-flex flex-column">
-													<span class="text-dark-75 font-weight-bolder font-size-sm">648 Comments</span>
-													<a href="#" class="text-primary font-weight-bolder">View</a>
+													<span class="font-weight-bolder font-size-h5">0%</span>
 												</div>
 											</div>
 											<!--end: Item-->
 											<!--begin: Item-->
 											<div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
 												<span class="mr-4">
-												<i class="flaticon-network icon-2x text-muted font-weight-bold"></i>
+													<i class="flaticon-network icon-2x text-muted font-weight-bold"></i>
 												</span>
-												<div class="d-flex flex-column">
-													<span class="text-dark-75 font-weight-bolder font-size-sm">648 Attendees</span>
-													<a href="#" class="text-primary font-weight-bolder">View</a>
+												<div class="d-flex flex-column text-dark-75">
+													<span class="font-weight-bolder font-size-sm">Attendees</span>
+													<span class="font-weight-bolder font-size-h5">
+													{{ count($attendee) }} person</span>
 												</div>
 											</div>
 											<!--end: Item-->
@@ -212,7 +194,7 @@ foreach( $basic_info as $this_basic_info ){
 													<span class="text-muted mt-3 font-weight-bold font-size-sm">All registered participants</span>
 												</h3>
 												<div class="card-toolbar" style="display:none;">
-													<a href="#" class="btn btn-success font-weight-bolder font-size-sm">
+													<a href="../../../../public/event/panel/{{ $this_basic_info->eve_ID }}/Panel_ExtendEvent" class="btn btn-success font-weight-bolder font-size-sm">
 													<span class="svg-icon svg-icon-md svg-icon-white">
 														<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -257,7 +239,7 @@ foreach( $basic_info as $this_basic_info ){
 																	<td class="pl-0 py-8">
 																		<div class="d-flex align-items-center">
 																			<div>
-																				<a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $this_attendee->use_FULLNAME }}</a>
+																				<a  class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $this_attendee->use_FULLNAME }}</a>
 																				<span class="text-muted font-weight-bold d-block">{{ $this_attendee->use_EMAIL }}</span>
 																			</div>
 																		</div>
@@ -275,10 +257,16 @@ foreach( $basic_info as $this_basic_info ){
 																		<span class="text-muted font-weight-bold">Ruby Developer</span>
 																	</td>
 																	<td>
-																		<span class="label label-lg label-light-warning label-inline" style="width:100%;">Success</span>
+																		@if( $this_attendee->att_IS_ATTEND != 1 )
+																		<span class="label label-lg label-light-warning label-inline" style="width:100%;">Waiting</span>
+																		@endif
+																		@if( $this_attendee->att_IS_ATTEND == 1 )
+																		<span class="label label-lg label-light-success label-inline" style="width:100%;">Attend</span>
+																		@endif
 																	</td>
 																	<td class="text-right pr-0">
-																		<a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3">
+																		@if( $this_attendee->att_IS_ATTEND != 1 )
+																		<a href="../../../../public/event/panel/{{ $this_basic_info->eve_ID }}/Panel_OverrideAttend/{{ $this_attendee->use_ID }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3">
 																			<span class="svg-icon svg-icon-md svg-icon-primary">
 																				<!--begin::Svg Icon | path:assets/media/svg/icons/General/Bookmark.svg-->
 																				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -290,6 +278,7 @@ foreach( $basic_info as $this_basic_info ){
 																				<!--end::Svg Icon-->
 																			</span>
 																		</a>
+																		@endif
 																	</td>
 																</tr>
 																<?php

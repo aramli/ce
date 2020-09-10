@@ -621,9 +621,91 @@ class Event extends Controller
                     ->leftJoin('d3s3m_role', 'use_d3s3m_role_rol_ID', '=', 'rol_ID')
                     ->where('att_d3s3m_event_eve_ID', $id)
                     ->get();
+            
+        // GET KWH ESTIMATION
+        foreach( $basic_info as $this_basic_info ){
+            $this_basic_info = $this_basic_info;
+        }
+
+        $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this_basic_info->eve_EVENT_FINISH);
+        $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this_basic_info->eve_EVENT_START);
+        $diff_in_minutes = $to->diffInMinutes($from);
+        $diff_in_hours = $diff_in_minutes/60;
+
+        $kwh_estimation = $diff_in_hours * $this_basic_info->roo_KWH_STANDARD;
+        // END GET KWH ESTIMATION
 
 
-        return view('event.event_panel', compact('basic_info', 'attendee'));
+        return view('event.event_panel', compact('basic_info', 'attendee', 'kwh_estimation'));
+    }
+
+
+
+
+
+
+
+
+    public function Panel_StartEvent($id){
+
+        DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_IS_START" => 1,
+            "eve_DATE_START" => date('Y-m-d H:i:s')
+        ]);
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Start event success');
+        Session::put('popup_message', 'Your event is now started. You can now turn on electricity.');
+
+        return redirect('/event/panel/'.$id);
+    }
+
+    public function Panel_StopEvent($id){
+
+        DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_IS_FINISH" => 1,
+            "eve_DATE_FINISH" => date('Y-m-d H:i:s')
+        ]);
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Start event success');
+        Session::put('popup_message', 'Your event is now stopped. All electricity has been turned off by system.');
+
+        return redirect('/event/panel/'.$id);
+    }
+
+    public function Panel_ExtendEvent($id){
+
+        DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_IS_EXTENDED" => 1
+        ]);
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Start event success');
+        Session::put('popup_message', 'Your event is now bypassed by you. Do not forget to click on stop button after you have finished.');
+
+        return redirect('/event/panel/'.$id);
+    }
+
+    public function Panel_OverrideAttend($id, $id_user_attendee){
+
+        DB::table('d3s3m_attendee')
+            ->where('att_d3s3m_event_eve_ID', $id)
+            ->where('att_d3s3m_user_use_ID', $id_user_attendee)
+            ->update([
+                "att_IS_ATTEND" => 1,
+                "att_DATE_ATTEND" => date('Y-m-d H:i:s')
+        ]);
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'User attend success');
+        Session::put('popup_message', 'User has been marked for attendance for this event.');
+
+        return redirect('/event/panel/'.$id);
     }
 
 
