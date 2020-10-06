@@ -30,10 +30,16 @@ foreach( $basic_info as $this_basic_info ){
 								</div>
 								<!--end::Info-->
 								<!--begin::Toolbar-->
-								<div class="d-flex align-items-center" style="display:none!important;">
+								<div class="d-flex align-items-center">
 									<!--begin::Actions-->
-									<a href="{{ route('create_temp_event') }}" class="btn btn-primary font-weight-bold btn-sm ">
-										Add New Event
+									<a class="btn btn-primary font-weight-bold btn-sm " style="margin-left:5px;">
+										Start Event
+									</a>
+									<a class="btn btn-primary font-weight-bold btn-sm " style="margin-left:5px;">
+										Extend Event
+									</a>
+									<a class="btn btn-primary font-weight-bold btn-sm " style="margin-left:5px;">
+										Stop Event
 									</a>
 									<!--end::Actions-->
 								</div>
@@ -48,6 +54,7 @@ foreach( $basic_info as $this_basic_info ){
 								<!--begin::Card-->
 								<div class="card card-custom gutter-b">
 									<div class="card-body">
+
 										<div class="d-flex">
 											<!--begin: Info-->
 											<div class="flex-grow-1">
@@ -139,7 +146,7 @@ foreach( $basic_info as $this_basic_info ){
 												</span>
 												<div class="d-flex flex-column text-dark-75">
 													<span class="font-weight-bolder font-size-sm">Actual kWh</span>
-													<span class="font-weight-bolder font-size-h5">0</span>
+													<span class="font-weight-bolder font-size-h5" id="display_total_actual_kwh">0</span>
 												</div>
 											</div>
 											<!--end: Item-->
@@ -150,7 +157,7 @@ foreach( $basic_info as $this_basic_info ){
 												</span>
 												<div class="d-flex flex-column text-dark-75">
 													<span class="font-weight-bolder font-size-sm">Estimation kWh</span>
-													<span class="font-weight-bolder font-size-h5">{{ number_format($kwh_estimation,2) }}</span>
+													<span class="font-weight-bolder font-size-h5" id="display_estimation_kwh">{{ number_format($kwh_estimation,2) }}</span>
 												</div>
 											</div>
 											<!--end: Item-->
@@ -161,7 +168,7 @@ foreach( $basic_info as $this_basic_info ){
 												</span>
 												<div class="d-flex flex-column text-dark-75">
 													<span class="font-weight-bolder font-size-sm">Ratio</span>
-													<span class="font-weight-bolder font-size-h5">0%</span>
+													<span class="font-weight-bolder font-size-h5"><span id="display_ratio">0</span>%</span>
 												</div>
 											</div>
 											<!--end: Item-->
@@ -306,4 +313,41 @@ foreach( $basic_info as $this_basic_info ){
 				<!--end::Wrapper-->
 				@include('include_new.aside_secondary')
 				
+@endsection
+
+@section('additional_bottom_script')
+<script>
+
+	StreamKWH();
+	function StreamKWH(){
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var jsonData = JSON.parse(this.responseText);
+				
+				var RESULT = jsonData.RESULT;
+				var MESSAGE = jsonData.MESSAGE;
+				
+				var TOTAL_ACTUAL_KWH = jsonData.TOTAL_ACTUAL_KWH;
+				var RATIO_ACTUAL_KWH = 0;
+				var ESTIMATION_KWH = document.getElementById('display_estimation_kwh').innerHTML;
+
+				if( TOTAL_ACTUAL_KWH > 0 ){
+					TOTAL_ACTUAL_KWH = TOTAL_ACTUAL_KWH;
+					RATIO_ACTUAL_KWH = TOTAL_ACTUAL_KWH / ESTIMATION_KWH * 100;
+				} else {
+					TOTAL_ACTUAL_KWH = 0;
+					RATIO_ACTUAL_KWH = 0;
+				}
+				document.getElementById('display_total_actual_kwh').innerHTML = TOTAL_ACTUAL_KWH;
+				document.getElementById('display_ratio').innerHTML = RATIO_ACTUAL_KWH;
+
+			}
+		};
+		xhttp.open("POST", "http://localhost/development_site/DISMI/public/SYSTEM/API/index.php", true);
+		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhttp.send("module=GetActualKWH_EventPanel&eid=<?php echo $this_basic_info->eve_ID; ?>&rid=<?php echo $this_basic_info->roo_ID; ?>");
+	}
+</script>
 @endsection

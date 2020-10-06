@@ -50,7 +50,7 @@
 					<!--begin::Aside Secondary Content-->
 					<div class="sidebar-content flex-column-fluid pb-10 pt-9 px-5 px-lg-10">
 						<!--begin::Stats Widget 13-->
-						<a  class="card card-custom bg-danger bg-hover-state-danger card-shadowless gutter-b">
+						<a href="../../../event/panel/1" class="card card-custom bg-danger bg-hover-state-danger card-shadowless gutter-b">
 							<!--begin::Body-->
 							<div class="card-body">
 								<span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
@@ -103,8 +103,8 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Project Briefing</a>
-										<span class="text-muted">Project Manager</span>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Sample Event 16</a>
+										<span class="text-muted">Friday, 16 October 2020</span>
 									</div>
 									<!--end::Text-->
 								</div>
@@ -130,8 +130,8 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a  class="text-dark-75 text-hover-primary mb-1 font-size-lg">Concept Design</a>
-										<span class="text-muted">Art Director</span>
+										<a  class="text-dark-75 text-hover-primary mb-1 font-size-lg">Sample Event 15</a>
+										<span class="text-muted">Thursday, 15 October 2020</span>
 									</div>
 									<!--end::Text-->
 								</div>
@@ -157,8 +157,8 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Functional Logics</a>
-										<span class="text-muted">Lead Developer</span>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Sample Event 14</a>
+										<span class="text-muted">Wednesday, 14 October 2020</span>
 									</div>
 									<!--end::Text-->
 								</div>
@@ -186,8 +186,8 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Development</a>
-										<span class="text-muted">DevOps</span>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Sample Event 13</a>
+										<span class="text-muted">Tuesday, 13 October 2020</span>
 									</div>
 									<!--end::Text-->
 								</div>
@@ -214,8 +214,8 @@
 									<!--end::Symbol-->
 									<!--begin::Text-->
 									<div class="d-flex flex-column font-weight-bold">
-										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Testing</a>
-										<span class="text-muted">QA Managers</span>
+										<a  class="text-dark text-hover-primary mb-1 font-size-lg">Sample Event 12</a>
+										<span class="text-muted">Monday, 12 October 2020</span>
 									</div>
 									<!--end::Text-->
 								</div>
