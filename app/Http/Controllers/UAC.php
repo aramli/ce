@@ -101,15 +101,13 @@ class UAC extends Controller
             $json_table['ALL_REGISTERED_USER'] = '{}';
         }
 
-        /*
-        $total_user = DB::table('mdb_user')->count('ID');
-        $total_administrator = DB::table('mdb_user')->where('ID_ROLE', 1)->count('ID');
-        $total_analyst = DB::table('mdb_user')->where('ID_ROLE', 2)->count('ID');
-        $total_guest = DB::table('mdb_user')->where('ID_ROLE', 3)->count('ID');
+        $total_user = DB::table('d3s3m_user')->count('use_ID');
+        $total_administrator = DB::table('d3s3m_user')->where('use_d3s3m_role_rol_ID', 1)->count('use_ID');
+        $total_trainer = DB::table('d3s3m_user')->where('use_d3s3m_role_rol_ID', 2)->count('use_ID');
+        $total_vip = DB::table('d3s3m_user')->where('use_d3s3m_role_rol_ID', 4)->count('use_ID');
+        $total_attendee = DB::table('d3s3m_user')->where('use_d3s3m_role_rol_ID', 3)->count('use_ID');
 
-        return view('user.index', compact('user', 'total_user', 'total_administrator', 'total_analyst', 'total_guest'));
-        */
-        return view('UAC.index', compact('json_table'));
+        return view('UAC.index', compact('json_table', 'total_user', 'total_administrator', 'total_trainer', 'total_vip', 'total_attendee'));
     }
 
     public function add(){
