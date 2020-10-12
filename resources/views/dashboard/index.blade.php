@@ -87,7 +87,7 @@
 					width: "100%",
 					report: {
 						dataSource: {
-							filename: "http://localhost/development_site/DISMI/public/SYSTEM/reporting/event__event_creation.json"
+							filename: "<?php echo env('MASTER_JSON_FILE_URL');?>/event__event_creation.json"
 						},
 						"slice": {
 							"rows": [
@@ -156,7 +156,7 @@
 					width: "100%",
 					report: {
 						dataSource: {
-							filename: "http://localhost/development_site/DISMI/public/SYSTEM/reporting/energy__energy_consumption_rank.json"
+							filename: "<?php echo env('MASTER_JSON_FILE_URL');?>/energy__energy_consumption_rank.json"
 						},
 						"slice": {
 							"rows": [

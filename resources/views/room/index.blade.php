@@ -39,6 +39,27 @@
 						<div class="d-flex flex-column-fluid">
 							<!--begin::Container-->
 							<div class="container-fluid">
+
+
+								<div class="row">
+									<div class="col-md-12">
+										<!--begin::Card-->
+										<div class="card card-custom gutter-b">
+											<div class="card-header" style="display:none;">
+												<div class="card-title">
+													<h3 class="card-label">Room Usage</h3>
+												</div>
+											</div>
+											<div class="card-body">
+												<!--begin::Chart-->
+												<div id="chart_room_usage"></div>
+												<!--end::Chart-->
+											</div>
+										</div>
+										<!--end::Card-->
+									</div>
+								</div>
+								
 								<!--begin::Card-->
 								<div class="card card-custom">
 									<div class="card-body">
@@ -213,5 +234,130 @@
 	jQuery(document).ready(function() {
 		KTDatatableDataLocalDemo.init();
 	});
+</script>
+
+
+
+<script>
+"use strict";
+
+// Shared Colors Definition
+const primary = '#6993FF';
+const success = '#1BC5BD';
+const info = '#8950FC';
+const warning = '#FFA800';
+const danger = '#F64E60';
+
+// Class definition
+function generateBubbleData(baseval, count, yrange) {
+    var i = 0;
+    var series = [];
+    while (i < count) {
+      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
+      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
+  
+      series.push([x, y, z]);
+      baseval += 86400000;
+      i++;
+    }
+    return series;
+  }
+
+function generateData(count, yrange) {
+    var i = 0;
+    var series = [];
+    while (i < count) {
+        var x = 'w' + (i + 1).toString();
+        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+        series.push({
+            x: x,
+            y: y
+        });
+        i++;
+    }
+    return series;
+}
+
+var KTApexChartsDemo = function () {
+	// Private functions
+
+	var _chart_room_usage = function () {
+		const apexChart = "#chart_room_usage";
+		var options = {
+			series: [{
+				name: 'Event Created in <?php echo date('Y');?>',
+				<?php
+				foreach( $chart_data__event_creation as $this_room ){
+					$array_this_room_event_created[] = $this_room->TOTAL_EVENT_CREATED;
+					$implode_room_event_created = implode(',',$array_this_room_event_created);
+				}
+				?>
+				data: [<?php echo $implode_room_event_created; ?>]
+			}
+			],
+			chart: {
+				type: 'bar',
+				height: 350
+			},
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					columnWidth: '55%',
+					endingShape: 'rounded'
+				},
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				show: true,
+				width: 3,
+				colors: ['transparent']
+			},
+			xaxis: {
+				<?php
+				foreach( $chart_data__event_creation as $this_room ){
+					$array_this_room_name[] = "'".$this_room->ROOM_NAME."'";
+					$implode_room_name = implode(',',$array_this_room_name);
+				}
+				?>
+				categories: [<?php echo $implode_room_name;?>],
+			},
+			yaxis: {
+				title: {
+					text: 'Event Created'
+				}
+			},
+			fill: {
+				opacity: 1
+			},
+			tooltip: {
+				y: {
+					formatter: function (val) {
+						// return "$ " + val + " thousands"
+						return val;
+					}
+				}
+			},
+			colors: [primary, success, warning]
+		};
+
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
+
+	return {
+		// public functions
+		init: function () {	
+			_chart_room_usage();
+		}
+	};
+}();
+
+jQuery(document).ready(function () {
+	KTApexChartsDemo.init();
+});
 </script>
 @endsection

@@ -17,7 +17,22 @@ class Room extends Controller
             $json_table['ALL_REGISTERED_ROOM'] = '{}';
         }
 
-        return view('room.index', compact('json_table'));
+        $query__chart_data__event_creation = "
+        select
+            roo_NAME as ROOM_NAME,
+            count(eve_ID) as TOTAL_EVENT_CREATED
+        from d3s3m_event
+            left join d3s3m_room on eve_d3s3m_room_roo_ID = roo_ID
+        where
+            eve_STATUS = 4
+        group by
+            eve_d3s3m_room_roo_ID
+        order by
+            roo_NAME ASC
+        ";
+        $chart_data__event_creation = DB::select(DB::raw($query__chart_data__event_creation));
+
+        return view('room.index', compact('json_table', 'chart_data__event_creation'));
     }
 
     public function add(){

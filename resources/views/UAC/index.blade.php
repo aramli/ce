@@ -65,131 +65,129 @@
 						<div class="d-flex flex-column-fluid">
 							<!--begin::Container-->
 							<div class="container-fluid">
+
+
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="row">
+
+											<div class="col-xl-6">
+												<!--begin::Stats Widget 29-->
+												<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
+													<!--begin::Body-->
+													<div class="card-body">
+														<span class="svg-icon svg-icon-2x svg-icon-info">
+															<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<polygon points="0 0 24 0 24 24 0 24"/>
+																	<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+																	<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+																</g>
+															</svg>
+															<!--end::Svg Icon-->
+														</span>
+														<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_user }}</span>
+														<span class="font-weight-bold text-muted font-size-sm">Total User</span>
+													</div>
+													<!--end::Body-->
+												</div>
+												<!--end::Stats Widget 29-->
+											</div>
+											<div class="col-xl-6">
+												<!--begin::Stats Widget 29-->
+												<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
+													<!--begin::Body-->
+													<div class="card-body">
+														<span class="svg-icon svg-icon-2x svg-icon-info">
+															<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<polygon points="0 0 24 0 24 24 0 24"/>
+																	<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+																	<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+																</g>
+															</svg>
+															<!--end::Svg Icon-->
+														</span>
+														<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_administrator }}</span>
+														<span class="font-weight-bold text-muted font-size-sm">Total Administrator</span>
+													</div>
+													<!--end::Body-->
+												</div>
+												<!--end::Stats Widget 29-->
+											</div>
+											<div class="col-xl-6">
+												<!--begin::Stats Widget 29-->
+												<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
+													<!--begin::Body-->
+													<div class="card-body">
+														<span class="svg-icon svg-icon-2x svg-icon-info">
+															<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<polygon points="0 0 24 0 24 24 0 24"/>
+																	<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+																	<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+																</g>
+															</svg>
+															<!--end::Svg Icon-->
+														</span>
+														<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_trainer }}</span>
+														<span class="font-weight-bold text-muted font-size-sm">Total Trainer</span>
+													</div>
+													<!--end::Body-->
+												</div>
+												<!--end::Stats Widget 29-->
+											</div>
+											<div class="col-xl-6">
+												<!--begin::Stats Widget 29-->
+												<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
+													<!--begin::Body-->
+													<div class="card-body">
+														<span class="svg-icon svg-icon-2x svg-icon-info">
+															<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<polygon points="0 0 24 0 24 24 0 24"/>
+																	<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+																	<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+																</g>
+															</svg>
+															<!--end::Svg Icon-->
+														</span>
+														<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_vip }}</span>
+														<span class="font-weight-bold text-muted font-size-sm">Total VIP</span>
+													</div>
+													<!--end::Body-->
+												</div>
+												<!--end::Stats Widget 29-->
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="col-lg-12" style="padding:0;">
+											<!--begin::Card-->
+											<div class="card card-custom gutter-b">
+												<div class="card-body" style="padding:0;">
+													<!--begin::Chart-->
+													<div id="radial_chart_user"></div>
+													<!--end::Chart-->
+												</div>
+											</div>
+											<!--end::Card-->
+										</div>
+									</div>
+								</div>
+
+								
 								<!--begin::Card-->
 								<div class="card card-custom">
 									<div class="card-body">
 										<!--begin: Search Form-->
 										<!--begin::Search Form-->
 										<div class="mb-7">
-
-											<div class="row">
-												<div class="col-md-6">
-													<div class="row">
-
-														<div class="col-xl-6">
-															<!--begin::Stats Widget 29-->
-															<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
-																<!--begin::Body-->
-																<div class="card-body">
-																	<span class="svg-icon svg-icon-2x svg-icon-info">
-																		<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
-																		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-																			<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																				<polygon points="0 0 24 0 24 24 0 24"/>
-																				<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-																				<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
-																			</g>
-																		</svg>
-																		<!--end::Svg Icon-->
-																	</span>
-																	<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_user }}</span>
-																	<span class="font-weight-bold text-muted font-size-sm">Total User</span>
-																</div>
-																<!--end::Body-->
-															</div>
-															<!--end::Stats Widget 29-->
-														</div>
-														<div class="col-xl-6">
-															<!--begin::Stats Widget 29-->
-															<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
-																<!--begin::Body-->
-																<div class="card-body">
-																	<span class="svg-icon svg-icon-2x svg-icon-info">
-																		<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
-																		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-																			<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																				<polygon points="0 0 24 0 24 24 0 24"/>
-																				<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-																				<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
-																			</g>
-																		</svg>
-																		<!--end::Svg Icon-->
-																	</span>
-																	<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_administrator }}</span>
-																	<span class="font-weight-bold text-muted font-size-sm">Total Administrator</span>
-																</div>
-																<!--end::Body-->
-															</div>
-															<!--end::Stats Widget 29-->
-														</div>
-														<div class="col-xl-6">
-															<!--begin::Stats Widget 29-->
-															<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
-																<!--begin::Body-->
-																<div class="card-body">
-																	<span class="svg-icon svg-icon-2x svg-icon-info">
-																		<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
-																		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-																			<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																				<polygon points="0 0 24 0 24 24 0 24"/>
-																				<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-																				<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
-																			</g>
-																		</svg>
-																		<!--end::Svg Icon-->
-																	</span>
-																	<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_trainer }}</span>
-																	<span class="font-weight-bold text-muted font-size-sm">Total Trainer</span>
-																</div>
-																<!--end::Body-->
-															</div>
-															<!--end::Stats Widget 29-->
-														</div>
-														<div class="col-xl-6">
-															<!--begin::Stats Widget 29-->
-															<div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-1.svg)">
-																<!--begin::Body-->
-																<div class="card-body">
-																	<span class="svg-icon svg-icon-2x svg-icon-info">
-																		<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
-																		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-																			<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																				<polygon points="0 0 24 0 24 24 0 24"/>
-																				<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-																				<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
-																			</g>
-																		</svg>
-																		<!--end::Svg Icon-->
-																	</span>
-																	<span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ $total_vip }}</span>
-																	<span class="font-weight-bold text-muted font-size-sm">Total VIP</span>
-																</div>
-																<!--end::Body-->
-															</div>
-															<!--end::Stats Widget 29-->
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="col-lg-12">
-														<!--begin::Card-->
-														<div class="card card-custom gutter-b">
-															<div class="card-body" style="padding:0;">
-																<!--begin::Chart-->
-																<div id="radial_chart_user"></div>
-																<!--end::Chart-->
-															</div>
-														</div>
-														<!--end::Card-->
-													</div>
-												</div>
-
-
-												
-
-
-
-											</div>
 
 											<div class="row align-items-center">
 												<div class="col-lg-10 col-xl-10">
