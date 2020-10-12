@@ -87,7 +87,25 @@ class Room extends Controller
                 "roo_CAPACITY" => $request->CAPACITY,
                 "roo_KWH_STANDARD" => $request->KWH_STANDARD,
                 "roo_IS_ACTIVE" => $request->IS_ACTIVE,
-                "roo_DATE_MODIFIED" => date('Y-m-d H:i:s')
+                "roo_IS_SCHEDULED" => $request->IS_SCHEDULED,
+                "roo_DATE_MODIFIED" => date('Y-m-d H:i:s'),
+
+                "roo_START_MONDAY" => $request->roo_START_MONDAY,
+                "roo_START_TUESDAY" => $request->roo_START_TUESDAY,
+                "roo_START_WEDNESDAY" => $request->roo_START_WEDNESDAY,
+                "roo_START_THURSDAY" => $request->roo_START_THURSDAY,
+                "roo_START_FRIDAY" => $request->roo_START_FRIDAY,
+                "roo_START_SATURDAY" => $request->roo_START_SATURDAY,
+                "roo_START_SUNDAY" => $request->roo_START_SUNDAY,
+
+                "roo_STOP_MONDAY" => $request->roo_STOP_MONDAY,
+                "roo_STOP_TUESDAY" => $request->roo_STOP_TUESDAY,
+                "roo_STOP_WEDNESDAY" => $request->roo_STOP_WEDNESDAY,
+                "roo_STOP_THURSDAY" => $request->roo_STOP_THURSDAY,
+                "roo_STOP_FRIDAY" => $request->roo_STOP_FRIDAY,
+                "roo_STOP_SATURDAY" => $request->roo_STOP_SATURDAY,
+                "roo_STOP_SUNDAY" => $request->roo_STOP_SUNDAY
+
             ]);
 
             Session::put('popup_status', 1);

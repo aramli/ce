@@ -126,6 +126,17 @@ foreach( $room as $this_room ){
 																				</div>
 																			</div>
 																			<!--end::Group-->
+																			<!--end::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label">Schedule Status</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<select class="form-control form-control-solid form-control-lg m-input" name="IS_SCHEDULED" style="color:#333;">
+																						<option value="1" <?php if( $this_room->roo_IS_SCHEDULED == 1 ){ echo ' selected ';} ?> >Active</option>
+																						<option value="0" <?php if( $this_room->roo_IS_SCHEDULED == 0 ){ echo ' selected ';} ?> >Not Active</option>
+																					</select>
+																				</div>
+																			</div>
+																			<!--end::Group-->
 
 
 
@@ -133,6 +144,93 @@ foreach( $room as $this_room ){
 																		</div>
 																		<!--end::Wizard Step 1-->
 																	</div>
+																</div>
+
+																<div class="row justify-content-center">
+																	<div class="col-xl-9">
+																		<!--begin::Wizard Step 1-->
+																		<div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
+
+
+
+																			<div class="alert alert-custom alert-default" role="alert" style="margin-top:25px!important;margin-bottom:25px;">
+																				<div class="alert-icon">
+																					<span class="svg-icon svg-icon-primary svg-icon-xl">
+																						<!--begin::Svg Icon | path:assets/media/svg/icons/Tools/Compass.svg-->
+																						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																								<rect x="0" y="0" width="24" height="24" />
+																								<path d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z" fill="#000000" opacity="0.3" />
+																								<path d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z" fill="#000000" fill-rule="nonzero" />
+																							</g>
+																						</svg>
+																						<!--end::Svg Icon-->
+																					</span>
+																				</div>
+																				<div class="alert-text">Only fill routine schedule blow if you choose <strong>Schedule Status</strong> above to <strong>Active</strong>.</div>
+																										
+																			</div>
+
+																			<h5 class="text-dark font-weight-bold mb-10">Routine Schedule:</h5>
+
+																			<div>
+																				<table class="table">
+																					<thead>
+																						<tr>
+																							<th>Day</th>
+																							<th>Switch On (24H)</th>
+																							<th>Switch Off (24H)</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<tr>
+																							<td>Monday</td>
+																							<td><input class="form-control" type="time" name="roo_START_MONDAY" value="{{ $this_room->roo_START_MONDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_MONDAY" value="{{ $this_room->roo_STOP_MONDAY }}" /></td>
+																						</tr>
+																						<tr>
+																							<td>Tuesday</td>
+																							<td><input class="form-control" type="time" name="roo_START_TUESDAY" value="{{ $this_room->roo_START_TUESDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_TUESDAY" value="{{ $this_room->roo_STOP_TUESDAY }}" /></td>
+																						</tr>
+																						<tr>
+																							<td>Wednesday</td>
+																							<td><input class="form-control" type="time" name="roo_START_WEDNESDAY" value="{{ $this_room->roo_START_WEDNESDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_WEDNESDAY" value="{{ $this_room->roo_STOP_WEDNESDAY }}" /></td>
+																						</tr>
+																						<tr>
+																							<td>Thursday</td>
+																							<td><input class="form-control" type="time" name="roo_START_THURSDAY" value="{{ $this_room->roo_START_THURSDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_THURSDAY" value="{{ $this_room->roo_STOP_THURSDAY }}" /></td>
+																						</tr>
+																						<tr>
+																							<td>Friday</td>
+																							<td><input class="form-control" type="time" name="roo_START_FRIDAY" value="{{ $this_room->roo_START_FRIDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_FRIDAY" value="{{ $this_room->roo_STOP_FRIDAY }}" /></td>
+																						</tr>
+																						<tr>
+																							<td>Saturday</td>
+																							<td><input class="form-control" type="time" name="roo_START_SATURDAY" value="{{ $this_room->roo_START_SATURDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_SATURDAY" value="{{ $this_room->roo_STOP_SATURDAY }}" /></td>
+																						</tr>
+																						<tr>
+																							<td>Sunday</td>
+																							<td><input class="form-control" type="time" name="roo_START_SUNDAY" value="{{ $this_room->roo_START_SUNDAY }}" /></td>
+																							<td><input class="form-control" type="time" name="roo_STOP_SUNDAY" value="{{ $this_room->roo_STOP_SUNDAY }}" /></td>
+																						</tr>
+																					</tbody>
+																				</table>
+																			</div>
+
+
+
+
+																		</div>
+																		<!--end::Wizard Step 1-->
+																	</div>
+
+
+
 																</div>
 																
 																<input type="hidden" name="currentID" value="{{ $this_room->roo_ID }}" />
