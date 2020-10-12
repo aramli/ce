@@ -59,7 +59,7 @@ class UAC extends Controller
                 "use_LAST_LOGIN" => date('Y-m-d H:i:s')
             ]);
 
-            return redirect('/dashboard');
+            return redirect('/dashboard/category');
         } else {
 
             Session::put('popup_status', 1);
