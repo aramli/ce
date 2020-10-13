@@ -1,13 +1,6 @@
 @extends('master_template_new')
 @section('content')
 
-<?php
-if( $dashboard_name == 'category' ){
-	$display_dashboard_name = 'training package';
-} else {
-	$display_dashboard_name = $dashboard_name;
-}
-?>
 
 <!-- WebDataRocks Dark Theme -->
 <link rel="stylesheet" type="text/css" href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css" />
@@ -40,25 +33,25 @@ if( $dashboard_name == 'category' ){
 										<!--begin::Nav-->
 										<ul class="menu-nav">
 											<li class="menu-item menu-item-submenu menu-item-rel">
-												<a href="../../../../public/dashboard/category" class="menu-link">
-													<span class="menu-text">Training Package</span>
+												<a href="category" class="menu-link menu-toggle">
+													<span class="menu-text">Category</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
 											<li class="menu-item menu-item-submenu menu-item-rel">
-												<a href="../../../../public/dashboard/event" class="menu-link">
+												<a href="category" class="menu-link menu-toggle">
 													<span class="menu-text">Event</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
 											<li class="menu-item menu-item-submenu menu-item-rel">
-												<a href="../../../../public/dashboard/room" class="menu-link">
+												<a href="category" class="menu-link menu-toggle">
 													<span class="menu-text">Room</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
 											<li class="menu-item menu-item-submenu menu-item-rel">
-												<a href="../../../../public/dashboard/user" class="menu-link">
+												<a href="category" class="menu-link menu-toggle">
 													<span class="menu-text">User</span>
 													<i class="menu-arrow"></i>
 												</a>
@@ -106,7 +99,7 @@ if( $dashboard_name == 'category' ){
 								<!--begin::Toolbar-->
 								<div class="d-flex align-items-center py-3 py-lg-2">
 									<!-- Button trigger modal-->
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddDashboard">Add New Dashboard Item</button>
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddDashboard">Launch demo modal</button>
 														
 
 
@@ -129,7 +122,7 @@ if( $dashboard_name == 'category' ){
 								<!--begin::Info-->
 								<div class="d-flex align-items-center flex-wrap mr-2">
 									<!--begin::Title-->
-									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Dashboard by <strong>{{ $display_dashboard_name }}</strong></h5>
+									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Dashboard by <strong>{{ $dashboard_name }}</strong></h5>
 									<!--end::Title-->
 									<!--begin::Separator-->
 									<div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
@@ -148,90 +141,25 @@ if( $dashboard_name == 'category' ){
 						<div class="d-flex flex-column-fluid">
 							<!--begin::Container-->
 							<div class="container-fluid">
-
-								@foreach( $dashboard_list as $this_dashboard_list )
+								<!--begin::Card-->
 								<div class="card card-custom" style="margin-bottom:50px;">
 									<div class="card-body">
-										<h1 style="text-align:center;">{{ $this_dashboard_list->dc_TITLE }}</h1>
-										<div id="wdr-component__{{ $this_dashboard_list->dc_ID }}"></div>
-										<div class="row">
-											<div class="col-md-12">
-												<div id="wdr-component__Event_creation"></div>
-											</div>
-											<div class="col-md-6">
-												<div id="fusionchartContainer__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
-											</div>
-											<div class="col-md-6">
-												<div id="fusionchartContainerBarChart__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
-											</div>
-										</div>
+										<h1 style="text-align:center;">Event Creation</h1>
+										<div id="wdr-component__Event_creation"></div>
+										<div id="fusionchartContainer__Event_creation" style="margin-top:1px;"></div>
 									</div>
 								</div>
-								<script>
+								<!--end::Card-->
 
-									var pivot__<?php echo $this_dashboard_list->dc_ID; ?> = new WebDataRocks({
-										container: "#wdr-component__<?php echo $this_dashboard_list->dc_ID; ?>",
-										toolbar: true,
-										height: 400,
-										width: "100%",
-										report: {
-											dataSource: {
-												data: JSON.parse('<?php echo $json_report;?>')
-											},
-											"slice": <?php echo $this_dashboard_list->dc_JSON; ?>
-										},
-										reportcomplete: function() {
-											pivot__<?php echo $this_dashboard_list->dc_ID; ?>.off("reportcomplete");
-											createFusionChart__<?php echo $this_dashboard_list->dc_ID; ?>();
-											createFusionChartBarChart__<?php echo $this_dashboard_list->dc_ID; ?>();
-										}
-									});
-
-									function createFusionChart__<?php echo $this_dashboard_list->dc_ID; ?>() {
-										var chart = new FusionCharts({
-											"type": "doughnut2d",
-											"renderAt": "fusionchartContainer__<?php echo $this_dashboard_list->dc_ID; ?>",
-										"width": "100%",
-										"height": 350
-										});
-
-										pivot__<?php echo $this_dashboard_list->dc_ID; ?>.fusioncharts.getData({
-											type: chart.chartType()
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-											chart.render();
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-										});
-									}
-
-
-									function createFusionChartBarChart__<?php echo $this_dashboard_list->dc_ID; ?>() {
-										var chart = new FusionCharts({
-											"type": "column2d",
-											"renderAt": "fusionchartContainerBarChart__<?php echo $this_dashboard_list->dc_ID; ?>",
-										"width": "100%",
-										"height": 350
-										});
-
-										pivot__<?php echo $this_dashboard_list->dc_ID; ?>.fusioncharts.getData({
-											type: chart.chartType()
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-											chart.render();
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-										});
-									}
-
-								</script>
-								@endforeach
-
-								
+								<!--begin::Card-->
+								<div class="card card-custom" style="margin-bottom:50px;">
+									<div class="card-body">
+										<h1 style="text-align:center;">Energy Consumption</h1>
+										<div id="wdr-component__Energy_consumption"></div>
+										<div id="fusionchartContainer__Energy_consumption" style="margin-top:1px;"></div>
+									</div>
+								</div>
+								<!--end::Card-->
 
 							</div>
 							<!--end::Container-->
@@ -244,6 +172,144 @@ if( $dashboard_name == 'category' ){
 				<!--end::Wrapper-->
 				@include('include_new.aside_secondary')
 
+			<script>
+
+				
+				var pivot = new WebDataRocks({
+					container: "#wdr-component__Event_creation",
+					toolbar: true,
+					height: 400,
+					width: "100%",
+					report: {
+						dataSource: {
+							filename: "<?php echo env('MASTER_JSON_FILE_URL');?>/event__event_creation.json"
+						},
+						"slice": {
+							"rows": [
+								{
+									"uniqueName": "ORGANIZER"
+								}
+							],
+							"columns": [
+								{
+									"uniqueName": "Measures"
+								},
+								{
+									"uniqueName": "TRAINING PACKAGE"
+								}
+							],
+							"measures": [
+								{
+									"uniqueName": "ORGANIZER",
+									"aggregation": "count",
+									"availableAggregations": [
+										"count",
+										"distinctcount"
+									]
+								}
+							]
+						}
+					},
+					reportcomplete: function() {
+						pivot.off("reportcomplete");
+						createFusionChart();
+					}
+				});
+
+				function createFusionChart() {
+					var chart = new FusionCharts({
+						"type": "doughnut2d",
+						"renderAt": "fusionchartContainer__Event_creation",
+					"width": "100%",
+					"height": 350
+					});
+
+					pivot.fusioncharts.getData({
+						type: chart.chartType()
+					}, function(data) {
+						chart.setJSONData(data);
+					chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+						chart.render();
+					}, function(data) {
+						chart.setJSONData(data);
+					chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+					});
+				}
+
+
+
+
+
+
+
+
+				
+				var pivot__energy_consumption = new WebDataRocks({
+					container: "#wdr-component__Energy_consumption",
+					toolbar: true,
+					height: 400,
+					width: "100%",
+					report: {
+						dataSource: {
+							filename: "<?php echo env('MASTER_JSON_FILE_URL');?>/energy__energy_consumption_rank.json"
+						},
+						"slice": {
+							"rows": [
+								{
+									"uniqueName": "EVENT_START.Month"
+								}
+							],
+							"columns": [
+								{
+									"uniqueName": "Measures"
+								}
+							],
+							"measures": [
+								{
+									"uniqueName": "EVENT TITLE",
+									"aggregation": "count",
+									"availableAggregations": [
+										"count",
+										"distinctcount"
+									]
+								},
+								{
+									"uniqueName": "ENERGY CONSUMPTION (kWh)",
+									"aggregation": "sum"
+								}
+							]
+						}
+					},
+					reportcomplete: function() {
+						pivot__energy_consumption.off("reportcomplete");
+						createFusionChart__Energy_consumption();
+					}
+				});
+
+				function createFusionChart__Energy_consumption() {
+					var chart = new FusionCharts({
+						"type": "doughnut2d",
+						"renderAt": "fusionchartContainer__Energy_consumption",
+					"width": "100%",
+					"height": 350
+					});
+
+					pivot__energy_consumption.fusioncharts.getData({
+						type: chart.chartType()
+					}, function(data) {
+						chart.setJSONData(data);
+					chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+						chart.render();
+					}, function(data) {
+						chart.setJSONData(data);
+					chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+					});
+				}
+
+
+
+				
+			</script>
 
 			<!-- Modal-->
 			<div class="modal fade" id="modalAddDashboard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -262,7 +328,7 @@ if( $dashboard_name == 'category' ){
 									<label>Data Source</label>
 									<select class="form-control" name="select_data_source" required >
 										<option value="">--Choose Data Source--</option>
-										<option value="category">Training Package</option>
+										<option value="category">Category</option>
 										<option value="event">Event</option>
 										<option value="room">Room</option>
 										<option value="user">User</option>

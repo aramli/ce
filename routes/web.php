@@ -57,8 +57,9 @@ Route::post('/ChangeMyPassword', 'UAC@ChangeMyPassword');
 *
 */
 Route::get('/dashboard', 'Dashboard@index')->name('dashboard');
-Route::get('/dashboard/{dashboard_name}', 'Dashboard@ByDashboardName');
+Route::get('/dashboard/{dashboard_name}', 'Dashboard@DisplayDashboardByType');
 Route::get('/dashboard/template/{dashboard_name}', 'Dashboard@TemplateGenerator');
+Route::post('/dashboard/action/AddNewDashboardItem', 'Dashboard@AddNewDashboardItem');
 
 
 
