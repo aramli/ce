@@ -243,7 +243,10 @@
 					// var ALERT = jsonData.ALERT;
 					// alert(MESSAGE);
 
+					// alert(jsonData.DISPLAY_RECENT_EVENT);
 					document.getElementById('div_your_recent_events').innerHTML = jsonData.DISPLAY_RECENT_EVENT;
+
+					localStorage.setItem('div_your_recent_events', jsonData.DISPLAY_RECENT_EVENT);
 
 				}
 			};

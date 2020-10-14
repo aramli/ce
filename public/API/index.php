@@ -6,17 +6,12 @@ if( $_POST['module'] == "GetUserRecentEvent" ){
 
 	$id_user = $_POST['ID_USER'];
 	
-	$query = "select * from d3s3m_event where eve_d3s3m_user_use_ID = '".$id_user."' and 
-		(
-			eve_STATUS = 2
-			OR eve_STATUS = 4
-		)
-	order by eve_EVENT_START DESC ";
+	$query = "select * from d3s3m_event where eve_d3s3m_user_use_ID = '".$id_user."' and (eve_STATUS = 2 OR eve_STATUS = 4) order by eve_EVENT_START DESC ";
 	$result = $db->query($query);
 	$num = $result->num_rows;
 	
 	$json['DISPLAY_RECENT_EVENT'] = '';
-	for( $i=0;$i<count($num);$i++ ){
+	for( $i=0;$i<$num;$i++ ){
 		
 		$row = $result->fetch_assoc();
 		
@@ -44,6 +39,7 @@ if( $_POST['module'] == "GetUserRecentEvent" ){
 		<!--end::Item-->
 		';
 	}
+
 
 	echo json_encode($json);
 	
