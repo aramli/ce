@@ -72,7 +72,7 @@ if( $dashboard_name == 'category' ){
 													<ul class="menu-subnav">
 														<li class="menu-item" aria-haspopup="true">
 															<a href="../../../../public/dashboard/template/category" class="menu-link" target="_blank">
-																<span class="menu-text">Category</span>
+																<span class="menu-text">Training Package</span>
 																<span class="menu-desc"></span>
 															</a>
 														</li>
