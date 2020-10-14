@@ -11,6 +11,7 @@ class Dashboard extends Controller
 {
     public function index(){
 
+		/*
     	// EVENT CREATION
     	$report_data = DB::select(DB::raw("
     		select
@@ -97,7 +98,11 @@ class Dashboard extends Controller
 		
 		$json_table[''] = '{}';
 
-    	return view('dashboard.index', compact('json_event_creation'));
+		return view('dashboard.index', compact('json_event_creation'));
+		*/
+
+		return redirect('/dashboard/category');
+
 	}
 	
 	public function TemplateGenerator($dashboard_name){

@@ -339,19 +339,27 @@ class UAC extends Controller
 
     public function myprofile(){
 
-        $profile = DB::table('d3s3m_user')->where('ID', Session::get('ID'))->get();
+        $user = DB::table('d3s3m_user')
+            ->leftJoin('d3s3m_company', 'com_ID', '=', 'use_d3s3m_company_com_ID')
+            ->leftJoin('d3s3m_division', 'div_ID', '=', 'use_d3s3m_division_div_ID')
+            ->leftJoin('d3s3m_role', 'rol_ID', '=', 'use_d3s3m_role_rol_ID')
+            ->where('use_ID', Session::get('ID'))
+            ->get();
 
-        $counter_event_created = DB::table('d3s3m_event')->where('ID_USER', Session::get('ID'))->where('STATUS', 2)->count('ID');
-        $counter_event_attend = DB::table('d3s3m_attendee')->where('ID_USER', Session::get('ID'))->where('IS_ATTEND', 1)->count('ID');
+
+        $profile = DB::table('d3s3m_user')->where('use_ID', Session::get('ID'))->get();
+
+        $counter_event_created = DB::table('d3s3m_event')->where('eve_d3s3m_user_use_ID', Session::get('ID'))->where('eve_STATUS', 2)->count('eve_ID');
+        $counter_event_attend = DB::table('d3s3m_attendee')->where('att_d3s3m_user_use_ID', Session::get('ID'))->where('att_IS_ATTEND', 1)->count('att_ID');
 
         $counter_event_absence = DB::select(DB::raw("
             select
-                count(t1.ID) as TOTAL_ROW
-            from d3s3m_attendee t1 
-                left join d3s3m_event t2 on t2.ID = t1.ID_EVENT
+                count(att_ID) as TOTAL_ROW
+            from d3s3m_attendee
+                left join d3s3m_event on eve_ID = att_d3s3m_event_eve_ID
             where
-                date(t2.EVENT_FINISH) < '".date('Y-m-d')."'
-                and t2.STATUS = 4
+                date(eve_EVENT_FINISH) < '".date('Y-m-d')."'
+                and eve_STATUS = 4
             "));
         foreach( $counter_event_absence as $this_counter_event_absence ) {
             $counter_event_absence = $this_counter_event_absence->TOTAL_ROW;
@@ -359,12 +367,11 @@ class UAC extends Controller
 
         $counter_energy_consumption = DB::select(DB::raw("
             select
-                sum(t2.KWH_CONSUMPTION) as KWH_CONSUMPTION
-            from d3s3m_event t1
-                left join d3s3m_energy_log t2 on t2.ID_EVENT = t1.ID
+                sum(eve_ENERGY_CONSUMPTION) as KWH_CONSUMPTION
+            from d3s3m_event
             where
-                date(t1.EVENT_FINISH) < '".date('Y-m-d')."'
-                and t1.STATUS = 4
+                date(eve_EVENT_FINISH) < '".date('Y-m-d')."'
+                and eve_STATUS = 4
             "));
         foreach( $counter_energy_consumption as $this_counter_energy_consumption ){ 
             $counter_energy_consumption = $this_counter_energy_consumption->KWH_CONSUMPTION;
@@ -373,12 +380,12 @@ class UAC extends Controller
 
 
 
-
-        $training_target = DB::table('d3s3m_training_target')->where('ID_USER', Session::get('ID'))->get();
+        /*
+        $training_target = DB::table('d3s3m_user')->where('use_ID', Session::get('ID'))->get();
         if( count($training_target) > 0 ){
 
             foreach( $training_target as $this_training_target ){
-                $display_training_target = $this_training_target->TRAINING_TARGET;
+                $display_training_target = $this_training_target->use_TRAINING_TARGET;
             }
 
         } else {
@@ -386,12 +393,12 @@ class UAC extends Controller
         }
         $counter_event_this_month = DB::select(DB::raw("
             select
-                count(ID) as TOTAL_ROW
+                count(eve_ID) as TOTAL_ROW
             from d3s3m_event
             where
-                STATUS = 4
-                and MONTH(EVENT_START) = '".date('m')."'
-                and YEAR(EVENT_START) = '".date('Y')."'
+            eve_STATUS = 4
+                and MONTH(eve_STATUS) = '".date('m')."'
+                and YEAR(eve_STATUS) = '".date('Y')."'
             "));
         foreach( $counter_event_this_month as $this_counter_event_this_month){
             $counter_event_this_month = $this_counter_event_this_month->TOTAL_ROW;
@@ -408,25 +415,25 @@ class UAC extends Controller
         for( $i=0;$i<12;$i++ ){
             $event_per_month = DB::select(DB::raw("
                 select
-                    count(ID) as TOTAL_ROW
+                    count(eve_ID) as TOTAL_ROW
                 from d3s3m_event
                 where 
-                    MONTH(EVENT_START) = '".($i+1)."'
-                    and YEAR(EVENT_START) = '".date('Y')."'
-                    and STATUS = 4
-                    and ID_USER = '".Session::get('ID')."'
+                    MONTH(eve_EVENT_START) = '".($i+1)."'
+                    and YEAR(eve_EVENT_START) = '".date('Y')."'
+                    and eve_STATUS = 4
+                    and eve_d3s3m_user_use_ID = '".Session::get('ID')."'
                 "));
             foreach( $event_per_month as $this_event_per_month ){
                 $array_event_per_month[$i] = $this_event_per_month->TOTAL_ROW;
             }
         }
         $implode_array_event_per_month = implode(",", $array_event_per_month);
-
+        */
 
 
 
         
-        return view('UAC.myprofile', compact('profile', 'counter_event_created', 'counter_event_attend', 'counter_event_absence', 'counter_energy_consumption', 'display_training_target', 'counter_event_this_month', 'kpi_percentage', 'implode_array_event_per_month'));
+        return view('UAC.my_profile', compact('user', 'profile', 'counter_event_created', 'counter_event_attend', 'counter_event_absence', 'counter_energy_consumption', 'display_training_target', 'counter_event_this_month', 'kpi_percentage', 'implode_array_event_per_month'));
     }
 
     public function UpdateMyProfile(Request $request){

@@ -49,7 +49,7 @@
 				<!--begin::Nav-->
 				<div class="navi navi-spacer-x-0 p-0">
 					<!--begin::Item-->
-					<a href="custom/apps/user/profile-1/personal-information.html" class="navi-item">
+					<a href="../../../../public/myprofile" class="navi-item">
 						<div class="navi-link">
 							<div class="symbol symbol-40 bg-light mr-3">
 								<div class="symbol-label">
@@ -74,7 +74,7 @@
 					</a>
 					<!--end:Item-->
 					<!--begin::Item-->
-					<a href="custom/apps/user/profile-3.html" class="navi-item">
+					<a href="#" class="navi-item">
 						<div class="navi-link">
 							<div class="symbol symbol-40 bg-light mr-3">
 								<div class="symbol-label">
@@ -94,14 +94,14 @@
 								</div>
 							</div>
 							<div class="navi-text">
-								<div class="font-weight-bold">My Messages</div>
-								<div class="text-muted">Inbox and tasks</div>
+								<div class="font-weight-bold">Change Password</div>
+								<div class="text-muted">Security Options</div>
 							</div>
 						</div>
 					</a>
 					<!--end:Item-->
 					<!--begin::Item-->
-					<a href="custom/apps/user/profile-2.html" class="navi-item">
+					<a href="custom/apps/user/profile-2.html" class="navi-item" style="display:none;">
 						<div class="navi-link">
 							<div class="symbol symbol-40 bg-light mr-3">
 								<div class="symbol-label">
@@ -126,7 +126,7 @@
 					</a>
 					<!--end:Item-->
 					<!--begin::Item-->
-					<a href="custom/apps/userprofile-1/overview.html" class="navi-item">
+					<a href="custom/apps/userprofile-1/overview.html" class="navi-item" style="display:none;">
 						<div class="navi-link">
 							<div class="symbol symbol-40 bg-light mr-3">
 								<div class="symbol-label">
