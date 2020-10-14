@@ -552,7 +552,7 @@ class UAC extends Controller
 
         } else {
 
-            $check = DB::table('d3s3m_user')->where('ID', Session::get('ID'))->where('PASSWORD', md5($request->CurrentPassword))->count('ID');
+            $check = DB::table('d3s3m_user')->where('use_ID', Session::get('ID'))->where('use_PASSWORD', md5($request->CurrentPassword))->count('use_ID');
 
             if( $check == 0 ){
 
@@ -563,9 +563,9 @@ class UAC extends Controller
 
             } else {
 
-                DB::table('d3s3m_user')->where('ID', Session::get('ID'))->update([
-                    "PASSWORD" => md5($request->NewPassword),
-                    "DATE_MODIFIED" => date('Y-m-d H:i:s')
+                DB::table('d3s3m_user')->where('use_ID', Session::get('ID'))->update([
+                    "use_PASSWORD" => md5($request->NewPassword),
+                    "use_DATE_MODIFIED" => date('Y-m-d H:i:s')
                 ]);
 
                 Session::put('popup_status', 1);
@@ -577,11 +577,11 @@ class UAC extends Controller
 
         }
 
-        return redirect('/myprofile');
+        return redirect('/change_my_password');
     }
 
-    public function test(){
-        return view('emails.reset_password.index');
+    public function change_my_password(){
+        return view('UAC.change_my_password');
     }
 
 

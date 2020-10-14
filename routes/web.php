@@ -46,6 +46,8 @@ Route::get('/forgot_password', 'UAC@forgot_password')->name('forgot_password');
 Route::post('/ResetMyPassword', 'UAC@ResetMyPassword');
 Route::post('/ChangeMyPassword', 'UAC@ChangeMyPassword');
 
+Route::get('/change_my_password', 'UAC@change_my_password')->name('change_my_password');
+
 
 
 

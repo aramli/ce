@@ -49,7 +49,7 @@
 				<!--begin::Nav-->
 				<div class="navi navi-spacer-x-0 p-0">
 					<!--begin::Item-->
-					<a href="../../../../public/myprofile" class="navi-item">
+					<a href="{{ route('my_profile') }}" class="navi-item">
 						<div class="navi-link">
 							<div class="symbol symbol-40 bg-light mr-3">
 								<div class="symbol-label">
@@ -74,7 +74,7 @@
 					</a>
 					<!--end:Item-->
 					<!--begin::Item-->
-					<a href="#" class="navi-item">
+					<a href="{{ route('change_my_password') }}" class="navi-item">
 						<div class="navi-link">
 							<div class="symbol symbol-40 bg-light mr-3">
 								<div class="symbol-label">
