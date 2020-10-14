@@ -149,87 +149,130 @@ if( $dashboard_name == 'category' ){
 							<!--begin::Container-->
 							<div class="container-fluid">
 
-								@foreach( $dashboard_list as $this_dashboard_list )
-								<div class="card card-custom" style="margin-bottom:50px;">
-									<div class="card-body">
-										<h1 style="text-align:center;">{{ $this_dashboard_list->dc_TITLE }}</h1>
-										<div id="wdr-component__{{ $this_dashboard_list->dc_ID }}"></div>
-										<div class="row">
-											<div class="col-md-12">
-												<div id="wdr-component__Event_creation"></div>
-											</div>
-											<div class="col-md-6">
-												<div id="fusionchartContainer__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
-											</div>
-											<div class="col-md-6">
-												<div id="fusionchartContainerBarChart__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
+								@if( count($dashboard_list) > 0 )
+
+									@foreach( $dashboard_list as $this_dashboard_list )
+									<div class="card card-custom" style="margin-bottom:50px;">
+										<div class="card-body">
+											<h1 style="text-align:center;">{{ $this_dashboard_list->dc_TITLE }}</h1>
+											<div id="wdr-component__{{ $this_dashboard_list->dc_ID }}"></div>
+											<div class="row">
+												<div class="col-md-12">
+													<div id="wdr-component__Event_creation"></div>
+												</div>
+												<div class="col-md-6">
+													<div id="fusionchartContainer__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
+												</div>
+												<div class="col-md-6">
+													<div id="fusionchartContainerBarChart__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<script>
+									<script>
 
-									var pivot__<?php echo $this_dashboard_list->dc_ID; ?> = new WebDataRocks({
-										container: "#wdr-component__<?php echo $this_dashboard_list->dc_ID; ?>",
-										toolbar: true,
-										height: 400,
-										width: "100%",
-										report: {
-											dataSource: {
-												data: JSON.parse('<?php echo $json_report;?>')
+										var pivot__<?php echo $this_dashboard_list->dc_ID; ?> = new WebDataRocks({
+											container: "#wdr-component__<?php echo $this_dashboard_list->dc_ID; ?>",
+											toolbar: true,
+											height: 400,
+											width: "100%",
+											report: {
+												dataSource: {
+													data: JSON.parse('<?php echo $json_report;?>')
+												},
+												"slice": <?php echo $this_dashboard_list->dc_JSON; ?>
 											},
-											"slice": <?php echo $this_dashboard_list->dc_JSON; ?>
-										},
-										reportcomplete: function() {
-											pivot__<?php echo $this_dashboard_list->dc_ID; ?>.off("reportcomplete");
-											createFusionChart__<?php echo $this_dashboard_list->dc_ID; ?>();
-											createFusionChartBarChart__<?php echo $this_dashboard_list->dc_ID; ?>();
+											reportcomplete: function() {
+												pivot__<?php echo $this_dashboard_list->dc_ID; ?>.off("reportcomplete");
+												createFusionChart__<?php echo $this_dashboard_list->dc_ID; ?>();
+												createFusionChartBarChart__<?php echo $this_dashboard_list->dc_ID; ?>();
+											}
+										});
+
+										function createFusionChart__<?php echo $this_dashboard_list->dc_ID; ?>() {
+											var chart = new FusionCharts({
+												"type": "doughnut2d",
+												"renderAt": "fusionchartContainer__<?php echo $this_dashboard_list->dc_ID; ?>",
+											"width": "100%",
+											"height": 350
+											});
+
+											pivot__<?php echo $this_dashboard_list->dc_ID; ?>.fusioncharts.getData({
+												type: chart.chartType()
+											}, function(data) {
+												chart.setJSONData(data);
+											chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+												chart.render();
+											}, function(data) {
+												chart.setJSONData(data);
+											chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+											});
 										}
-									});
-
-									function createFusionChart__<?php echo $this_dashboard_list->dc_ID; ?>() {
-										var chart = new FusionCharts({
-											"type": "doughnut2d",
-											"renderAt": "fusionchartContainer__<?php echo $this_dashboard_list->dc_ID; ?>",
-										"width": "100%",
-										"height": 350
-										});
-
-										pivot__<?php echo $this_dashboard_list->dc_ID; ?>.fusioncharts.getData({
-											type: chart.chartType()
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-											chart.render();
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-										});
-									}
 
 
-									function createFusionChartBarChart__<?php echo $this_dashboard_list->dc_ID; ?>() {
-										var chart = new FusionCharts({
-											"type": "column2d",
-											"renderAt": "fusionchartContainerBarChart__<?php echo $this_dashboard_list->dc_ID; ?>",
-										"width": "100%",
-										"height": 350
-										});
+										function createFusionChartBarChart__<?php echo $this_dashboard_list->dc_ID; ?>() {
+											var chart = new FusionCharts({
+												"type": "column2d",
+												"renderAt": "fusionchartContainerBarChart__<?php echo $this_dashboard_list->dc_ID; ?>",
+											"width": "100%",
+											"height": 350
+											});
 
-										pivot__<?php echo $this_dashboard_list->dc_ID; ?>.fusioncharts.getData({
-											type: chart.chartType()
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-											chart.render();
-										}, function(data) {
-											chart.setJSONData(data);
-										chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
-										});
-									}
+											pivot__<?php echo $this_dashboard_list->dc_ID; ?>.fusioncharts.getData({
+												type: chart.chartType()
+											}, function(data) {
+												chart.setJSONData(data);
+											chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+												chart.render();
+											}, function(data) {
+												chart.setJSONData(data);
+											chart.setChartAttribute("theme", "fusion"); // apply the FusionCharts theme
+											});
+										}
 
-								</script>
-								@endforeach
+									</script>
+									@endforeach
+
+								@endif
+
+								@if( count($dashboard_list) == 0 )
+									<div class="row">
+										<div class="col-xl-12">
+											<!--begin::Engage Widget 1-->
+											<div class="card card-custom card-stretch gutter-b">
+												<div class="card-body d-flex p-0">
+													<div class="flex-grow-1 p-8 card-rounded bgi-no-repeat d-flex align-items-center" style="background-color: #FFF4DE; background-position: left bottom; background-size: auto 100%; background-image: url(assets/media/svg/humans/custom-2.svg)">
+														<div class="row">
+															<div class="col-12 col-xl-5"></div>
+															<div class="col-12 col-xl-7">
+																<h4 class="text-danger font-weight-bolder">Your dashboard is empty</h4>
+																<p class="text-dark-50 my-5 font-size-xl font-weight-bold">You can add new customized dashboard widget by click on "Add New Dashboard Item" and fill all required data</p>
+																														   
+																<a href="#" class="btn btn-danger font-weight-bold py-2 px-6" data-toggle="modal" data-target="#modalAddDashboard">Add New Dashboard Item</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!--end::Engage Widget 1-->
+										</div>
+										<div class="col-xl-6" style="display:none;">
+											<!--begin::Engage Widget 2-->
+											<div class="card card-custom card-stretch gutter-b">
+												<div class="card-body d-flex p-0">
+													<div class="flex-grow-1 bg-danger p-8 card-rounded flex-grow-1 bgi-no-repeat" style="background-position: calc(100% + 0.5rem) bottom; background-size: auto 70%; background-image: url(assets/media/svg/humans/custom-3.svg)">
+														<h4 class="text-inverse-danger mt-2 font-weight-bolder">User Confidence</h4>
+														<p class="text-inverse-danger my-6">Boost marketing &amp; sales
+														<br />through product confidence.</p>
+														<a href="#" class="btn btn-warning font-weight-bold py-2 px-6">Learn</a>
+													</div>
+												</div>
+											</div>
+											<!--end::Engage Widget 2-->
+										</div>
+									</div>
+									<!--end::Row-->
+								@endif
 
 								
 
