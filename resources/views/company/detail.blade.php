@@ -33,6 +33,7 @@ foreach( $company as $this_company ){
 									<!--begin::Button-->
 									<a href="{{ route('view_all_company') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
 							
+									@if( in_array('FT-026', Session::get('ARRAY_UAC')) )
 									<a class="btn btn-danger font-weight-bold btn-sm px-3 font-size-base ml-2" data-toggle="modal" data-target="#modalDelete" style="color:#fff;">
 										Delete
 									</a>
@@ -55,14 +56,17 @@ foreach( $company as $this_company ){
 											</div>
 										</div>
 									</div>
-
+									@endif
 									<!--end::Button-->
+
+									@if( in_array('FT-025', Session::get('ARRAY_UAC')) )
 									<!--begin::Dropdown-->
 									<div class="btn-group ml-2">
-										
 										<button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" onclick="UpdateExistingCompany();">Submit</button>
 									</div>
 									<!--end::Dropdown-->
+									@endif
+
 								</div>
 								<!--end::Toolbar-->
 							</div>
