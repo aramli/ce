@@ -40,7 +40,7 @@ foreach( $basic_info as $this_basic_info ){
 									<!--begin::Button-->
 									<a href="{{ route('view_all_event') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
 
-									@if( $this_basic_info->eve_STATUS == 1 )
+									@if( $this_basic_info->eve_STATUS == 1 && in_array('FT-015', Session::get('ARRAY_UAC')) )
 									<a href="#" class="btn btn-danger font-weight-bold btn-sm px-3 font-size-base ml-2" style="color:#fff;" data-toggle="modal" data-target="#modalRejectEvent">
 										Reject
 									</a>
@@ -66,7 +66,7 @@ foreach( $basic_info as $this_basic_info ){
 									@endif
 
 
-									@if( $this_basic_info->eve_STATUS == 1 )
+									@if( $this_basic_info->eve_STATUS == 1 && in_array('FT-015', Session::get('ARRAY_UAC')) )
 									<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base ml-2" style="color:#fff;" data-toggle="modal" data-target="#modalApproveEvent">
 										Approve
 									</a>
@@ -92,7 +92,7 @@ foreach( $basic_info as $this_basic_info ){
 									@endif
 
 
-									@if( $this_basic_info->eve_STATUS == 2 )
+									@if( $this_basic_info->eve_STATUS == 2 && in_array('FT-016', Session::get('ARRAY_UAC')) )
 									<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base ml-2" style="color:#fff;" data-toggle="modal" data-target="#modalBlastInvitation">
 										Blast Invitation
 									</a>

@@ -45,6 +45,13 @@ class UAC extends Controller
             Session::put('ROLE_NAME', $this_user->rol_NAME);
             Session::put('IS_LOGIN', 1);
 
+            $explode_UAC = explode(',',$this_user->use_ACCESS_CODE);
+            for( $i=0;$i<count($explode_UAC);$i++ ){
+                $array_uac[] = $explode_UAC[$i];
+            }
+            Session::put('ARRAY_UAC', $array_uac);
+            
+
 
             // Session::put('ROOT_URL', 'http://localhost/development_site/rules');
             // Session::put('CURL_URL', 'http://13.251.212.5:8083');

@@ -33,6 +33,7 @@ foreach( $room as $this_room ){
 									<!--begin::Button-->
 									<a href="{{ route('view_all_room') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
 							
+									@if( in_array('FT-023', Session::get('ARRAY_UAC')) )
 									<a class="btn btn-danger font-weight-bold btn-sm px-3 font-size-base ml-2" data-toggle="modal" data-target="#modalDelete" style="color:#fff;">
 										Delete
 									</a>
@@ -55,14 +56,17 @@ foreach( $room as $this_room ){
 											</div>
 										</div>
 									</div>
-
+									@endif
 									<!--end::Button-->
+
+									@if( in_array('FT-022', Session::get('ARRAY_UAC')) )
 									<!--begin::Dropdown-->
 									<div class="btn-group ml-2">
-										
 										<button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" onclick="UpdateExistingRoom();">Submit</button>
 									</div>
 									<!--end::Dropdown-->
+									@endif
+
 								</div>
 								<!--end::Toolbar-->
 							</div>

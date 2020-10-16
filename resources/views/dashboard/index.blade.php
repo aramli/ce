@@ -7,6 +7,8 @@ if( $dashboard_name == 'category' ){
 } else {
 	$display_dashboard_name = $dashboard_name;
 }
+
+
 ?>
 
 <!-- WebDataRocks Dark Theme -->
@@ -39,30 +41,46 @@ if( $dashboard_name == 'category' ){
 									<div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
 										<!--begin::Nav-->
 										<ul class="menu-nav">
+
+											
+
+											@if( in_array('SM-008', Session::get('ARRAY_UAC')) )
 											<li class="menu-item menu-item-submenu menu-item-rel">
 												<a href="../../../../public/dashboard/category" class="menu-link">
 													<span class="menu-text">Training Package</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
+											@endif
+
+											@if( in_array('SM-009', Session::get('ARRAY_UAC')) )
 											<li class="menu-item menu-item-submenu menu-item-rel">
 												<a href="../../../../public/dashboard/event" class="menu-link">
 													<span class="menu-text">Event</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
+											@endif
+
+											@if( in_array('SM-010', Session::get('ARRAY_UAC')) )
 											<li class="menu-item menu-item-submenu menu-item-rel">
 												<a href="../../../../public/dashboard/room" class="menu-link">
 													<span class="menu-text">Room</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
+											@endif
+
+											@if( in_array('SM-011', Session::get('ARRAY_UAC')) )
 											<li class="menu-item menu-item-submenu menu-item-rel">
 												<a href="../../../../public/dashboard/user" class="menu-link">
 													<span class="menu-text">User</span>
 													<i class="menu-arrow"></i>
 												</a>
 											</li>
+											@endif
+											
+											@if( in_array('FT-012', Session::get('ARRAY_UAC')) )
 											<li class="menu-item menu-item-open menu-item-here menu-item-submenu menu-item-rel menu-item-open menu-item-here" data-menu-toggle="click" aria-haspopup="true">
 												<a href="javascript:;" class="menu-link menu-toggle">
 													<span class="menu-text">Dashboard Generator</span>
@@ -97,22 +115,23 @@ if( $dashboard_name == 'category' ){
 													</ul>
 												</div>
 											</li>
+											@endif
 										</ul>
 										<!--end::Nav-->
 									</div>
 									<!--end::Menu-->
 								</div>
 								<!--end::Menu Wrapper-->
+
+								@if( in_array('FT-013', Session::get('ARRAY_UAC')) )
 								<!--begin::Toolbar-->
 								<div class="d-flex align-items-center py-3 py-lg-2">
 									<!-- Button trigger modal-->
 									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddDashboard">Add New Dashboard Item</button>
-														
-
-
-
 								</div>
 								<!--end::Toolbar-->
+								@endif
+
 							</div>
 							<!--end::Container-->
 						</div>

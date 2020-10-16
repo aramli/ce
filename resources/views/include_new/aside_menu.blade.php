@@ -18,7 +18,7 @@
 
 
 
-							
+							@if( in_array('MM-001', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="Dashboard">
 								<a href="{{ route('dashboard') }}" class="nav-link btn btn-icon btn-lg btn-borderless active">
@@ -36,6 +36,9 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
+
+							@if( in_array('MM-002', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="Event">
 								<a href="{{ route('view_all_event') }}" class="nav-link btn btn-icon btn-lg btn-borderless">
@@ -53,6 +56,9 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
+
+							@if( in_array('MM-003', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="User Management">
 								<a href="{{ route('view_all_user') }}" class="nav-link btn btn-icon btn-lg btn-borderless">
@@ -70,6 +76,9 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
+
+							@if( in_array('MM-004', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="Room">
 								<a href="{{ route('view_all_room') }}" class="nav-link btn btn-icon btn-lg btn-borderless">
@@ -87,6 +96,9 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
+
+							@if( in_array('MM-005', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="Company">
 								<a href="{{ route('view_all_company') }}" class="nav-link btn btn-icon btn-lg btn-borderless">
@@ -104,6 +116,9 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
+
+							@if( in_array('MM-006', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="Division">
 								<a href="{{ route('view_all_division') }}" class="nav-link btn btn-icon btn-lg btn-borderless">
@@ -121,6 +136,9 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
+
+							@if( in_array('MM-007', Session::get('ARRAY_UAC')) )
 							<!--begin::Item-->
 							<li class="nav-item mb-2" data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window" title="Training Package">
 								<a href="{{ route('view_all_category') }}" class="nav-link btn btn-icon btn-lg btn-borderless">
@@ -138,6 +156,7 @@
 								</a>
 							</li>
 							<!--end::Item-->
+							@endif
 
 						</ul>
 						<!--end::Nav-->

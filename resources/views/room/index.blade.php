@@ -23,6 +23,7 @@
 									<!--end::Search Form-->
 								</div>
 								<!--end::Info-->
+								@if( in_array('FT-021', Session::get('ARRAY_UAC')) )
 								<!--begin::Toolbar-->
 								<div class="d-flex align-items-center">
 									<!--begin::Actions-->
@@ -32,6 +33,8 @@
 									<!--end::Actions-->
 								</div>
 								<!--end::Toolbar-->
+								@endif
+
 							</div>
 						</div>
 						<!--end::Subheader-->
@@ -176,36 +179,42 @@
 										</svg>\
 									</span>\
 								</a>\
-								<a class="btn btn-sm btn-clean btn-icon" title="Delete" data-toggle="modal" data-target="#modalDelete_'+row.roo_ID+'">\
-									<span class="svg-icon svg-icon-md">\
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-												<rect x="0" y="0" width="24" height="24"/>\
-												<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
-												<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
-											</g>\
-										</svg>\
-									</span>\
-								</a>\
-								<div class="modal fade" id="modalDelete_'+row.roo_ID+'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">\
-									<div class="modal-dialog modal-dialog-centered" role="document">\
-										<div class="modal-content">\
-											<div class="modal-header">\
-												<h5 class="modal-title" id="exampleModalCenterTitle">Delete Confirmation</h5>\
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">\
-												<span aria-hidden="true">&times;</span>\
-												</button>\
-											</div>\
-											<div class="modal-body">\
-												Are you sure you want to delete <strong>'+row.roo_NAME+' (System ID: '+row.roo_ID+')</strong> data? Please note that this action <strong>can not be undone</strong>. \
-											</div>\
-											<div class="modal-footer">\
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">No, Go Back</button>\
-												<a href="../../../../public/room/detail/'+row.roo_ID+'/delete" class="btn btn-danger" style="color:#fff;">Yes, Delete</a>\
+								<?php
+								if( in_array('FT-023', Session::get('ARRAY_UAC')) ){
+									?>
+									<a class="btn btn-sm btn-clean btn-icon" title="Delete" data-toggle="modal" data-target="#modalDelete_'+row.roo_ID+'">\
+										<span class="svg-icon svg-icon-md">\
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+													<rect x="0" y="0" width="24" height="24"/>\
+													<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
+													<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
+												</g>\
+											</svg>\
+										</span>\
+									</a>\
+									<div class="modal fade" id="modalDelete_'+row.roo_ID+'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">\
+										<div class="modal-dialog modal-dialog-centered" role="document">\
+											<div class="modal-content">\
+												<div class="modal-header">\
+													<h5 class="modal-title" id="exampleModalCenterTitle">Delete Confirmation</h5>\
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">\
+													<span aria-hidden="true">&times;</span>\
+													</button>\
+												</div>\
+												<div class="modal-body">\
+													Are you sure you want to delete <strong>'+row.roo_NAME+' (System ID: '+row.roo_ID+')</strong> data? Please note that this action <strong>can not be undone</strong>. \
+												</div>\
+												<div class="modal-footer">\
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">No, Go Back</button>\
+													<a href="../../../../public/room/detail/'+row.roo_ID+'/delete" class="btn btn-danger" style="color:#fff;">Yes, Delete</a>\
+												</div>\
 											</div>\
 										</div>\
 									</div>\
-								</div>\
+									<?php
+								}
+								?>
 							';
 					},
 				}],

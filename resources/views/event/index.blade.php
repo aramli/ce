@@ -23,6 +23,9 @@
 									<!--end::Search Form-->
 								</div>
 								<!--end::Info-->
+								
+								
+								@if( in_array('FT-014', Session::get('ARRAY_UAC')) )
 								<!--begin::Toolbar-->
 								<div class="d-flex align-items-center">
 									<!--begin::Actions-->
@@ -32,6 +35,8 @@
 									<!--end::Actions-->
 								</div>
 								<!--end::Toolbar-->
+								@endif
+
 							</div>
 						</div>
 						<!--end::Subheader-->

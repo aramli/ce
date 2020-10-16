@@ -32,7 +32,8 @@ foreach( $user as $this_user ){
 								<div class="d-flex align-items-center">
 									<!--begin::Button-->
 									<a href="{{ route('view_all_user') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
-							
+									
+									@if( in_array('FT-019', Session::get('ARRAY_UAC')) )
 									<a class="btn btn-danger font-weight-bold btn-sm px-3 font-size-base ml-2" data-toggle="modal" data-target="#modalDelete" style="color:#fff;">
 										Delete
 									</a>
@@ -55,14 +56,17 @@ foreach( $user as $this_user ){
 											</div>
 										</div>
 									</div>
+									@endif
 
 									<!--end::Button-->
+									@if( in_array('FT-020', Session::get('ARRAY_UAC')) )
 									<!--begin::Dropdown-->
 									<div class="btn-group ml-2">
 										
 										<button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" onclick="UpdateExistingUser();">Submit</button>
 									</div>
 									<!--end::Dropdown-->
+									@endif
 								</div>
 								<!--end::Toolbar-->
 							</div>
