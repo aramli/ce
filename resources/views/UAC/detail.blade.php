@@ -2,6 +2,13 @@
 foreach( $user as $this_user ){
 	$this_user = $this_user;
 }
+
+$this_user_uac = $this_user->use_ACCESS_CODE;
+$array_this_user_uac = array();
+if( strlen($this_user_uac) > 0 ){
+	$explode_this_user_uac = explode(',', $this_user_uac);
+	$array_this_user_uac = $explode_this_user_uac;
+}
 ?>
 @extends('master_template_new')
 @section('content')
@@ -200,12 +207,322 @@ foreach( $user as $this_user ){
 																				</div>
 																				<div class="alert-text">Only fill the training target value below if you are choosing <strong>TRAINER</strong> as the role for the person you are about to submit.</div>
 																			</div>
+
+
+
+
+
 																			<h5 class="text-dark font-weight-bold mb-10 mt-10">Training Target (per Month):</h5>
 																			<!--begin::Group-->
 																			<div class="form-group row">
 																				<label class="col-xl-3 col-lg-3 col-form-label">Training Target</label>
 																				<div class="col-lg-9 col-xl-9">
 																					<input class="form-control form-control-solid form-control-lg" name="numberTargetTraining" type="text" value="{{ $this_user->use_TRAINING_TARGET }}" />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+
+
+																			
+																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:100px!important;width:100%;clear:both;">User Access Control (UAC):</h5>
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Main Menu</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-001" <?php if( in_array('MM-001', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Dashboard</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-002" <?php if( in_array('MM-002', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Event</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-003" <?php if( in_array('MM-003', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>User</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-004" <?php if( in_array('MM-004', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Room</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-005" <?php if( in_array('MM-005', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Company</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-006" <?php if( in_array('MM-006', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Division</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="MM-007" <?php if( in_array('MM-007', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Training Package</label>
+																						</div>
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Dashboard</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="SM-008" <?php if( in_array('SM-008', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Dashboard per training package</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="SM-009" <?php if( in_array('SM-009', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Dashboard per event</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="SM-010" <?php if( in_array('SM-010', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Dashboard per room</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="SM-011" <?php if( in_array('SM-011', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Dashboard per user</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-012" <?php if( in_array('FT-012', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Dashboard generator</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-013" <?php if( in_array('FT-013', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add New Dashboard Item</label>
+																						</div>
+
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Event</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-014" <?php if( in_array('FT-014', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add New Event</label>
+																						</div>
+																					
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-015" <?php if( in_array('FT-015', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Approve or Reject Event</label>
+																						</div>
+																					
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-016" <?php if( in_array('FT-016', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Blast Invitation</label>
+																						</div>
+
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">User</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-017" <?php if( in_array('FT-017', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add New User</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-018" <?php if( in_array('FT-018', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Upload and Download User CSV</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-019" <?php if( in_array('FT-019', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Delete user</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-020" <?php if( in_array('FT-020', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Update user</label>
+																						</div>
+
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Room</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-021" <?php if( in_array('FT-021', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add Room</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-022" <?php if( in_array('FT-022', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Update Room</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-023" <?php if( in_array('FT-023', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Delete Room</label>
+																						</div>
+
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Company</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-024" <?php if( in_array('FT-024', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add Company</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-025" <?php if( in_array('FT-025', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Update Company</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-026" <?php if( in_array('FT-026', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Delete Company</label>
+																						</div>
+
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Division</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-027" <?php if( in_array('FT-027', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add Division</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-028" <?php if( in_array('FT-028', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Update Division</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-029" <?php if( in_array('FT-029', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Delete Division</label>
+																						</div>
+
+																					</div>
+
+																				</div>
+																			</div>
+																			<!--end::Group-->
+
+
+																			<!--begin::Group-->
+																			<div class="form-group">
+																				<label style="font-weight:bold;">Training Package</label>
+																				<div class="checkbox-inline" style="margin-top:10px;">
+
+																					<div class="row">
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-030" <?php if( in_array('FT-030', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Add Training Package</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-031" <?php if( in_array('FT-031', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Update Training Package</label>
+																						</div>
+
+																						<div class="col-md-6" style="margin-bottom:15px;">
+																							<label class="checkbox checkbox-lg">
+																							<input type="checkbox" name="array_uac[]" value="FT-032" <?php if( in_array('FT-032', $array_this_user_uac) ){ echo ' checked '; } ?> />
+																							<span></span>Delete Training Package</label>
+																						</div>
+
+																					</div>
+
 																				</div>
 																			</div>
 																			<!--end::Group-->

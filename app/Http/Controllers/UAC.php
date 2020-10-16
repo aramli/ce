@@ -187,8 +187,8 @@ class UAC extends Controller
     	$company = DB::table('d3s3m_company')->get();
     	$division = DB::table('d3s3m_division')->get();
     	$role = DB::table('d3s3m_role')->get();
-    	// $user = DB::table('d3s3m_user')->where('ID', $id)->get();
-
+        // $user = DB::table('d3s3m_user')->where('ID', $id)->get();
+        
     	$user = DB::table('d3s3m_user')
             ->leftJoin('d3s3m_company', 'com_ID', '=', 'use_d3s3m_company_com_ID')
             ->leftJoin('d3s3m_division', 'div_ID', '=', 'use_d3s3m_division_div_ID')
@@ -196,10 +196,18 @@ class UAC extends Controller
             ->where('use_ID', $id)
             ->get();
 
-    	return view('UAC.detail', compact('user', 'company', 'division', 'role'));
+    	return view('UAC.detail', compact('user', 'company', 'division', 'role', 'uac'));
     }
 
     public function UpdateUserDetail(Request $request){
+
+        $array_uac = $request->array_uac;
+
+        if( count($array_uac) > 0 ){
+            $implode_array_uac = implode(',', $array_uac);
+        } else {
+            $implode_array_uac = '';
+        }
 
     	if( $request->currentEmail == $request->inputEmail ){
 
@@ -211,7 +219,8 @@ class UAC extends Controller
                 "use_d3s3m_role_rol_ID" => $request->selectRole,
                 "use_IS_ACTIVE" => $request->checkboxIsActive,
                 "use_TRAINING_TARGET" => $request->numberTargetTraining,
-                "use_DATE_MODIFIED" => date('Y-m-d H:i:s')
+                "use_DATE_MODIFIED" => date('Y-m-d H:i:s'),
+                "use_ACCESS_CODE" => $implode_array_uac
             ]);
 
 	        Session::put('popup_status', 1);
@@ -238,7 +247,8 @@ class UAC extends Controller
 	                "use_d3s3m_role_rol_ID" => $request->selectRole,
 	                "use_IS_ACTIVE" => $request->checkboxIsActive,
                     "use_TRAINING_TARGET" => $request->numberTargetTraining,
-	                "use_DATE_MODIFIED" => date('Y-m-d H:i:s')
+	                "use_DATE_MODIFIED" => date('Y-m-d H:i:s'),
+                    "use_ACCESS_CODE" => $implode_array_uac
 	            ]);
 
 		        Session::put('popup_status', 1);
