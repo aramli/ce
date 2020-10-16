@@ -1,7 +1,7 @@
 <!--begin::Aside Secondary-->
 <div class="sidebar sidebar-left d-flex flex-row-auto flex-column" id="kt_sidebar">
 					<!--begin::Aside Secondary Header-->
-					<div class="sidebar-header flex-column-auto pt-9 pb-5 px-5 px-lg-10">
+					<div class="sidebar-header flex-column-auto pt-9 pb-5 px-5 px-lg-10" style="display:none;">
 						<!--begin::Toolbar-->
 						<div class="d-flex">
 							<!--begin::Desktop Search-->
