@@ -99,6 +99,46 @@ if( $_POST['module'] == "GetAllUpcomingEvent" ){
 
 }
 
+if( $_POST['module'] == "GetOngoingEvent" ){
+
+	$id_user = $_POST['ID_USER'];
+
+	$query = "
+		select 
+			* 
+		from d3s3m_event 
+		where 
+			eve_d3s3m_user_use_ID = '".$id_user."' and eve_STATUS = '2' 
+			and eve_EVENT_START <= '".date('Y-m-d H:i:s')."'
+			and eve_IS_FINISH is null
+	";
+	$result = $db->query($query);
+	$num = $result->num_rows;
+
+	$array_event_id = array();
+	$array_event_title = array();
+
+	if( $num > 0 ){
+		$json['RESULT'] = 1;
+
+		for( $i=0;$i<$num;$i++ ){
+			$row = $result->fetch_assoc();
+	
+			$array_event_id[] = $row['eve_ID'];
+			$array_event_title[] = $row['eve_TITLE'];
+		}
+	} else {
+		$json['RESULT'] = 2;
+	}
+
+	$json['NUMBER_OF_EVENT'] = $num;
+	$json['ARRAY_EVENT_ID'] = $array_event_id;
+	$json['ARRAY_EVENT_TITLE'] = $array_event_title;
+	
+	echo json_encode($json);
+
+}
+
 
 
 ?>

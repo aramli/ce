@@ -49,27 +49,12 @@
 					<!--end::Aside Secondary Header-->
 					<!--begin::Aside Secondary Content-->
 					<div class="sidebar-content flex-column-fluid pb-10 pt-9 px-5 px-lg-10">
-						<!--begin::Stats Widget 13-->
-						<a href="../../../event/panel/1" class="card card-custom bg-danger bg-hover-state-danger card-shadowless gutter-b">
-							<!--begin::Body-->
-							<div class="card-body">
-								<span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-									<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Cart3.svg-->
-									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-											<rect x="0" y="0" width="24" height="24"/>
-											<circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
-											<path d="M12.4208204,17.1583592 L15.4572949,11.0854102 C15.6425368,10.7149263 15.4923686,10.2644215 15.1218847,10.0791796 C15.0177431,10.0271088 14.9029083,10 14.7864745,10 L12,10 L12,7.17705098 C12,6.76283742 11.6642136,6.42705098 11.25,6.42705098 C10.965921,6.42705098 10.7062236,6.58755277 10.5791796,6.84164079 L7.5427051,12.9145898 C7.35746316,13.2850737 7.50763142,13.7355785 7.87811529,13.9208204 C7.98225687,13.9728912 8.09709167,14 8.21352549,14 L11,14 L11,16.822949 C11,17.2371626 11.3357864,17.572949 11.75,17.572949 C12.034079,17.572949 12.2937764,17.4124472 12.4208204,17.1583592 Z" fill="#000000"/>
-										</g>
-									</svg>
-									<!--end::Svg Icon-->
-								</span>
-								<div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">Event Title</div>
-								<div class="font-weight-bold text-inverse-danger font-size-sm">Click here to see your ongoing event panel</div>
-							</div>
-							<!--end::Body-->
-						</a>
-						<!--end::Stats Widget 13-->
+
+						<div id="ongoing_event_panel">
+							
+						</div>
+
+						
 						<!--begin::List Widget 1-->
 						<div class="card card-custom card-shadowless bg-white gutter-b">
 							<!--begin::Header-->
@@ -299,24 +284,74 @@
 
 
 				<script>
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						var jsonData = JSON.parse(this.responseText);
-						
-						var RESULT = jsonData.RESULT;
-						var MESSAGE = jsonData.MESSAGE;
-						// var ALERT = jsonData.ALERT;
-						// alert(MESSAGE);
+				StreamUpcomingEvent();
+				function StreamUpcomingEvent(){
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							var jsonData = JSON.parse(this.responseText);
+							
+							var RESULT = jsonData.RESULT;
+							var MESSAGE = jsonData.MESSAGE;
+							// var ALERT = jsonData.ALERT;
+							// alert(MESSAGE);
 
-						// alert(jsonData.DISPLAY_RECENT_EVENT);
-						document.getElementById('div_upcoming_events').innerHTML = jsonData.DISPLAY_UPCOMING_EVENT;
+							// alert(jsonData.DISPLAY_RECENT_EVENT);
+							document.getElementById('div_upcoming_events').innerHTML = jsonData.DISPLAY_UPCOMING_EVENT;
 
-						localStorage.setItem('div_upcoming_events', jsonData.DISPLAY_UPCOMING_EVENT);
+							localStorage.setItem('div_upcoming_events', jsonData.DISPLAY_UPCOMING_EVENT);
 
-					}
-				};
-				xhttp.open("POST", "<?php echo env('MASTER_API_URL'); ?>", true);
-				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-				xhttp.send("module=GetAllUpcomingEvent");
+						}
+					};
+					xhttp.open("POST", "<?php echo env('MASTER_API_URL'); ?>", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("module=GetAllUpcomingEvent");
+				}
+
+				StreamOngoingEvent();
+				function StreamOngoingEvent(){
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							var jsonData = JSON.parse(this.responseText);
+							
+							var RESULT = jsonData.RESULT;
+							// var MESSAGE = jsonData.MESSAGE;
+							// var ALERT = jsonData.ALERT;
+							// alert(MESSAGE);
+
+							// alert(jsonData.DISPLAY_RECENT_EVENT);
+
+							if( RESULT == 1 ){
+								// document.getElementById('ongoing_event_panel').innerHTML = jsonData.ARRAY_EVENT_TITLE;
+
+								for( i=0;i<jsonData.NUMBER_OF_EVENT;i++ ){
+									document.getElementById('ongoing_event_panel').innerHTML += '\
+										<a href="../../../event/panel/'+jsonData.ARRAY_EVENT_ID[i]+'" class="card card-custom bg-danger bg-hover-state-danger card-shadowless gutter-b">\
+											<div class="card-body">\
+												<span class="svg-icon svg-icon-white svg-icon-3x ml-n1">\
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+															<rect x="0" y="0" width="24" height="24"/>\
+															<circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>\
+															<path d="M12.4208204,17.1583592 L15.4572949,11.0854102 C15.6425368,10.7149263 15.4923686,10.2644215 15.1218847,10.0791796 C15.0177431,10.0271088 14.9029083,10 14.7864745,10 L12,10 L12,7.17705098 C12,6.76283742 11.6642136,6.42705098 11.25,6.42705098 C10.965921,6.42705098 10.7062236,6.58755277 10.5791796,6.84164079 L7.5427051,12.9145898 C7.35746316,13.2850737 7.50763142,13.7355785 7.87811529,13.9208204 C7.98225687,13.9728912 8.09709167,14 8.21352549,14 L11,14 L11,16.822949 C11,17.2371626 11.3357864,17.572949 11.75,17.572949 C12.034079,17.572949 12.2937764,17.4124472 12.4208204,17.1583592 Z" fill="#000000"/>\
+														</g>\
+													</svg>\
+												</span>\
+												<div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">'+jsonData.ARRAY_EVENT_TITLE[i]+'</div>\
+												<div class="font-weight-bold text-inverse-danger font-size-sm">Click here to see your ongoing event panel</div>\
+											</div>\
+										</a>\
+									';
+								}
+							}
+
+
+						}
+					};
+					xhttp.open("POST", "<?php echo env('MASTER_API_URL'); ?>", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("module=GetOngoingEvent&ID_USER=<?php echo Session::get('ID'); ?>");
+				}
+				
 			</script>
