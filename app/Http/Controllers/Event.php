@@ -205,6 +205,19 @@ class Event extends Controller
             "att_IS_ATTEND" => 0
         ]);
 
+        // CHECK FOR VIP
+        $vip_status = DB::table('d3s3m_user')->where('use_ID', $id_attendee)->get();
+        foreach( $vip_status as $this_vip_status ){
+            $this_vip_status = $this_vip_status;
+
+            if( $this_vip_status->use_IS_ACTIVE == 1 ){
+                DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+                    "eve_IS_EXTENDED" => 1
+                ]);
+            }
+        }
+        // END CHECK FOR VIP
+
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');
         Session::put('popup_title', 'Login Success');
@@ -675,7 +688,7 @@ class Event extends Controller
                 "eve_IS_START" => 1,
                 "eve_DATE_START" => date('Y-m-d H:i:s')
             ]);
-            
+
         }
 
     }
