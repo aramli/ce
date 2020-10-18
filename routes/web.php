@@ -163,7 +163,9 @@ Route::get('/event/detail/{id}/BlastInvitation', 'Event@BlastInvitation');
 
 Route::get('/event/panel/{id}', 'Event@EventPanel');
 Route::get('/event/panel/{id}/Panel_StartEvent', 'Event@Panel_StartEvent');
+Route::get('/event/panel/{implode_id}/Panel_StartEvent__Auto_Nodejs', 'Event@Panel_StartEvent__Auto_Nodejs');
 Route::get('/event/panel/{id}/Panel_StopEvent', 'Event@Panel_StopEvent');
+Route::get('/event/panel/{implode_id}/Panel_StopEvent__Auto_Nodejs', 'Event@Panel_StopEvent__Auto_Nodejs');
 Route::get('/event/panel/{id}/Panel_ExtendEvent', 'Event@Panel_ExtendEvent');
 Route::get('/event/panel/{id}/Panel_OverrideAttend/{id_user_attendee}', 'Event@Panel_OverrideAttend');
 

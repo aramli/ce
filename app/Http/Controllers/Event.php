@@ -649,6 +649,7 @@ class Event extends Controller
     public function Panel_StartEvent($id){
 
         DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_STATUS" => 6,
             "eve_IS_START" => 1,
             "eve_DATE_START" => date('Y-m-d H:i:s')
         ]);
@@ -661,19 +662,261 @@ class Event extends Controller
         return redirect('/event/panel/'.$id);
     }
 
+    public function Panel_StartEvent__Auto_Nodejs($implode_id){
+
+        $array_explode_id = explode(',', $implode_id);
+
+        for( $i=0;$i<count($array_explode_id);$i++ ){
+
+            $id = $array_explode_id[$i];
+
+            DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+                "eve_STATUS" => 6,
+                "eve_IS_START" => 1,
+                "eve_DATE_START" => date('Y-m-d H:i:s')
+            ]);
+            
+        }
+
+    }
+
     public function Panel_StopEvent($id){
 
+
+        // GET EVENT INFO
+        $event = DB::table('d3s3m_event')
+                        ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                        ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                        ->leftJoin('d3s3m_category', 'cat_ID', '=', 'eve_d3s3m_category_cat_ID')
+                        ->where('eve_STATUS', '>', '0')
+                        ->where('eve_ID', $id)
+                        ->get();
+        foreach( $event as $this_event ){
+            $this_event = $this_event;
+        }
+        $event_start = $this_event->eve_DATE_START;
+        $event_stop = $this_event->eve_DATE_FINISH;
+        $address_kwh_listrik = intval($this_event->roo_KWH_ADDRESS);
+        $address_kwh_ac = intval($this_event->roo_KWH_ADDRESS_AC);
+        // print_r($this_event);exit;
+        // END GET EVENT INFO
+
+
+        // GET KWH USAGE START
+        $energy_logger_start = DB::table('d3s3m_energy_logger')
+        ->where('elog_DATE_CREATED', '>=', $event_start)
+        ->orderBy('elog_DATE_CREATED', 'ASC')
+        ->take(1)
+        ->get();
+        foreach( $energy_logger_start as $this_energy_logger_start ){
+            $this_energy_logger_start = $this_energy_logger_start;
+        }
+        $array_energy_log_start = explode(',',$this_energy_logger_start->elog_KWH_STREAM);
+        for( $i=0;$i<count($array_energy_log_start);$i++ ){
+            $index_energy_start = $this_energy_logger_start->elog_KWH_ADDRESS_START + $i;
+            $final_array_energy_log_start[$index_energy_start] = $array_energy_log_start[$i];
+        }
+
+        if( isset($final_array_energy_log_start[$address_kwh_listrik]) ){
+            $kwh_listrik_start = $final_array_energy_log_start[$address_kwh_listrik];
+        } else {
+            $kwh_listrik_start = 0;
+        }
+
+        if( isset($final_array_energy_log_start[$address_kwh_ac]) ){
+            $kwh_ac_start = $final_array_energy_log_start[$address_kwh_ac];
+        } else {
+            $kwh_ac_start = 0;
+        }
+        // END GET KWH USAGE START
+
+
+        // GET KWH USAGE END
+        $energy_logger_end = DB::table('d3s3m_energy_logger')
+        ->where('elog_DATE_CREATED', '<=', date('Y-m-d H:i:s'))
+        ->orderBy('elog_DATE_CREATED', 'DESC')
+        ->take(1)
+        ->get();
+        // print_r($energy_logger_end);exit;
+        // $query_energy_logger_end = "select * from d3s3m_energy_logger where elog_DATE_CREATED <= '".date('Y-m-d H:i:s')."' order by elog_DATE_CREATED DESC limit 0,1 ";
+        // $energy_logger_end = DB::select(DB::raw($query_energy_logger_end));
+        // echo $query_energy_logger_end;exit;
+        foreach( $energy_logger_end as $this_energy_logger_end ){
+            $this_energy_logger_end = $this_energy_logger_end;
+        }
+        $array_energy_log_end = explode(',',$this_energy_logger_end->elog_KWH_STREAM);
+        for( $i=0;$i<count($array_energy_log_end);$i++ ){
+            $index_energy_end = $this_energy_logger_end->elog_KWH_ADDRESS_START + $i;
+            $final_array_energy_log_end[$index_energy_end] = $array_energy_log_end[$i];
+        }
+        
+
+        if( isset($final_array_energy_log_end[$address_kwh_listrik]) ){
+            $kwh_listrik_end = $final_array_energy_log_end[$address_kwh_listrik];
+        } else {
+            $kwh_listrik_end = 0;
+        }
+
+        if( isset($final_array_energy_log_end[$address_kwh_ac]) ){
+            $kwh_ac_end = $final_array_energy_log_end[$address_kwh_ac];
+        } else {
+            $kwh_ac_end = 0;
+        }
+        // END GET KWH USAGE END
+
+
+
+        // CALCULATE TOTAL ACTUAL KWH
+        $actual_kwh_listrik = $kwh_listrik_end - $kwh_listrik_start;
+        $actual_kwh_ac = $kwh_ac_end - $kwh_ac_start;
+        $total_actual_kwh = $actual_kwh_listrik + $actual_kwh_ac;
+        // END CALCULATE TOTAL ACTUAL KWH
+
+
+
+        // UPDATE ACTUAL KWH TO DATABASE
         DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_ENERGY_CONSUMPTION" => $total_actual_kwh,
+            "eve_STATUS" => 4,
             "eve_IS_FINISH" => 1,
             "eve_DATE_FINISH" => date('Y-m-d H:i:s')
         ]);
+        // END UPDATE ACTUAL KWH TO DATABASE
+
+
+
+
+        
+
+
 
         Session::put('popup_status', 1);
         Session::put('popup_type', 'success');
         Session::put('popup_title', 'Start event success');
         Session::put('popup_message', 'Your event is now stopped. All electricity has been turned off by system.');
 
-        return redirect('/event/panel/'.$id);
+        return redirect('/event/all');
+    }
+
+    public function Panel_StopEvent__Auto_Nodejs($implode_id){
+
+        $array_explode_id = explode(',', $implode_id);
+
+        for( $i=0;$i<count($array_explode_id);$i++ ){
+
+            $id = $array_explode_id[$i];
+
+            // UPDATE ACTUAL KWH TO DATABASE
+            DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+                "eve_STATUS" => 4,
+                "eve_IS_FINISH" => 1,
+                "eve_DATE_FINISH" => date('Y-m-d H:i:s')
+                ]);
+            // END UPDATE ACTUAL KWH TO DATABASE
+
+
+
+
+            
+            // GET EVENT INFO
+                    $event = DB::table('d3s3m_event')
+                    ->leftJoin('d3s3m_user', 'use_ID', '=', 'eve_d3s3m_user_use_ID')
+                    ->leftJoin('d3s3m_room', 'roo_ID', '=', 'eve_d3s3m_room_roo_ID')
+                    ->leftJoin('d3s3m_category', 'cat_ID', '=', 'eve_d3s3m_category_cat_ID')
+                    ->where('eve_STATUS', '>', '0')
+                    ->where('eve_ID', $id)
+                    ->get();
+            foreach( $event as $this_event ){
+            $this_event = $this_event;
+            }
+            $event_start = $this_event->eve_DATE_START;
+            $event_stop = $this_event->eve_DATE_FINISH;
+            $address_kwh_listrik = intval($this_event->roo_KWH_ADDRESS);
+            $address_kwh_ac = intval($this_event->roo_KWH_ADDRESS_AC);
+            // print_r($this_event);exit;
+            // END GET EVENT INFO
+
+
+            // GET KWH USAGE START
+            $energy_logger_start = DB::table('d3s3m_energy_logger')
+            ->where('elog_DATE_CREATED', '>=', $event_start)
+            ->orderBy('elog_DATE_CREATED', 'ASC')
+            ->take(1)
+            ->get();
+            foreach( $energy_logger_start as $this_energy_logger_start ){
+            $this_energy_logger_start = $this_energy_logger_start;
+            }
+            $array_energy_log_start = explode(',',$this_energy_logger_start->elog_KWH_STREAM);
+            for( $i=0;$i<count($array_energy_log_start);$i++ ){
+            $index_energy_start = $this_energy_logger_start->elog_KWH_ADDRESS_START + $i;
+            $final_array_energy_log_start[$index_energy_start] = $array_energy_log_start[$i];
+            }
+
+            if( isset($final_array_energy_log_start[$address_kwh_listrik]) ){
+            $kwh_listrik_start = $final_array_energy_log_start[$address_kwh_listrik];
+            } else {
+            $kwh_listrik_start = 0;
+            }
+
+            if( isset($final_array_energy_log_start[$address_kwh_ac]) ){
+            $kwh_ac_start = $final_array_energy_log_start[$address_kwh_ac];
+            } else {
+            $kwh_ac_start = 0;
+            }
+            // END GET KWH USAGE START
+
+
+            // GET KWH USAGE END
+            $energy_logger_end = DB::table('d3s3m_energy_logger')
+            ->where('elog_DATE_CREATED', '<=', 'eve_DATE_FINISH')
+            ->orderBy('elog_DATE_CREATED', 'DESC')
+            ->take(1)
+            ->get();
+            // print_r($energy_logger_end);exit;
+            // $query_energy_logger_end = "select * from d3s3m_energy_logger where elog_DATE_CREATED <= '".date('Y-m-d H:i:s')."' order by elog_DATE_CREATED DESC limit 0,1 ";
+            // $energy_logger_end = DB::select(DB::raw($query_energy_logger_end));
+            // echo $query_energy_logger_end;exit;
+            foreach( $energy_logger_end as $this_energy_logger_end ){
+            $this_energy_logger_end = $this_energy_logger_end;
+            }
+            $array_energy_log_end = explode(',',$this_energy_logger_end->elog_KWH_STREAM);
+            for( $i=0;$i<count($array_energy_log_end);$i++ ){
+            $index_energy_end = $this_energy_logger_end->elog_KWH_ADDRESS_START + $i;
+            $final_array_energy_log_end[$index_energy_end] = $array_energy_log_end[$i];
+            }
+
+
+            if( isset($final_array_energy_log_end[$address_kwh_listrik]) ){
+            $kwh_listrik_end = $final_array_energy_log_end[$address_kwh_listrik];
+            } else {
+            $kwh_listrik_end = 0;
+            }
+
+            if( isset($final_array_energy_log_end[$address_kwh_ac]) ){
+            $kwh_ac_end = $final_array_energy_log_end[$address_kwh_ac];
+            } else {
+            $kwh_ac_end = 0;
+            }
+            // END GET KWH USAGE END
+
+
+
+            // CALCULATE TOTAL ACTUAL KWH
+            $actual_kwh_listrik = $kwh_listrik_end - $kwh_listrik_start;
+            $actual_kwh_ac = $kwh_ac_end - $kwh_ac_start;
+            $total_actual_kwh = $actual_kwh_listrik + $actual_kwh_ac;
+            // END CALCULATE TOTAL ACTUAL KWH
+
+
+
+            // UPDATE ACTUAL KWH TO DATABASE
+            DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+            "eve_ENERGY_CONSUMPTION" => $total_actual_kwh
+            ]);
+            // END UPDATE ACTUAL KWH TO DATABASE
+
+        }
+
     }
 
     public function Panel_ExtendEvent($id){

@@ -47,7 +47,15 @@ if( $_POST['module'] == "GetUserRecentEvent" ){
 
 if( $_POST['module'] == "GetAllUpcomingEvent" ){
 
-	$query = "select * from d3s3m_event where eve_STATUS = 4 and eve_EVENT_START >= '".date('Y-m-d H:i:s')."' order by eve_EVENT_START DESC ";
+	$query = "
+	select 
+		* 
+	from d3s3m_event 
+	where 
+		eve_STATUS = 4 
+		and eve_EVENT_START >= '".date('Y-m-d H:i:s')."' 
+		order by eve_EVENT_START DESC 
+	";
 	$result = $db->query($query);
 	$num = $result->num_rows;
 	
@@ -135,6 +143,54 @@ if( $_POST['module'] == "GetOngoingEvent" ){
 	$json['ARRAY_EVENT_ID'] = $array_event_id;
 	$json['ARRAY_EVENT_TITLE'] = $array_event_title;
 	
+	echo json_encode($json);
+
+}
+
+if( $_POST['module'] == "StreamEventPanelInfo" ){
+
+	$address_kwh_listrik = $_POST['ADDRESS_KWH_LISTRIK'];
+	$address_kwh_ac = $_POST['ADDRESS_KWH_AC'];
+	$datetime_event_start = $_POST['DATETIME_EVENT_START'];
+
+
+
+	$query_stream_kwh_start = "select * from d3s3m_energy_logger where elog_DATE_CREATED between '".$datetime_event_start."' and '".date('Y-m-d H:i:s')."' order by elog_DATE_CREATED ASC limit 0,1 ";
+	$result_stream_kwh_start = $db->query($query_stream_kwh_start);
+	$row_stream_kwh_start = $result_stream_kwh_start->fetch_assoc();
+	$start__elog_KWH_ADDRESS_START = $row_stream_kwh_start['elog_KWH_ADDRESS_START'];
+	$start__elog_KWH_LONG = $row_stream_kwh_start['elog_KWH_LONG'];
+	$start__elog_KWH_STREAM = explode(',',$row_stream_kwh_start['elog_KWH_STREAM']);
+	for( $i=0;$i<$start__elog_KWH_LONG;$i++ ){
+		$start__array_index = $start__elog_KWH_ADDRESS_START + $i;
+		$start__array_data[$start__array_index] = $start__elog_KWH_STREAM[$i];
+	}
+
+
+	$query_stream_kwh_end = "select * from d3s3m_energy_logger where elog_DATE_CREATED between '".$datetime_event_start."' and '".date('Y-m-d H:i:s')."' order by elog_DATE_CREATED DESC limit 0,1 ";
+	$result_stream_kwh_end = $db->query($query_stream_kwh_end);
+	$row_stream_kwh_end = $result_stream_kwh_end->fetch_assoc();
+	$end__elog_KWH_ADDRESS_START = $row_stream_kwh_end['elog_KWH_ADDRESS_START'];
+	$end__elog_KWH_LONG = $row_stream_kwh_end['elog_KWH_LONG'];
+	$end__elog_KWH_STREAM = explode(',',$row_stream_kwh_end['elog_KWH_STREAM']);
+	for( $i=0;$i<$end__elog_KWH_LONG;$i++ ){
+		$end__array_index = $end__elog_KWH_ADDRESS_START + $i;
+		$end__array_data[$end__array_index] = $end__elog_KWH_STREAM[$i];
+	}
+
+	$json['query_stream_kwh_start'] = $query_stream_kwh_start;
+	$json['start__elog_KWH_ADDRESS_START'] = $start__elog_KWH_ADDRESS_START;
+	$json['start__elog_KWH_LONG'] = $start__elog_KWH_LONG;
+	$json['start__array_data'] = $start__array_data;
+
+	$json['query_stream_kwh_end'] = $query_stream_kwh_end;
+	$json['end__elog_KWH_ADDRESS_START'] = $end__elog_KWH_ADDRESS_START;
+	$json['end__elog_KWH_LONG'] = $end__elog_KWH_LONG;
+	$json['end__array_data'] = $end__array_data;
+
+	$json['RESULT'] = 1;
+	$json['MESSAGE'] = "Streaming kwh";
+
 	echo json_encode($json);
 
 }

@@ -30,7 +30,7 @@ foreach( $basic_info as $this_basic_info ){
 								</div>
 								<!--end::Info-->
 								<!--begin::Toolbar-->
-								<div class="d-flex align-items-center">
+								<div class="d-flex align-items-center" style="display:none!important;">
 									<!--begin::Actions-->
 									<a class="btn btn-primary font-weight-bold btn-sm " style="margin-left:5px;">
 										Start Event
@@ -318,9 +318,8 @@ foreach( $basic_info as $this_basic_info ){
 @section('additional_bottom_script')
 <script>
 
-	StreamKWH();
-	function StreamKWH(){
-
+	// StreakKWH();
+	function StreakKWH(){
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -328,26 +327,63 @@ foreach( $basic_info as $this_basic_info ){
 				
 				var RESULT = jsonData.RESULT;
 				var MESSAGE = jsonData.MESSAGE;
-				
-				var TOTAL_ACTUAL_KWH = jsonData.TOTAL_ACTUAL_KWH;
-				var RATIO_ACTUAL_KWH = 0;
-				var ESTIMATION_KWH = document.getElementById('display_estimation_kwh').innerHTML;
 
-				if( TOTAL_ACTUAL_KWH > 0 ){
-					TOTAL_ACTUAL_KWH = TOTAL_ACTUAL_KWH;
-					RATIO_ACTUAL_KWH = TOTAL_ACTUAL_KWH / ESTIMATION_KWH * 100;
+				// console.log("----");
+				// console.log(jsonData.query_stream_kwh_start);
+				// console.log(jsonData.start__array_data[115]);
+				// console.log(jsonData.end__array_data[115]);
+
+				var int_kwh_listrik = parseInt("<?php echo $this_basic_info->roo_KWH_ADDRESS; ?>");
+				var int_kwh_ac = parseInt("<?php echo $this_basic_info->roo_KWH_ADDRESS_AC; ?>");
+
+
+
+				if( jsonData.start__array_data[int_kwh_listrik] ){
+					var kwh_listrik_start = parseInt(jsonData.start__array_data[int_kwh_listrik]);
 				} else {
-					TOTAL_ACTUAL_KWH = 0;
-					RATIO_ACTUAL_KWH = 0;
+					var kwh_listrik_start = 0;
 				}
-				document.getElementById('display_total_actual_kwh').innerHTML = TOTAL_ACTUAL_KWH;
-				document.getElementById('display_ratio').innerHTML = RATIO_ACTUAL_KWH;
+				if( jsonData.end__array_data[int_kwh_listrik] ){
+					var kwh_listrik_end = parseInt(jsonData.end__array_data[int_kwh_listrik]);
+				} else {
+					var kwh_listrik_end = 0;
+				}
+				var total_kwh_listrik = kwh_listrik_end - kwh_listrik_start;
+
+
+				
+				
+				if( jsonData.start__array_data[int_kwh_ac] ){
+					var kwh_ac_start = parseInt(jsonData.start__array_data[int_kwh_ac]);	
+				} else {
+					var kwh_ac_start = 0;
+				}
+				if( jsonData.end__array_data[int_kwh_ac] ){
+					var kwh_ac_end = parseInt(jsonData.end__array_data[int_kwh_ac]);	
+				} else {
+					var kwh_ac_end = 0;
+				}
+				var total_kwh_ac = kwh_ac_end - kwh_ac_start;
+
+
+				
+				var kwh_total_actual = total_kwh_listrik + total_kwh_ac;
+				document.getElementById('display_total_actual_kwh').innerHTML = kwh_total_actual;
+
+
+
+				var kwh_estimation = <?php echo $kwh_estimation; ?>;
+				var ratio = kwh_total_actual / kwh_estimation * 100;
+				document.getElementById('display_ratio').innerHTML = Number(ratio.toFixed(2));
+
 
 			}
 		};
-		xhttp.open("POST", "http://localhost/development_site/DISMI/public/SYSTEM/API/index.php", true);
+		xhttp.open("POST", "<?php echo env('MASTER_API_URL'); ?>", true);
 		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhttp.send("module=GetActualKWH_EventPanel&eid=<?php echo $this_basic_info->eve_ID; ?>&rid=<?php echo $this_basic_info->roo_ID; ?>");
+		xhttp.send("module=StreamEventPanelInfo&ADDRESS_KWH_LISTRIK=<?php echo $this_basic_info->roo_KWH_ADDRESS; ?>&ADDRESS_KWH_AC=<?php echo $this_basic_info->roo_KWH_ADDRESS_AC; ?>&DATETIME_EVENT_START=<?php echo $this_basic_info->eve_DATE_START;?>");
 	}
+
+	setInterval(StreakKWH, 1000);
 </script>
 @endsection

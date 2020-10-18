@@ -104,7 +104,13 @@ class Room extends Controller
                 "roo_STOP_THURSDAY" => $request->roo_STOP_THURSDAY,
                 "roo_STOP_FRIDAY" => $request->roo_STOP_FRIDAY,
                 "roo_STOP_SATURDAY" => $request->roo_STOP_SATURDAY,
-                "roo_STOP_SUNDAY" => $request->roo_STOP_SUNDAY
+                "roo_STOP_SUNDAY" => $request->roo_STOP_SUNDAY,
+
+                "roo_KWH_ADDRESS" => $request->roo_KWH_ADDRESS,
+                "roo_POWER_ADDRESS" => $request->roo_POWER_ADDRESS,
+                "roo_KWH_ADDRESS_AC" => $request->roo_KWH_ADDRESS_AC,
+                "roo_POWER_ADDRESS_AC" => $request->roo_POWER_ADDRESS_AC,
+                "roo_BLINKING_ADDRESS" => $request->roo_BLINKING_ADDRESS
 
             ]);
 
