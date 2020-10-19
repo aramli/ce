@@ -187,5 +187,6 @@ Route::get('/report/energy/over_consumption_event', 'Report@over_consumption_eve
 
 
 
-
+Route::get('/system_setting', 'SystemSetting@index')->name('view_system_setting');
+Route::post('/system_setting/UpdateSystemSetting', 'SystemSetting@UpdateSystemSetting');
 Route::get('/test', 'UAC@test');
