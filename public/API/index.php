@@ -1,7 +1,6 @@
 <?php
 include('_general_setting.php');
 
-
 if( $_POST['module'] == "GetUserRecentEvent" ){
 
 	$id_user = $_POST['ID_USER'];
@@ -194,7 +193,5 @@ if( $_POST['module'] == "StreamEventPanelInfo" ){
 	echo json_encode($json);
 
 }
-
-
 
 ?>

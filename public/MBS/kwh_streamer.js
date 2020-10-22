@@ -62,7 +62,7 @@ setInterval(function() {
             return console.log(err);
         }
 
-        // console.log(data.data);
+        console.log(data.data);
 
         var currentdate = new Date();
         var final_current_date = currentdate.getFullYear() 
