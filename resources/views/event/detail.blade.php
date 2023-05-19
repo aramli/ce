@@ -80,7 +80,7 @@ foreach( $basic_info as $this_basic_info ){
 														</button>
 												</div>
 												<div class="modal-body">
-														Are you sure you want to approve this event? <br/><span style="font-style: italic;color:grey;">Please note that this action will not be undone.</span>
+														Are you sure you want to approve this event? <br/><span style="font-style: italic;color:grey;">Please note that this action can not be undone.</span>
 												</div>
 												<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
@@ -93,8 +93,15 @@ foreach( $basic_info as $this_basic_info ){
 
 
 									@if( $this_basic_info->eve_STATUS == 2 && in_array('FT-016', Session::get('ARRAY_UAC')) )
-									<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base ml-2" style="color:#fff;" data-toggle="modal" data-target="#modalBlastInvitation">
-										Blast Invitation
+									<?php
+									if( $this_basic_info->eve_IS_BLAST == 1 ){
+										$blast_invitation_background_color = 'success';
+									} else {
+										$blast_invitation_background_color = 'primary';
+									}
+									?>
+									<a href="#" class="btn btn-{{ $blast_invitation_background_color }} font-weight-bold btn-sm px-3 font-size-base ml-2" style="color:#fff;" data-toggle="modal" data-target="#modalBlastInvitation">
+										Blast Invitation <?php if( $this_basic_info->eve_IS_BLAST == 1 ){ echo '<i class="fas fa-check" style="margin-left:5px;font-size:13px;"></i>'; } ?>
 									</a>
 									<div class="modal fade" id="modalBlastInvitation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 										<div class="modal-dialog modal-dialog-centered" role="document">
@@ -106,7 +113,7 @@ foreach( $basic_info as $this_basic_info ){
 														</button>
 												</div>
 												<div class="modal-body">
-														Are you sure you want to blast this event invitation to all participants? <br/><span style="font-style: italic;color:grey;">Please note that this action will not be undone.</span>
+														Are you sure you want to blast this event invitation to all participants? <br/><span style="font-style: italic;color:grey;">Please note that this action can not be undone.</span>
 												</div>
 												<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
@@ -116,6 +123,31 @@ foreach( $basic_info as $this_basic_info ){
 										</div>
 									</div>
 									@endif
+
+									@if( $this_basic_info->eve_STATUS != 4 && $this_basic_info->eve_STATUS != 6 )
+									<a href="#" class="btn btn-danger font-weight-bold btn-sm px-3 font-size-base ml-2" style="color:#fff;" data-toggle="modal" data-target="#modalDeleteEvent">
+										Delete Event 
+									</a>
+									@endif
+									<div class="modal fade" id="modalDeleteEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalCenterTitle">Delete Event</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+														</button>
+												</div>
+												<div class="modal-body">
+														Are you sure you want to delete this event and participants? <br/><span style="font-style: italic;color:grey;">Please note that this action can not be undone.</span>
+												</div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+														<a href="../../../../public/event/detail/{{ $this_basic_info->eve_ID }}/DeleteEvent" type="button" class="btn btn-danger">Yes, Delete Now</a>
+												</div>
+											</div>
+										</div>
+									</div>
 									
 									<!--end::Button-->
 								</div>

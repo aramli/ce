@@ -11,7 +11,7 @@
 								<!--begin::Info-->
 								<div class="d-flex align-items-center flex-wrap mr-2">
 									<!--begin::Title-->
-									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Training Package Management</h5>
+									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">ddddd Package Management</h5>
 									<!--end::Title-->
 									<!--begin::Separator-->
 									<div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
@@ -84,7 +84,7 @@
 					@include('include_new.footer')
 				</div>
 				<!--end::Wrapper-->
-				@include('include_new.aside_secondary')
+				{{-- @include('include_new.aside_secondary') --}}
 				
 @endsection
 

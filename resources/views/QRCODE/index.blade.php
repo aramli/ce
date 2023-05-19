@@ -1,0 +1,1 @@
+{!! QrCode::size(600)->generate($codeContents) !!}

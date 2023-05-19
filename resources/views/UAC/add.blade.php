@@ -185,7 +185,7 @@
 					@include('include_new.footer')
 				</div>
 				<!--end::Wrapper-->
-				@include('include_new.aside_secondary')
+				{{-- @include('include_new.aside_secondary') --}}
 				
 @endsection
 

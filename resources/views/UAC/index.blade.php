@@ -23,8 +23,7 @@
 									<!--end::Search Form-->
 								</div>
 								<!--end::Info-->
-								<!--begin::Toolbar-->
-								<div class="d-flex align-items-center">
+								<!--begin::Toolbar--								<div class="d-flex align-items-center">
 
 									@if( in_array('FT-018', Session::get('ARRAY_UAC')) )
 									<!--begin::Actions-->

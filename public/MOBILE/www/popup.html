@@ -1,0 +1,197 @@
+<!doctype html>
+<html class="fixed">
+	<head>
+
+		<!-- Basic -->
+		<meta charset="UTF-8">
+
+		<meta name="keywords" content="HTML5 Admin Template" />
+		<meta name="description" content="Porto Admin - Responsive HTML5 Template">
+		<meta name="author" content="okler.net">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="repo/vendor/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="repo/vendor/animate/animate.css">
+
+		<link rel="stylesheet" href="repo/vendor/font-awesome/css/fontawesome-all.min.css" />
+		<link rel="stylesheet" href="repo/vendor/magnific-popup/magnific-popup.css" />
+		<link rel="stylesheet" href="repo/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="repo/css/theme.css" />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="repo/css/skins/default.css" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="repo/css/custom.css">
+
+		<!-- Head Libs -->
+		<script src="repo/vendor/modernizr/modernizr.js"></script>
+		
+		<style>
+			.opensleft{
+				display:none!important;
+			}
+			body{
+				font-family: 'Century Gothic';
+			}
+		</style>
+		
+		
+
+	</head>
+	<body>
+		<!-- start: page -->
+		<section class="body-sign body-locked">
+			<div class="center-sign">
+				<div class="panel card-sign" style="max-width:700px;">
+					<div class="card-body">
+						<form action="index.html">
+							<div class="current-user text-center">
+								<img src="repo/img/!logged-user.jpg" alt="John Doe" class="rounded-circle user-image" />
+								<h2 class="user-name text-dark m-0" style="font-size:3rem;" id="heading_section">Loading</h2>
+								<p class="user-email m-0" style="font-size:1rem;margin-top:25px!important;" id="caption_section">Loading</p>
+							</div>
+
+							<div class="row">
+								<div class="col-12">
+									<a href="index.html" style="width:100%;color:#fff;" class="btn btn-primary pull-right">Close</a>
+									<div style="text-align:center!important;clear:both;display:inline-block;margin-top:10px;width:100%;">This screen will be automatically close in <span id="countdown_timer">10</span> second</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end: page -->
+
+		<!-- Vendor -->
+		<script src="repo/vendor/jquery/jquery.js"></script>
+		<script src="repo/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+		<script src="repo/vendor/popper/umd/popper.min.js"></script>
+		<script src="repo/vendor/bootstrap/js/bootstrap.js"></script>
+		<script src="repo/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script src="repo/vendor/common/common.js"></script>
+		<script src="repo/vendor/nanoscroller/nanoscroller.js"></script>
+		<script src="repo/vendor/magnific-popup/jquery.magnific-popup.js"></script>
+		<script src="repo/vendor/jquery-placeholder/jquery-placeholder.js"></script>
+		
+		<!-- Theme Base, Components and Settings -->
+		<script src="repo/js/theme.js"></script>
+		
+		<!-- Theme Custom -->
+		<script src="repo/js/custom.js"></script>
+		
+		<!-- Theme Initialization Files -->
+		<script src="repo/js/theme.init.js"></script>
+		
+		<script>
+		
+			// READ $ GET
+			var current_url = window.location.href;
+			
+			//REPLACE STRING FROM DESKTOP
+			var sanitize_current_url = current_url.replace("https://192.168.3.240/public/MOBILE/www/popup.html?action=", "");
+			// var sanitize_current_url = current_url.replace("http://localhost/mobile/DISMI/www/popup.html?action=", "");
+			var sanitize_current_url = sanitize_current_url.replace("&eid=", "-");
+			var sanitize_current_url = sanitize_current_url.replace("&uid=", "-");
+			
+			//REPLACE STRING FROM MOBILE
+			// alert(current_url);
+			//var sanitize_current_url = current_url.replace("file:///android_asset/www/popup.html?action=", "");
+			//var sanitize_current_url = sanitize_current_url.replace("&amp;eid=", "-");
+			//var sanitize_current_url = sanitize_current_url.replace("&amp;uid=", "-");
+
+			// alert(current_url);
+			// alert(sanitize_current_url);
+
+			var array_split = sanitize_current_url.split("-");
+			var action = array_split[0];
+			var event_id = array_split[1];
+			var user_id = array_split[2];
+
+			// alert(sanitize_current_url);
+			// alert(action);
+			// alert(event_id);
+			// alert(user_id);
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+
+				// alert("masuk on ready state change");
+
+				if (this.readyState == 4 && this.status == 200) {
+					var jsonData = JSON.parse(this.responseText);
+					
+					console.log(jsonData);
+					
+					if( action == "StartEvent" || action == "STARTEVENT" ){
+						display_heading = "Initiation";
+					} else if( action == "AttendEvent" ){
+						display_heading = "Attend";
+					} else if( action == "StopEvent" || action == "STOPEVENT" ){
+						display_heading = "Termination";
+					} else if( action == "ExtendEvent" ){
+						display_heading = "Extend Event Complete";
+					}
+					
+					if( jsonData.RESULT == 1 ){
+						document.getElementById('heading_section').innerHTML = "Event "+display_heading+" Success!"; 
+						document.getElementById('caption_section').innerHTML = jsonData.MESSAGE; 
+					} else if( jsonData.RESULT == 0 ){ 
+						document.getElementById('heading_section').innerHTML = "Event "+display_heading+" Failed!"; 
+						document.getElementById('caption_section').innerHTML = jsonData.MESSAGE; 
+					} else if( jsonData.RESULT == 2 ){ 
+						document.getElementById('heading_section').innerHTML = "Well done! Event Complete!"; 
+						document.getElementById('caption_section').innerHTML = jsonData.MESSAGE; 
+					} else if( jsonData.RESULT == 3 ){ 
+						document.getElementById('heading_section').innerHTML = "Extend Event Complete"; 
+						document.getElementById('caption_section').innerHTML = jsonData.MESSAGE; 
+					} else {
+						alert("System error. Please contact our administrator.");
+					}
+					
+					
+				}
+			};
+			
+			xhttp.open("POST", localStorage.getItem('API_URL'), true);
+			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhttp.send("module="+action+"&event_id="+event_id+"&user_id="+user_id);
+			
+			
+			// alert(action);
+			// alert(event_id);
+			// alert(user_id);
+			
+			
+
+
+
+			// REDIRECTION 
+			function AutoClose(){
+				
+				var countdown_timer = document.getElementById('countdown_timer').innerHTML;
+				
+				if( countdown_timer > 0 ){
+					countdown_timer--;
+					document.getElementById('countdown_timer').innerHTML = countdown_timer;
+				} else {
+					// window.location='index.html';
+				}
+				
+				setTimeout(AutoClose, 1000);
+			}
+			AutoClose();
+		</script>
+
+	</body>
+</html>

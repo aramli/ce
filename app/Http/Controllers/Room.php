@@ -26,11 +26,18 @@ class Room extends Controller
         where
             eve_STATUS = 4
         group by
-            eve_d3s3m_room_roo_ID
+            eve_d3s3m_room_roo_ID,
+			roo_NAME
         order by
             roo_NAME ASC
         ";
         $chart_data__event_creation = DB::select(DB::raw($query__chart_data__event_creation));
+		
+		if( count($chart_data__event_creation) > 0 ){
+			$chart_data__event_creation = $chart_data__event_creation;
+		} else {
+			$chart_data__event_creation = '';
+		}
 
         return view('room.index', compact('json_table', 'chart_data__event_creation'));
     }
@@ -47,6 +54,7 @@ class Room extends Controller
         if( $check == 0 ){
             DB::table('d3s3m_room')->insert([
                 "roo_NAME" => $request->NAME,
+                "roo_PIN" => rand(123456,987654),
                 "roo_CAPACITY" => $request->CAPACITY,
                 "roo_KWH_STANDARD" => $request->KWH_STANDARD,
                 "roo_IS_ACTIVE" => $request->IS_ACTIVE
@@ -164,6 +172,74 @@ class Room extends Controller
         Session::put('popup_message', 'Room has been erased.');
 
         return redirect('/room/all');
+
+    }
+
+    public function force_on($id){
+
+        $power_address = DB::table('d3s3m_room')->where('roo_ID', $id)->get();
+        foreach( $power_address as $this_power_address ){
+            
+            DB::table('d3s3m_reset_command')->insert([
+                "rc_roo_ID" => $id,
+                "rc_POWER_ADDRESS" => $this_power_address->roo_POWER_ADDRESS,
+                "rc_INT_COMMAND" => 1
+            ]);
+            DB::table('d3s3m_reset_command')->insert([
+                "rc_roo_ID" => $id,
+                "rc_POWER_ADDRESS" => $this_power_address->roo_POWER_ADDRESS_AC,
+                "rc_INT_COMMAND" => 1
+            ]);
+            /*
+            DB::table('d3s3m_reset_command')->insert([
+                "rc_roo_ID" => $id,
+                "rc_POWER_ADDRESS" => $this_power_address->roo_BLINKING_ADDRESS,
+                "rc_INT_COMMAND" => 1
+            ]);
+            */
+
+        }
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Reset Success');
+        Session::put('popup_message', 'Room electricity, ac has been forced to turned on.');
+
+        return redirect('/room/detail/'.$id);
+
+    }
+
+    public function force_off($id){
+
+        $power_address = DB::table('d3s3m_room')->where('roo_ID', $id)->get();
+        foreach( $power_address as $this_power_address ){
+            
+            DB::table('d3s3m_reset_command')->insert([
+                "rc_roo_ID" => $id,
+                "rc_POWER_ADDRESS" => $this_power_address->roo_POWER_ADDRESS,
+                "rc_INT_COMMAND" => 0
+            ]);
+            DB::table('d3s3m_reset_command')->insert([
+                "rc_roo_ID" => $id,
+                "rc_POWER_ADDRESS" => $this_power_address->roo_POWER_ADDRESS_AC,
+                "rc_INT_COMMAND" => 0
+            ]);
+            /*
+            DB::table('d3s3m_reset_command')->insert([
+                "rc_roo_ID" => $id,
+                "rc_POWER_ADDRESS" => $this_power_address->roo_BLINKING_ADDRESS,
+                "rc_INT_COMMAND" => 0
+            ]);
+            */
+
+        }
+
+        Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Reset Success');
+        Session::put('popup_message', 'Room electricity, ac has been forced to turned off.');
+
+        return redirect('/room/detail/'.$id);
 
     }
 }

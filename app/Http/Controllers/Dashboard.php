@@ -243,10 +243,39 @@ class Dashboard extends Controller
 			$tujuan_upload = 'UPLOAD/dashboard_json_file';
 			$file->move($tujuan_upload,$file->getClientOriginalName());
 
+			/*
 			$path = asset('UPLOAD/dashboard_json_file/'.$file->getClientOriginalName());
-			$json = json_decode(file_get_contents($path), true);
+			// echo $path;exit;
+			
+			$arrContextOptions=array(
+				"ssl"=>array(
+					"cafile" => "C:/xampp/htdocs/DISMI/public/MBS/myCA.pem",
+					"verify_peer"=>false,
+					"verify_peer_name"=>false,
+				),
+			);  
+			// $json = json_decode(file_get_contents($path), true);
+			// $json = json_decode( file_get_contents($path), false, stream_context_create($arrContextOptions) );
+			
+			$ch = curl_init();
+			$timeout = 5;
+			curl_setopt($ch,CURLOPT_URL,$path);
+			curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+			curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			// print_r($data);exit;
+			// return $data;exit;
+			$json = json_decode($data);
+			*/
+			
+			$path = "C:/xampp/htdocs/DISMI/public/UPLOAD/dashboard_json_file/".$file->getClientOriginalName(); // ie: /var/www/laravel/app/storage/json/filename.json
+			$json = json_decode(file_get_contents($path), true); 
+			//print_r($json);exit;
+			  
 			
 			$slice_configuration = $json['slice'];
+			//print_r($slice_configuration);exit;
 			$final_slice_content = json_encode($slice_configuration);
 			
 
@@ -396,6 +425,19 @@ class Dashboard extends Controller
 
 		return view('dashboard.index', compact('dashboard_name', 'json_report', 'dashboard_list'));
 
+	}
+	
+	public function DeleteDashboard($id, $dashboard_name){
+		
+		DB::table('d3s3m_dashboard_setting')->where('dc_ID', $id)->delete();
+		
+		Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Dashboard Widget Delete Success');
+        Session::put('popup_message', 'Dashboard widget has been successfully removed.');
+		
+		return redirect('/dashboard/'.$dashboard_name);
+		
 	}
 
 }

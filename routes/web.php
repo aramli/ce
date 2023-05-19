@@ -62,6 +62,7 @@ Route::get('/dashboard', 'Dashboard@index')->name('dashboard');
 Route::get('/dashboard/{dashboard_name}', 'Dashboard@DisplayDashboardByType');
 Route::get('/dashboard/template/{dashboard_name}', 'Dashboard@TemplateGenerator');
 Route::post('/dashboard/action/AddNewDashboardItem', 'Dashboard@AddNewDashboardItem');
+Route::get('/dashboard/action/DeleteDashboard/{id}/{dashboard_name}', 'Dashboard@DeleteDashboard');
 
 
 
@@ -135,6 +136,9 @@ Route::post('/room/UpdateRoomDetail', 'Room@UpdateRoomDetail');
 
 Route::get('/room/detail/{id}/delete', 'Room@DeleteRoom');
 
+Route::get('/room/detail/{id}/force_on', 'Room@force_on');
+Route::get('/room/detail/{id}/force_off', 'Room@force_off');
+
 
 
 
@@ -190,3 +194,6 @@ Route::get('/report/energy/over_consumption_event', 'Report@over_consumption_eve
 Route::get('/system_setting', 'SystemSetting@index')->name('view_system_setting');
 Route::post('/system_setting/UpdateSystemSetting', 'SystemSetting@UpdateSystemSetting');
 Route::get('/test', 'UAC@test');
+
+
+Route::get('GenerateQRCode/{action}/{eid}/{uid}', 'QRCODE_GENERATOR@GenerateQRCode');

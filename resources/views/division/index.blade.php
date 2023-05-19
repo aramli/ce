@@ -84,7 +84,8 @@
 					@include('include_new.footer')
 				</div>
 				<!--end::Wrapper-->
-				@include('include_new.aside_secondary')
+				{{-- side bar upcoming --}}
+				{{-- @include('include_new.aside_secondary') --}}
 				
 @endsection
 

@@ -8,7 +8,7 @@ let connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'DISMI_FINAL'
+    database: 'dismi_denso_20211025'
 });
 connection.connect(function(err) {
     if (err) {
@@ -26,9 +26,6 @@ localStorage = new LocalStorage('./scratch');
 
 
 
-
-
-
 // create an empty modbus client
 var ModbusRTU = require("modbus-serial");
 var client = new ModbusRTU();
@@ -38,6 +35,8 @@ var plc__ip = GetSystemSetting('plc__ip');
 var plc__port = parseInt(GetSystemSetting('plc__port'));
 client.connectTCP(plc__ip, { port: plc__port });
 client.setID(1);
+
+// console.log(plc__ip);
  
 // read the values of 10 registers starting at address 0
 // on device number 1. and log the values to the console.
@@ -52,6 +51,28 @@ setInterval(function() {
     // var kwh_address_start = 101;
     // var kwh_long = 100;
 
+    /*
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var d = new Date(dateString);
+    var CurrentDayName = days[d.getDay()];
+    */
+
+   var d = new Date();
+   var weekday = new Array(7);
+   weekday[0] = "Sunday";
+   weekday[1] = "Monday";
+   weekday[2] = "Tuesday";
+   weekday[3] = "Wednesday";
+   weekday[4] = "Thursday";
+   weekday[5] = "Friday";
+   weekday[6] = "Saturday";
+   
+   var n = weekday[d.getDay()];
+   var CurrentDayName = n;
+
+
+
+
     var kwh_address_start = parseInt(GetSystemSetting('kwh_address_start'));
     var kwh_long = parseInt(GetSystemSetting('kwh_address_long'));
     var blinker_buffer_time = parseInt(GetSystemSetting('blinker_buffer_time'));
@@ -62,7 +83,7 @@ setInterval(function() {
             return console.log(err);
         }
 
-        console.log(data.data);
+        // console.log(data.data);
 
         var currentdate = new Date();
         var final_current_date = currentdate.getFullYear() 
@@ -102,6 +123,10 @@ setInterval(function() {
         and eve_STATUS = 6 \
         and DATE_SUB(eve_EVENT_FINISH, INTERVAL "+blinker_buffer_time+" MINUTE) <= NOW() \
         and eve_EVENT_FINISH >= NOW() \
+		and eve_IS_EXTENDED is null \
+        and eve_IS_ALARM is null \
+        and roo_IS_SCHEDULED != 1 \
+	limit 0,1 \
     ";
     connection.query(sql_auto_blinker, (error, results, fields) => {
         if (error) {
@@ -117,14 +142,76 @@ setInterval(function() {
                 array_blinker__event_id[i] = this_event_id;
 
                 // POWER UP
-                client.writeRegisters(results[i].roo_BLINKING_ADDRESS, [1, 0xffff]);
+                client.writeRegisters(results[i].roo_BLINKING_ADDRESS, [1, 0]);
                 console.log("Power up blinker address: "+results[i].roo_BLINKING_ADDRESS);
+                // END POWER UP
+				
+				
+
+                // UPDATE STATUS BLINKER
+                let update_finish = "update d3s3m_event set eve_IS_ALARM = 1 where eve_ID = "+results[i].eve_ID;
+                connection.query(update_finish, (error, results, fields) => {
+                    if(error){
+                        return console.error(error.message);
+                    }
+                });
+                // END UPDATE STATUS BLINKER
+				
+				
+            }
+            var implode_array_event_id_for_blinker = array_blinker__event_id.join();
+            //ExecuteStartEventCURL(implode_array_event_id_for_blinker);
+            console.log("\n")
+            console.log("Initiate blinker for Event ID: "+implode_array_event_id_for_blinker);
+
+        }
+
+    });
+	
+	
+	
+	
+	
+	/*
+    *
+    * AUTO STOP BLINKER
+    * 
+    */
+    let sql_auto_off_blinker = "\
+    select * \
+    from d3s3m_event \
+    left join d3s3m_room on roo_ID = eve_d3s3m_room_roo_ID \
+    where \
+        eve_IS_START = 1 \
+        and eve_DATE_START is not null \
+        and eve_STATUS = 6 \
+        and eve_EVENT_FINISH >= NOW() \
+		and eve_IS_EXTENDED = 1 \
+        and roo_IS_SCHEDULED != 1 \
+	limit 0,1 \
+    ";
+    connection.query(sql_auto_off_blinker, (error, results, fields) => {
+        if (error) {
+            return console.error(error.message);
+        }
+
+        if( results.length > 0 ){
+
+            var array_blinker__event_id = new Array();
+
+            for( i=0;i<results.length;i++ ){
+                var this_event_id = results[i].eve_ID;
+                array_blinker__event_id[i] = this_event_id;
+
+                // POWER UP
+                client.writeRegisters(results[i].roo_BLINKING_ADDRESS, [0, 0]);
+                console.log("Force power down blinker address: "+results[i].roo_BLINKING_ADDRESS);
                 // END POWER UP
             }
             var implode_array_event_id_for_blinker = array_blinker__event_id.join();
-            ExecuteStartEventCURL(implode_array_event_id_for_blinker);
+            //ExecuteStartEventCURL(implode_array_event_id_for_blinker);
             console.log("\n")
-            console.log("Initiate blinker for Event ID: "+implode_array_event_id_for_blinker);
+            console.log("Force blinker off for Event ID: "+implode_array_event_id_for_blinker);
 
         }
 
@@ -138,6 +225,7 @@ setInterval(function() {
     * AUTO START EVENT
     * 
     */
+	
     let sql_auto_start = "\
     select * \
     from d3s3m_event \
@@ -146,25 +234,34 @@ setInterval(function() {
         eve_IS_START = 1 \
         and eve_DATE_START is null \
         and eve_STATUS = 2 \
+        and roo_IS_SCHEDULED != 1 \
+	limit 0,1 \
     ";
     connection.query(sql_auto_start, (error, results, fields) => {
         if (error) {
             return console.error(error.message);
         }
+		
+		
     
         if( results.length > 0 ){
-
+			
             var array_start__event_id = new Array();
-
+			
             for( i=0;i<results.length;i++ ){
                 var this_event_id = results[i].eve_ID;
                 array_start__event_id[i] = this_event_id;
 
                 // POWER UP
-                client.writeRegisters(results[i].roo_POWER_ADDRESS, [1, 0xffff]);
-                client.writeRegisters(results[i].roo_POWER_ADDRESS_AC, [1, 0xffff]);
-                console.log("Power up electricity address: "+results[i].roo_POWER_ADDRESS);
-                console.log("Power up air conditioner address: "+results[i].roo_POWER_ADDRESS_AC);
+				if( results[i].roo_POWER_ADDRESS ){
+					client.writeRegisters(results[i].roo_POWER_ADDRESS, [1, 0]);
+					console.log("Power up electricity address: "+results[i].roo_POWER_ADDRESS);
+				}
+				
+				if( results[i].roo_POWER_ADDRESS_AC ){
+					client.writeRegisters(results[i].roo_POWER_ADDRESS_AC, [1, 0]);
+					console.log("Power up air conditioner address: "+results[i].roo_POWER_ADDRESS_AC);
+				}
                 // END POWER UP
             }
             var implode_array_event_id_for_starting = array_start__event_id.join();
@@ -186,6 +283,7 @@ setInterval(function() {
     * AUTO STOP EVENT
     *
     */
+	/*
     let sql = "\
     SELECT * \
     FROM d3s3m_event \
@@ -205,11 +303,32 @@ setInterval(function() {
             eve_STATUS = 4 \
             and eve_IS_FINISH is null \
             and eve_DATE_FINISH is null \
-            and eve_IS_EXTENDED is null \
         )\
     ";
+	*/
+	let sql_auto_stop_non_event = "\
+    SELECT * \
+    FROM d3s3m_event \
+    left join \
+        d3s3m_room on roo_ID = eve_d3s3m_room_roo_ID \
+    where \
+        (\
+            eve_STATUS = 4 \
+            and eve_IS_FINISH is null \
+            and eve_DATE_FINISH is null \
+        )\
+		OR\
+		(\
+			eve_STATUS = 6 \
+			and eve_IS_EXTENDED is null \
+			and eve_EVENT_FINISH <= NOW() \
+		)\
+        and roo_IS_SCHEDULED != 1 \
+	limit 0,1 \
+    ";
+	
     // console.log(sql);
-    connection.query(sql, (error, results, fields) => {
+    connection.query(sql_auto_stop_non_event, (error, results, fields) => {
         if (error) {
             return console.error(error.message);
         }
@@ -239,9 +358,15 @@ setInterval(function() {
                 array_stop__event_id[i] = this_event_id;
 
                 // SIGNAL POWER OFF
-                client.writeRegisters(this_power_listrik, [0, 0xffff]);
-                client.writeRegisters(this_power_ac, [0, 0xffff]);
-                client.writeRegisters(this_blinker, [0, 0xffff]);
+                client.writeRegisters(this_power_listrik, [0, 0]);
+				console.log("Turning off electricity at: "+this_power_listrik);
+				
+                client.writeRegisters(this_power_ac, [0, 0]);
+				console.log("Turning off ac at: "+this_power_ac);
+				
+                client.writeRegisters(this_blinker, [0, 0]);
+				console.log("Turning off blinker at: "+this_blinker);
+				
                 // klo mau write, start dengan angka ganjil
                 // klo mau write di 40122, maka address nya adalah 121
                 // END SIGNAL POWER OFF
@@ -270,7 +395,194 @@ setInterval(function() {
 
 
 
-}, 1000);
+
+
+
+
+
+    /*
+    *
+    * AUTO START NON EVENT ROOM
+    * 
+    */
+	
+    let sql_auto_start_non_event = "\
+    select * \
+    from d3s3m_room \
+    where \
+        roo_IS_SCHEDULED = 1 \
+        and TIME(roo_START_"+CurrentDayName+") <= TIME(NOW()) \
+		and TIME(roo_STOP_"+CurrentDayName+") >= TIME(NOW()) \
+        and \
+        ( \
+            roo_MASTER_ELECTRICITY = 0 \
+            or roo_MASTER_AC = 0 \
+        ) \
+    limit 0,1 \
+    ";
+    connection.query(sql_auto_start_non_event, (error, results, fields) => {
+        if (error) {
+            return console.error(error.message);
+        }
+		
+		
+    
+        if( results.length > 0 ){
+			
+            for( i=0;i<results.length;i++ ){
+
+                // POWER UP
+				if( results[i].roo_POWER_ADDRESS ){
+					client.writeRegisters(results[i].roo_POWER_ADDRESS, [1, 0]);
+					console.log("Power up electricity address: "+results[i].roo_POWER_ADDRESS);
+				}
+
+                // UPDATE STATUS MASTER ELECTRICITY
+                let update_master_electricity = "update d3s3m_room set roo_MASTER_ELECTRICITY = 1 where roo_ID = "+results[i].roo_ID;
+                connection.query(update_master_electricity, (error, results, fields) => {
+                    if(error){
+                        return console.error(error.message);
+                    }
+                });
+				
+				if( results[i].roo_POWER_ADDRESS_AC ){
+					client.writeRegisters(results[i].roo_POWER_ADDRESS_AC, [1, 0]);
+					console.log("Power up air conditioner address: "+results[i].roo_POWER_ADDRESS_AC);
+				}
+                // END POWER UP
+
+                // UPDATE STATUS MASTER AC
+                let update_master_ac = "update d3s3m_room set roo_MASTER_AC = 1 where roo_ID = "+results[i].roo_ID;
+                connection.query(update_master_ac, (error, results, fields) => {
+                    if(error){
+                        return console.error(error.message);
+                    }
+                });
+
+            }
+            console.log("\n")
+            console.log("Starting Non - Event Room: "+results[0].roo_NAME);
+
+        }
+
+    });
+
+
+
+
+
+
+    /*
+    *
+    * AUTO STOP NON EVENT ROOM
+    *
+    */
+	let sql = "\
+    select * \
+    from d3s3m_room \
+    where \
+        roo_IS_SCHEDULED = 1 \
+        and TIME(roo_STOP_"+CurrentDayName+") <= TIME(NOW()) \
+        and \
+        ( \
+            roo_MASTER_ELECTRICITY = 1 \
+            or roo_MASTER_AC = 1 \
+        ) \
+    limit 0,1 \
+    ";
+	
+    // console.log(sql);
+    connection.query(sql, (error, results, fields) => {
+        if (error) {
+            return console.error(error.message);
+        }
+
+        if( results.length > 0 ){
+
+            for( i=0;i<results.length;i++ ){
+
+                var this_power_listrik = results[i].roo_POWER_ADDRESS;
+                var this_power_ac = results[i].roo_POWER_ADDRESS_AC;
+                var this_blinker = results[i].roo_BLINKING_ADDRESS;
+
+                // SIGNAL POWER OFF
+                client.writeRegisters(this_power_listrik, [0, 0]);
+				console.log("Turning off electricity of non-event room at: "+this_power_listrik);
+
+                // UPDATE STATUS MASTER ELECTRICITY
+                let update_master_electricity = "update d3s3m_room set roo_MASTER_ELECTRICITY = 0 where roo_ID = "+results[i].roo_ID;
+                connection.query(update_master_electricity, (error, results, fields) => {
+                    if(error){
+                        return console.error(error.message);
+                    }
+                });
+				
+                client.writeRegisters(this_power_ac, [0, 0]);
+				console.log("Turning off ac of non-event room at: "+this_power_ac);
+                // END SIGNAL POWER OFF
+
+                // UPDATE STATUS MASTER AC
+                let update_master_ac = "update d3s3m_room set roo_MASTER_AC = 0 where roo_ID = "+results[i].roo_ID;
+                connection.query(update_master_ac, (error, results, fields) => {
+                    if(error){
+                        return console.error(error.message);
+                    }
+                });
+
+            }
+			
+            console.log("\n")
+            console.log("Stoping Non - Event Room: "+results[0].roo_NAME);
+
+        }
+        
+    });
+	
+	/*
+    *
+    * RESET ON OFF ROOM
+    * 
+    */
+	
+   let sql_reset_on_off_room = "\
+   select * \
+   from d3s3m_reset_command \
+   limit 0,1 \
+   ";
+   connection.query(sql_reset_on_off_room, (error, results, fields) => {
+       if (error) {
+           return console.error(error.message);
+       }
+   
+       if( results.length > 0 ){
+           
+           for( i=0;i<results.length;i++ ){
+			   
+               if( results[i].rc_POWER_ADDRESS ){
+				   
+                   client.writeRegisters(results[i].rc_POWER_ADDRESS, [results[i].rc_INT_COMMAND, 0]);
+                   console.log("Force address: "+results[i].rc_POWER_ADDRESS+" to "+results[i].rc_INT_COMMAND);
+				   
+
+                   var delete_this_reset_sequence = "delete from d3s3m_reset_command where rc_ID = '"+results[i].rc_ID+"' ";
+                    connection.query(delete_this_reset_sequence, (error, results, fields) => {
+                        if(error){
+                            return console.error(error.message);
+                        }
+                    });
+               }
+
+           }
+
+       }
+
+   });
+
+
+
+
+
+}, 2000);
 
 
 
@@ -299,11 +611,15 @@ function ConvertDate(mysqldate){
 
 function ExecuteStopEventCURL(implode_event_id){
     var request = require('request');
-    var options = {
+	var fs = require('fs');
+	var options = {
     'method': 'GET',
-    'url': 'http://localhost/development_site/DISMI/public/event/panel/'+implode_event_id+'/Panel_StopEvent__Auto_Nodejs',
+    'url': 'https://dismi.local/public/event/panel/'+implode_event_id+'/Panel_StopEvent__Auto_Nodejs',
     'headers': {
-    }
+		},
+	'agentOptions': {
+		ca: fs.readFileSync("myCA.pem")
+		}
     };
     request(options, function (error, response) { 
         if (error) throw new Error(error);
@@ -314,15 +630,21 @@ function ExecuteStopEventCURL(implode_event_id){
 
 function ExecuteStartEventCURL(implode_event_id){
     var request = require('request');
+	var fs = require('fs');
     var options = {
     'method': 'GET',
-    'url': 'http://localhost/development_site/DISMI/public/event/panel/'+implode_event_id+'/Panel_StartEvent__Auto_Nodejs',
+    'url': 'https://dismi.local/public/event/panel/'+implode_event_id+'/Panel_StartEvent__Auto_Nodejs',
     'headers': {
-    }
+		},
+	'agentOptions': {
+		ca: fs.readFileSync("myCA.pem")
+		}
     };
+	
+	// console.log(options);
     request(options, function (error, response) { 
         if (error) throw new Error(error);
-        // console.log(response.body);
+        console.log(response.body);
     });
 }
 

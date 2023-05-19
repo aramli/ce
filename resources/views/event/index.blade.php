@@ -29,6 +29,52 @@
 								<!--begin::Toolbar-->
 								<div class="d-flex align-items-center">
 									<!--begin::Actions-->
+
+									{{-- nambah impot --}}
+									@if( in_array('FT-018', Session::get('ARRAY_UAC')) )
+									<!--begin::Actions-->
+									<a class="btn btn-primary font-weight-bold btn-sm mr-6" data-toggle="modal" data-target="#modalUploadCSV">Upload .csv</a>
+									<div class="modal fade" id="modalUploadCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+										<form action="../../../user/UploadUserCSV" method="post" enctype="multipart/form-data">
+											{{ csrf_field() }}
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalCenterTitle" style="font-weight: bold">Add Event by CSV file</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="row">
+															<div class="col">
+																<span >Please upload the .csv file according to the existing format</span>
+															</div>
+															<div class="col">
+																<span > Donwload file format</span>
+																<a href="{{ asset('SYSTEM/sample_csv_event.csv') }}" class="btn btn-success font-weight-bold btn-sm mr-6">Download .csv sample</a>
+															</div>
+
+														</div>
+														<br>
+														<h5 class="modal-title" id="exampleModalCenterTitle" style="font-weight: bold">Upload your file here</h5>
+														<input type="file" name="csvfile" class="file-upload-default" required>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+														<button type="submit" class="btn btn-primary" style="color:#fff;">Upload</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+
+									
+									{{-- <a href="{{ asset('SYSTEM/sample_csv_user.csv') }}" class="btn btn-light font-weight-bold btn-sm mr-6">Download .csv sample</a> --}}
+									@endif
+									
+
+
 									<a href="{{ route('create_temp_event') }}" class="btn btn-primary font-weight-bold btn-sm ">
 										Add New Event
 									</a>
@@ -85,7 +131,7 @@
 					@include('include_new.footer')
 				</div>
 				<!--end::Wrapper-->
-				@include('include_new.aside_secondary')
+				{{-- @include('include_new.aside_secondary') --}}
 				
 @endsection
 
@@ -159,6 +205,8 @@
 							return '<span class="badge badge-primary" style="width:100%;">Finished</span>';
 						} else if( row.eve_STATUS == 5 ){
 							return '<span class="badge badge-danger" style="width:100%;">Rejected</span>';
+						} else if( row.eve_STATUS == 6 ){
+							return '<span class="badge badge-info" style="width:100%;">Running</span>';
 						}
 
 					}

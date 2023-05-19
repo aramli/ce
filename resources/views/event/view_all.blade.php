@@ -58,6 +58,9 @@
 														@if( $this_event->STATUS == 5 )
 															<span class="badge badge-danger" style="width:100%;">Rejected</span>
 														@endif
+														@if( $this_event->STATUS == 6 )
+															<span class="badge badge-info" style="width:100%;">Running</span>
+														@endif
 													</td>
 													<td>
 														<a href="detail/{{ $this_event->ID }}"><i data-feather="edit"></i></a>

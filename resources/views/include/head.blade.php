@@ -2,7 +2,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>DISMI</title>
+	<title>DISMI V2</title>
 	<!-- core:css -->
 	<link rel="stylesheet" href="{{ asset('ASSET/assets/vendors/core/core.css') }}">
 	<!-- endinject -->

@@ -130,6 +130,7 @@ class UAC extends Controller
 
         $check = DB::table('d3s3m_user')->where('use_EMAIL', $request->inputEmail)->count('use_ID');
         $otp = rand(123456,654321);
+		$otp = "password";
 
         if( $check == 0 ){
             DB::table('d3s3m_user')->insert([
@@ -140,7 +141,8 @@ class UAC extends Controller
                 "use_d3s3m_role_rol_ID" => $request->selectRole,
                 "use_IS_ACTIVE" => $request->checkboxIsActive,
                 "use_PASSWORD" => md5($otp),
-                "use_TRAINING_TARGET" => $request->numberTargetTraining
+                "use_TRAINING_TARGET" => $request->numberTargetTraining,
+                "use_ACCESS_CODE" => "MM-002,FT-014,FT-016"
             ]);
             $new_id = DB::getPdo()->lastInsertId();
 
@@ -287,7 +289,15 @@ class UAC extends Controller
 
 
 			// PROSES FILE
-			$file = fopen(asset('UPLOAD/user/'.$nama_file), 'r');
+			$arrContextOptions=array(
+				"ssl"=>array(
+					"verify_peer"=>false,
+					"verify_peer_name"=>false,
+				),
+			);  
+
+			$file = fopen(asset('UPLOAD/user/'.$nama_file), 'r', false, stream_context_create($arrContextOptions));
+
 			$success_query = 0;
 			$failed_query = 0;
 			while (($line = fgetcsv($file,0, ';')) != FALSE) {
@@ -313,7 +323,7 @@ class UAC extends Controller
 					$check = DB::table('d3s3m_user')->where('use_EMAIL', $user_parameter['EMAIL'])->count('use_ID');
 
 			        if( $check == 0 ){
-			            DB::table('d3s3m_user')->insert([
+			            $query_insert_upload_user = DB::table('d3s3m_user')->insert([
 			                "use_FULLNAME" => $user_parameter['FULLNAME'],
 			                "use_EMAIL" => $user_parameter['EMAIL'],
 			                "use_d3s3m_company_com_ID" => $user_parameter['ID_COMPANY'],
@@ -325,6 +335,7 @@ class UAC extends Controller
                             "use_PASSWORD" => md5('password'),
                             "use_DATE_CREATED" => date('Y-m-d H:i:s')
 			            ]);
+						
 			            $new_id = DB::getPdo()->lastInsertId();
 
 				        if( $new_id > 0 ){
@@ -338,7 +349,7 @@ class UAC extends Controller
 				}
 				
 			}
-			unlink($_SERVER['DOCUMENT_ROOT'].'/development_site/DISMI/public/UPLOAD/user/'.$nama_file);
+			unlink($_SERVER['DOCUMENT_ROOT'].'/public/UPLOAD/user/'.$nama_file);
 			fclose($file);
 			
 			

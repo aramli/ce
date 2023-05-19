@@ -32,6 +32,9 @@ foreach( $room as $this_room ){
 								<div class="d-flex align-items-center">
 									<!--begin::Button-->
 									<a href="{{ route('view_all_room') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
+
+									<a href="../../../../public/room/detail/{{ $this_room->roo_ID }}/force_on" class="btn btn-warning font-weight-bold btn-sm px-3 font-size-base ml-2">Reset Power On</a>
+									<a href="../../../../public/room/detail/{{ $this_room->roo_ID }}/force_off" class="btn btn-warning font-weight-bold btn-sm px-3 font-size-base ml-2">Reset Power Off</a>
 							
 									@if( in_array('FT-023', Session::get('ARRAY_UAC')) )
 									<a class="btn btn-danger font-weight-bold btn-sm px-3 font-size-base ml-2" data-toggle="modal" data-target="#modalDelete" style="color:#fff;">
@@ -100,6 +103,14 @@ foreach( $room as $this_room ){
 																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Name</label>
 																				<div class="col-lg-9 col-xl-9">
 																					<input class="form-control form-control-solid form-control-lg" name="NAME" placeholder="Ex: Sample Room 1" type="text" value="{{ $this_room->roo_NAME }}" required />
+																				</div>
+																			</div>
+																			<!--end::Group-->
+																			<!--begin::Group-->
+																			<div class="form-group row">
+																				<label class="col-xl-3 col-lg-3 col-form-label">PIN</label>
+																				<div class="col-lg-9 col-xl-9">
+																					<input class="form-control form-control-solid form-control-lg" name="PIN" placeholder="Ex: 491042" type="text" value="{{ $this_room->roo_PIN }}" disabled style="background:grey;color:#fff;font-weight:bold;" />
 																				</div>
 																			</div>
 																			<!--end::Group-->

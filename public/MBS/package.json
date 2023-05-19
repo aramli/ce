@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fs": "0.0.1-security",
     "jsmodbus": "^4.0.4",
     "modbus-serial": "^8.0.1",
     "mysql": "^2.18.1",

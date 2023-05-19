@@ -1,0 +1,219 @@
+2021-10-14 20:38:29,123 DEBUG - Starting ServiceWrapper in the CLI mode
+2021-10-14 20:38:29,954 INFO  - Installing the service with id 'kwhStreamer'
+2021-10-14 20:38:29,999 DEBUG - Completed. Exit code is 0
+2021-10-14 20:38:44,320 INFO  - Starting ServiceWrapper in the service mode
+2021-10-14 20:38:44,349 INFO  - Starting node  kwh_streamer.js
+2021-10-14 20:38:44,353 INFO  - Starting node  kwh_streamer.js
+2021-10-14 20:38:44,445 INFO  - Started process 7980
+2021-10-14 20:38:44,612 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-14 20:47:25,018 INFO  - Stopping kwhStreamer
+2021-10-14 20:47:25,020 DEBUG - ProcessKill 7980
+2021-10-14 20:47:25,981 INFO  - Found child process: 4504 Name: conhost.exe
+2021-10-14 20:47:26,064 INFO  - Stopping process 4504
+2021-10-14 20:47:26,078 INFO  - Send SIGINT 4504
+2021-10-14 20:47:26,080 WARN  - SIGINT to 4504 failed - Killing as fallback
+2021-10-14 20:47:26,083 INFO  - Stopping process 7980
+2021-10-14 20:47:26,086 INFO  - Send SIGINT 7980
+2021-10-14 20:47:26,086 WARN  - SIGINT to 7980 failed - Killing as fallback
+2021-10-14 20:47:26,089 INFO  - Finished kwhStreamer
+2021-10-14 20:47:26,091 DEBUG - Completed. Exit code is 0
+2021-10-14 20:49:31,825 INFO  - Starting ServiceWrapper in the service mode
+2021-10-14 20:49:31,865 INFO  - Starting node  kwh_streamer.js
+2021-10-14 20:49:31,871 INFO  - Starting node  kwh_streamer.js
+2021-10-14 20:49:31,898 INFO  - Started process 12984
+2021-10-14 20:49:31,904 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-15 18:18:53,125 INFO  - Starting ServiceWrapper in the service mode
+2021-10-15 18:18:53,191 INFO  - Starting node  kwh_streamer.js
+2021-10-15 18:18:53,195 INFO  - Starting node  kwh_streamer.js
+2021-10-15 18:18:53,236 INFO  - Started process 12840
+2021-10-15 18:18:53,243 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-15 19:52:35,675 INFO  - Starting ServiceWrapper in the service mode
+2021-10-15 19:52:35,974 INFO  - Starting node  kwh_streamer.js
+2021-10-15 19:52:35,979 INFO  - Starting node  kwh_streamer.js
+2021-10-15 19:52:36,270 INFO  - Started process 6572
+2021-10-15 19:52:36,356 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-15 19:57:52,789 INFO  - Starting ServiceWrapper in the service mode
+2021-10-15 19:57:52,820 INFO  - Starting node  kwh_streamer.js
+2021-10-15 19:57:52,824 INFO  - Starting node  kwh_streamer.js
+2021-10-15 19:57:52,844 INFO  - Started process 10608
+2021-10-15 19:57:52,849 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-26 09:02:16,368 INFO  - Starting ServiceWrapper in the service mode
+2021-10-26 09:02:16,792 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:02:16,922 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:02:18,588 INFO  - Started process 5424
+2021-10-26 09:02:19,319 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-26 09:08:01,522 INFO  - Starting ServiceWrapper in the service mode
+2021-10-26 09:08:01,551 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:08:01,555 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:08:01,574 INFO  - Started process 12208
+2021-10-26 09:08:01,579 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-26 09:13:08,416 INFO  - Stopping kwhStreamer
+2021-10-26 09:13:08,417 DEBUG - ProcessKill 12208
+2021-10-26 09:13:08,632 INFO  - Found child process: 12240 Name: conhost.exe
+2021-10-26 09:13:08,675 INFO  - Stopping process 12240
+2021-10-26 09:13:08,678 INFO  - Send SIGINT 12240
+2021-10-26 09:13:08,680 WARN  - SIGINT to 12240 failed - Killing as fallback
+2021-10-26 09:13:08,682 INFO  - Stopping process 12208
+2021-10-26 09:13:08,685 INFO  - Send SIGINT 12208
+2021-10-26 09:13:08,686 WARN  - SIGINT to 12208 failed - Killing as fallback
+2021-10-26 09:13:08,688 INFO  - Finished kwhStreamer
+2021-10-26 09:13:08,690 DEBUG - Completed. Exit code is 0
+2021-10-26 09:13:09,897 INFO  - Starting ServiceWrapper in the service mode
+2021-10-26 09:13:09,938 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:13:09,944 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:13:09,963 INFO  - Started process 2788
+2021-10-26 09:13:09,967 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-26 09:17:25,632 INFO  - Stopping kwhStreamer
+2021-10-26 09:17:25,633 DEBUG - ProcessKill 2788
+2021-10-26 09:17:25,738 INFO  - Found child process: 10340 Name: conhost.exe
+2021-10-26 09:17:25,786 INFO  - Stopping process 10340
+2021-10-26 09:17:25,789 INFO  - Send SIGINT 10340
+2021-10-26 09:17:25,791 WARN  - SIGINT to 10340 failed - Killing as fallback
+2021-10-26 09:17:25,793 INFO  - Stopping process 2788
+2021-10-26 09:17:25,796 INFO  - Send SIGINT 2788
+2021-10-26 09:17:25,796 WARN  - SIGINT to 2788 failed - Killing as fallback
+2021-10-26 09:17:25,799 INFO  - Finished kwhStreamer
+2021-10-26 09:17:25,800 DEBUG - Completed. Exit code is 0
+2021-10-26 09:17:27,164 INFO  - Starting ServiceWrapper in the service mode
+2021-10-26 09:17:27,211 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:17:27,215 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:17:27,250 INFO  - Started process 10704
+2021-10-26 09:17:27,257 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-26 09:52:12,776 INFO  - Stopping kwhStreamer
+2021-10-26 09:52:12,777 DEBUG - ProcessKill 10704
+2021-10-26 09:52:12,871 INFO  - Found child process: 6628 Name: conhost.exe
+2021-10-26 09:52:12,915 INFO  - Stopping process 6628
+2021-10-26 09:52:12,921 INFO  - Send SIGINT 6628
+2021-10-26 09:52:12,924 WARN  - SIGINT to 6628 failed - Killing as fallback
+2021-10-26 09:52:12,928 INFO  - Stopping process 10704
+2021-10-26 09:52:12,931 INFO  - Send SIGINT 10704
+2021-10-26 09:52:12,932 WARN  - SIGINT to 10704 failed - Killing as fallback
+2021-10-26 09:52:12,934 INFO  - Finished kwhStreamer
+2021-10-26 09:52:12,936 DEBUG - Completed. Exit code is 0
+2021-10-26 09:52:14,270 INFO  - Starting ServiceWrapper in the service mode
+2021-10-26 09:52:14,299 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:52:14,303 INFO  - Starting node  kwh_streamer.js
+2021-10-26 09:52:14,323 INFO  - Started process 12260
+2021-10-26 09:52:14,330 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-10-29 07:37:04,883 INFO  - Stopping kwhStreamer
+2021-10-29 07:37:04,939 DEBUG - ProcessKill 12260
+2021-10-29 07:37:10,562 WARN  - Failed to locate children of the process with PID=12260. Child processes won't be terminated
+System.Runtime.InteropServices.COMException (0x8007045B): A system shutdown is in progress.
+
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   at System.Management.ManagementScope.InitializeGuts(Object o)
+   at System.Management.ManagementScope.Initialize()
+   at System.Management.ManagementObjectSearcher.Initialize()
+   at System.Management.ManagementObjectSearcher.Get()
+   at winsw.Util.ProcessHelper.GetChildPids(Int32 pid)
+2021-10-29 07:37:21,025 INFO  - Stopping process 12260
+2021-10-29 07:37:21,027 INFO  - Send SIGINT 12260
+2021-10-29 07:37:21,522 INFO  - SIGINT to12260 successful
+2021-10-29 07:37:21,552 INFO  - Finished kwhStreamer
+2021-10-29 07:37:21,681 DEBUG - Completed. Exit code is 0
+2021-10-29 07:38:49,683 INFO  - Starting ServiceWrapper in the service mode
+2021-10-29 07:38:50,316 INFO  - Starting node  kwh_streamer.js
+2021-10-29 07:38:50,484 INFO  - Starting node  kwh_streamer.js
+2021-10-29 07:38:52,904 INFO  - Started process 6084
+2021-10-29 07:38:53,559 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-01 07:57:18,202 INFO  - Starting ServiceWrapper in the service mode
+2021-11-01 07:57:18,593 INFO  - Starting node  kwh_streamer.js
+2021-11-01 07:57:18,717 INFO  - Starting node  kwh_streamer.js
+2021-11-01 07:57:19,906 INFO  - Started process 7012
+2021-11-01 07:57:20,110 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-02 18:47:29,312 INFO  - Stopping kwhStreamer
+2021-11-02 18:47:29,355 DEBUG - ProcessKill 7012
+2021-11-02 18:47:30,651 WARN  - Failed to locate children of the process with PID=7012. Child processes won't be terminated
+System.Runtime.InteropServices.COMException (0x8007045B): A system shutdown is in progress.
+
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   at System.Management.ManagementScope.InitializeGuts(Object o)
+   at System.Management.ManagementScope.Initialize()
+   at System.Management.ManagementObjectSearcher.Initialize()
+   at System.Management.ManagementObjectSearcher.Get()
+   at winsw.Util.ProcessHelper.GetChildPids(Int32 pid)
+2021-11-02 18:47:31,778 INFO  - Stopping process 7012
+2021-11-02 18:47:31,781 INFO  - Send SIGINT 7012
+2021-11-02 18:47:32,127 INFO  - SIGINT to7012 successful
+2021-11-02 18:47:32,274 INFO  - Finished kwhStreamer
+2021-11-02 18:47:32,555 DEBUG - Completed. Exit code is 0
+2021-11-02 18:48:44,039 INFO  - Starting ServiceWrapper in the service mode
+2021-11-02 18:48:44,399 INFO  - Starting node  kwh_streamer.js
+2021-11-02 18:48:44,404 INFO  - Starting node  kwh_streamer.js
+2021-11-02 18:48:44,592 INFO  - Started process 5952
+2021-11-02 18:48:44,596 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-02 19:19:13,330 INFO  - Stopping kwhStreamer
+2021-11-02 19:19:13,330 DEBUG - ProcessKill 5952
+2021-11-02 19:19:13,410 INFO  - Found child process: 5960 Name: conhost.exe
+2021-11-02 19:19:13,478 INFO  - Stopping process 5960
+2021-11-02 19:19:13,482 INFO  - Send SIGINT 5960
+2021-11-02 19:19:13,483 WARN  - SIGINT to 5960 failed - Killing as fallback
+2021-11-02 19:19:13,486 INFO  - Stopping process 5952
+2021-11-02 19:19:13,489 INFO  - Send SIGINT 5952
+2021-11-02 19:19:13,490 WARN  - SIGINT to 5952 failed - Killing as fallback
+2021-11-02 19:19:13,492 INFO  - Finished kwhStreamer
+2021-11-02 19:19:13,493 DEBUG - Completed. Exit code is 0
+2021-11-02 19:19:14,866 INFO  - Starting ServiceWrapper in the service mode
+2021-11-02 19:19:14,908 INFO  - Starting node  kwh_streamer.js
+2021-11-02 19:19:14,913 INFO  - Starting node  kwh_streamer.js
+2021-11-02 19:19:14,965 INFO  - Started process 12736
+2021-11-02 19:19:14,973 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-02 19:41:35,917 INFO  - Stopping kwhStreamer
+2021-11-02 19:41:35,918 DEBUG - ProcessKill 12736
+2021-11-02 19:41:36,026 INFO  - Found child process: 9016 Name: conhost.exe
+2021-11-02 19:41:36,086 INFO  - Stopping process 9016
+2021-11-02 19:41:36,092 INFO  - Send SIGINT 9016
+2021-11-02 19:41:36,095 WARN  - SIGINT to 9016 failed - Killing as fallback
+2021-11-02 19:41:36,099 INFO  - Stopping process 12736
+2021-11-02 19:41:36,103 INFO  - Send SIGINT 12736
+2021-11-02 19:41:36,103 WARN  - SIGINT to 12736 failed - Killing as fallback
+2021-11-02 19:41:36,106 INFO  - Finished kwhStreamer
+2021-11-02 19:41:36,107 DEBUG - Completed. Exit code is 0
+2021-11-03 17:25:51,828 INFO  - Starting ServiceWrapper in the service mode
+2021-11-03 17:25:51,865 INFO  - Starting node  kwh_streamer.js
+2021-11-03 17:25:51,873 INFO  - Starting node  kwh_streamer.js
+2021-11-03 17:25:51,901 INFO  - Started process 3404
+2021-11-03 17:25:51,907 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-04 07:35:01,516 INFO  - Stopping kwhStreamer
+2021-11-04 07:35:01,517 DEBUG - ProcessKill 3404
+2021-11-04 07:35:01,622 INFO  - Found child process: 6624 Name: conhost.exe
+2021-11-04 07:35:01,674 INFO  - Stopping process 6624
+2021-11-04 07:35:01,679 INFO  - Send SIGINT 6624
+2021-11-04 07:35:01,681 WARN  - SIGINT to 6624 failed - Killing as fallback
+2021-11-04 07:35:01,683 INFO  - Stopping process 3404
+2021-11-04 07:35:01,688 INFO  - Send SIGINT 3404
+2021-11-04 07:35:01,688 WARN  - SIGINT to 3404 failed - Killing as fallback
+2021-11-04 07:35:01,691 INFO  - Finished kwhStreamer
+2021-11-04 07:35:01,693 DEBUG - Completed. Exit code is 0
+2021-11-04 07:35:03,112 INFO  - Starting ServiceWrapper in the service mode
+2021-11-04 07:35:03,149 INFO  - Starting node  kwh_streamer.js
+2021-11-04 07:35:03,155 INFO  - Starting node  kwh_streamer.js
+2021-11-04 07:35:03,179 INFO  - Started process 10476
+2021-11-04 07:35:03,183 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-04 08:00:03,263 INFO  - Stopping kwhStreamer
+2021-11-04 08:00:03,264 DEBUG - ProcessKill 10476
+2021-11-04 08:00:03,375 INFO  - Found child process: 672 Name: conhost.exe
+2021-11-04 08:00:03,433 INFO  - Stopping process 672
+2021-11-04 08:00:03,440 INFO  - Send SIGINT 672
+2021-11-04 08:00:03,443 WARN  - SIGINT to 672 failed - Killing as fallback
+2021-11-04 08:00:03,448 INFO  - Stopping process 10476
+2021-11-04 08:00:03,452 INFO  - Send SIGINT 10476
+2021-11-04 08:00:03,453 WARN  - SIGINT to 10476 failed - Killing as fallback
+2021-11-04 08:00:03,457 INFO  - Finished kwhStreamer
+2021-11-04 08:00:03,459 DEBUG - Completed. Exit code is 0
+2021-11-08 07:29:46,301 INFO  - Starting ServiceWrapper in the service mode
+2021-11-08 07:29:46,341 INFO  - Starting node  kwh_streamer.js
+2021-11-08 07:29:46,353 INFO  - Starting node  kwh_streamer.js
+2021-11-08 07:29:46,380 INFO  - Started process 3004
+2021-11-08 07:29:46,386 DEBUG - Forwarding logs of the process System.Diagnostics.Process (node) to winsw.DefaultLogAppender
+2021-11-08 07:41:08,267 INFO  - Stopping kwhStreamer
+2021-11-08 07:41:08,268 DEBUG - ProcessKill 3004
+2021-11-08 07:41:08,426 INFO  - Found child process: 496 Name: conhost.exe
+2021-11-08 07:41:08,491 INFO  - Stopping process 496
+2021-11-08 07:41:08,496 INFO  - Send SIGINT 496
+2021-11-08 07:41:08,508 WARN  - SIGINT to 496 failed - Killing as fallback
+2021-11-08 07:41:08,510 INFO  - Stopping process 3004
+2021-11-08 07:41:08,514 INFO  - Send SIGINT 3004
+2021-11-08 07:41:08,515 WARN  - SIGINT to 3004 failed - Killing as fallback
+2021-11-08 07:41:08,517 INFO  - Finished kwhStreamer
+2021-11-08 07:41:08,518 DEBUG - Completed. Exit code is 0

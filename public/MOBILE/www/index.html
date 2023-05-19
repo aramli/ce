@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!-- core:css -->
+		<link rel="stylesheet" href="assets/vendors/core/core.css">
+		<!-- endinject -->
+		<!-- plugin css for this page -->
+		<link rel="stylesheet" href="assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+		<!-- end plugin css for this page -->
+		<!-- inject:css -->
+		<link rel="stylesheet" href="assets/fonts/feather-font/css/iconfont.css">
+		<link rel="stylesheet" href="assets/vendors/flag-icon-css/css/flag-icon.min.css">
+		<!-- endinject -->
+		<!-- Layout styles -->  
+		<link rel="stylesheet" href="assets/css/demo_2/style.css">
+		<!-- End layout styles -->
+		<!-- <link rel="shortcut icon" href="assets/images/favicon.png" /> -->
+
+		<style>
+			.card{
+				border:0;
+				background:rgba(0,0,0,0.8);
+			}
+			.main-wrapper .page-wrapper,
+			body{
+				background:transparent;
+			}
+			#myVideo{
+				position: fixed;
+				left: 0;
+				top: 0;
+				min-width: 100%;
+				min-height: 100%;
+				z-index:-1;
+			}
+			.dashboard-date{
+				background:rgba(0,0,0,0.8);
+			}
+			input{
+				color:#fff!important;
+				font-weight: bold;
+			}
+		</style>
+
+		<style>
+			.modal {
+			  display: none; /* Hidden by default */
+			  position: fixed; /* Stay in place */
+			  z-index: 1; /* Sit on top */
+			  padding-top: 0px; /* Location of the box */
+			  left: 0;
+			  top: 0;
+			  width: 100%; /* Full width */
+			  height: 100%; /* Full height */
+			  overflow: auto; /* Enable scroll if needed */
+			  /*background-color: rgb(0,0,0); /* Fallback color */*/
+			  /*background-color: rgba(0,0,0,0.4); /* Black w/ opacity */*/
+			}
+
+			/* Modal Content */
+			.modal-content {
+			  /*background-color: rgba(0,0,0,0.7);*/
+			  margin: auto;
+			  padding: 20px;
+			  border: 1px solid #888;
+			  width: 50%;
+			}
+
+			/* The Close Button */
+			.close {
+			  color: #aaaaaa;
+			  float: right;
+			  font-size: 28px;
+			  font-weight: bold;
+			}
+
+			.close:hover,
+			.close:focus {
+			  color: #000;
+			  text-decoration: none;
+			  cursor: pointer;
+			}
+		</style>
+
+		<style>
+			* {
+			  box-sizing: border-box;
+			  font-family: 'Roboto', sans-serif;
+			}
+
+			.calc-body {
+			  width: 275px;
+			  margin: auto;
+			  min-height: 400px;
+			  border: solid 1px #3A4655;
+			  box-shadow: 0 8px 50px -7px black;
+			}
+
+			.calc-screen {
+			  background: #3A4655;
+			  width: 100%;
+			  height: 150px;
+			  padding: 20px;
+			}
+
+			.calc-operation {
+			  text-align: right;
+			  color: #727B86;
+			  font-size: 21px;
+			  padding-bottom: 10px;
+			  border-bottom: dotted 1px;
+			}
+
+			.calc-typed {
+			  margin-top: 20px;
+			  font-size: 45px;
+			  text-align: right;
+			  color: #fff;
+			}
+
+			.calc-button-row {
+			  width: 100%;
+			  background: #3C4857;
+			}
+
+			.button {
+			  width: 33%;
+			  background: #425062;
+			  color: #fff;
+			  padding: 20px;
+			  display: inline-block;
+			  font-size: 25px;
+			  text-align: center;
+			  vertical-align: middle;
+			  margin-right: -4px;
+			  border-right: solid 2px #3C4857;
+			  border-bottom: solid 2px #3C4857;
+			  transition: all 0.2s ease-in-out;
+			}
+
+			.button.l {
+			  color: #AEB3BA;
+			  background: #404D5E;
+			}
+
+			.button.c {
+			  color: #D95D4E;
+			  background: #404D5E;
+			}
+
+			.button:hover {
+			  background: #E0B612;
+			  transform: rotate(5deg);
+			}
+
+			.button.c:hover,
+			.button.l:hover {
+			  background: #E0B612;
+			  color: #fff;
+			}
+
+			.blink-me {
+			  color: #E0B612;
+			}
+		</style>
+
+	</head>
+	<body style="background:#000;">
+
+		<!--
+		<video autoplay muted loop id="myVideo" >
+			<source src="vid4.mp4" type="video/mp4">
+		</video>
+		-->
+
+
+		<div class="main-wrapper">
+			<div class="page-wrapper" style="margin-left:0px;width:100%;">
+				<div class="page-content" style="margin:0px;">
+					<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+						<div>
+							<h4 class="mb-3 mb-md-0">Welcome to <span id="ROOM_NAME"></span> <span id="EVENT_TITLE"></span></h4>
+						</div>
+						<div class="d-flex align-items-center flex-wrap text-nowrap">
+							<div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">
+								<span class="input-group-addon bg-transparent"><i data-feather="calendar" class=" text-primary"></i></span>
+								<input type="text" class="form-control" disabled>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 col-xl-12 stretch-card">
+							<div class="row flex-grow">
+								<div class="col-md-3 grid-margin stretch-card">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex justify-content-between align-items-baseline">
+												<h6 class="card-title mb-0">Event Start</h6>
+											</div>
+											<div class="row" style="margin-top:10px;">
+												<div class="col-12 col-md-12 col-xl-12">
+													<h3 class="mb-2" id="COUNTER_EVENT_START" style="font-size:14px;">-</h3>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3 grid-margin stretch-card">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex justify-content-between align-items-baseline">
+												<h6 class="card-title mb-0">Event Finish</h6>
+											</div>
+											<div class="row" style="margin-top:10px;">
+												<div class="col-12 col-md-12 col-xl-12">
+													<h3 class="mb-2" id="COUNTER_EVENT_FINISH" style="font-size:14px;">-</h3>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3 grid-margin stretch-card">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex justify-content-between align-items-baseline">
+												<h6 class="card-title mb-0">Participant</h6>
+											</div>
+											<div class="row" style="margin-top:10px;">
+												<div class="col-6 col-md-12 col-xl-5">
+													<h3 class="mb-2" id="COUNTER_PARTICIPANT" style="font-size:14px;">-</h3>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3 grid-margin stretch-card">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex justify-content-between align-items-baseline">
+												<h6 class="card-title mb-0">Energy (KWH)</h6>
+											</div>
+											<div class="row" style="margin-top:10px;">
+												<div class="col-6 col-md-12 col-xl-5">
+													<h3 class="mb-2" id="COUNTER_ENERGY_CONSUMPTION" style="font-size:14px;">-</h3>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- row -->
+					<div class="row">
+						<div class="col-lg-7 col-xl-8 grid-margin stretch-card col-md-8">
+							<div class="card">
+								<div class="card-body" style="text-align:center;">
+									<img src="sample_room_image.png" style="height:100%;width:auto;max-height:350px;"  id="myBtn" />
+									<div id="myModal" class="modal">
+										<div class="modal-content">
+											<span class="close" style="color:#fff!important;text-align:right;">&times;</span>
+											
+
+
+
+
+											<div class="container">
+												<div class="calc-body">
+													<div class="calc-screen">
+														<div class="calc-typed" id="calc_typed"></div>
+													</div>
+													<div class="calc-button-row">
+														<div class="button" onclick="AddCode(7);">7</div>
+														<div class="button" onclick="AddCode(8);">8</div>
+														<div class="button" onclick="AddCode(9);">9</div>
+													</div>
+													<div class="calc-button-row">
+														<div class="button" onclick="AddCode(4);">4</div>
+														<div class="button" onclick="AddCode(5);">5</div>
+														<div class="button" onclick="AddCode(6);">6</div>
+													</div>
+													<div class="calc-button-row">
+														<div class="button" onclick="AddCode(1);">1</div>
+														<div class="button" onclick="AddCode(2);">2</div>
+														<div class="button" onclick="AddCode(3);">3</div>
+													</div>
+													<div class="calc-button-row">
+														<div class="button">.</div>
+														<div class="button" onclick="AddCode(0);">0</div>
+														<div class="button c" onclick="ClearCode();">C</div>
+													</div>
+												</div>
+											</div>
+
+
+
+
+
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-5 col-xl-4 grid-margin stretch-card col-md-4">
+							<div class="card">
+								<div class="card-body">
+									<div class="d-flex justify-content-between align-items-baseline mb-2">
+										<h6 class="card-title mb-0">OCUPANCY</h6>
+									</div>
+									<div id="progressbar1" class="mx-auto"></div>
+									<div class="row mt-4" style="padding-top:40px;">
+										<div class="col-6 d-flex justify-content-end">
+											<div>
+												<label class="d-flex align-items-center justify-content-end tx-10 text-uppercase font-weight-medium">Total Invitation <span class="p-1 ml-1 rounded-circle bg-primary-muted"></span></label>
+												<h5 class="font-weight-bold mb-0 text-right" id="COUNTER_TOTAL_INVITATION" style="font-size:20px;">-</h5>
+											</div>
+										</div>
+										<div class="col-6">
+											<div>
+												<label class="d-flex align-items-center tx-10 text-uppercase font-weight-medium"><span class="p-1 mr-1 rounded-circle bg-primary"></span> Total Attendee</label>
+												<h5 class="font-weight-bold mb-0" id="COUNTER_TOTAL_ATTENDEE" style="font-size:20px;">-</h5>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- row -->
+					<div class="row">
+						<div class="col-lg-12 col-xl-12 stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="d-flex justify-content-between align-items-baseline mb-2">
+										<h6 class="card-title mb-0">Participant</h6>
+										<div class="dropdown mb-2">
+											<button class="btn p-0" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+											</button>
+											<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton7">
+												<a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+												<a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+												<a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></a>
+												<a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="printer" class="icon-sm mr-2"></i> <span class="">Print</span></a>
+												<a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Download</span></a>
+											</div>
+										</div>
+									</div>
+									<div class="table-responsive">
+										<table class="table table-hover mb-0">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Name</th>
+													<!-- <th>Email</th> -->
+													<th>Division</th>
+													<th>Company</th>
+													<th>Status</th>
+													<th>Check in</th>
+												</tr>
+											</thead>
+											<tbody id="PARTICIPANT_LIST" >
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- row -->
+				</div>
+
+				<div style="z-index:99999;position: fixed;right:20px;bottom:10px;">
+					<a href="scanner_initiator.html" class="btn btn-lg m-btn--pill m-btn m-btn--gradient-from-success m-btn--gradient-to-accent" style="color:#fff;background:#10b759 !important;">QR Scanner +</a>
+					<a id="DISPLAY_BUTTON_STOP" onclick="InitiateStopEvent();" class="btn btn-lg m-btn--pill m-btn m-btn--gradient-from-success m-btn--gradient-to-accent" style="color:#fff;background:red !important;">Stop</a>
+					<a id="DISPLAY_BUTTON_EXTEND" onclick="InitiateExtendEvent();" class="btn btn-lg m-btn--pill m-btn m-btn--gradient-from-success m-btn--gradient-to-accent" style="color:#000;background:yellow !important;">Extend</a>
+				</div>
+
+
+			</div>
+		</div>
+		<!-- core:js -->
+		<script src="assets/vendors/core/core.js"></script>
+		<!-- endinject -->
+		<!-- plugin js for this page -->
+		<script src="assets/vendors/chartjs/Chart.min.js"></script>
+		<script src="assets/vendors/jquery.flot/jquery.flot.js"></script>
+		<script src="assets/vendors/jquery.flot/jquery.flot.resize.js"></script>
+		<script src="assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+		<script src="assets/vendors/apexcharts/apexcharts.min.js"></script>
+		<script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
+		<!-- end plugin js for this page -->
+		<!-- inject:js -->
+		<script src="assets/vendors/feather-icons/feather.min.js"></script>
+		<script src="assets/js/template.js"></script>
+		<!-- endinject -->
+		<!-- custom js for this page -->
+		<!-- <script src="assets/js/dashboard.js"></script> -->
+		<script src="assets/js/datepicker.js"></script>
+		<!-- end custom js for this page -->
+
+
+
+
+
+		<script>
+
+			// var API_URL = "http://192.168.100.37:8080/DISMI/core/DENSO/module/mobileAPI/index.php";
+			// var API_URL = "http://192.168.1.2/development_site/dsmx/core/DENSO/module/mobileAPI/index.php";
+			// var API_URL = "http://localhost/development_site/dsmx/core/DENSO/module/mobileAPI/index.php";
+			// var API_URL = "https://dismi-denso.com/appapi/module/mobileAPI/index.php";
+			// var API_URL = "http://localhost/development_site/DISMI/public/API/index.php";
+			var API_URL = "https://192.168.3.240/public/API/index.php";
+
+			localStorage.setItem('API_URL', API_URL);
+
+
+			localStorage.setItem("ID_ROOM", 6);
+
+			function GetCurrentDatetime(){
+				var today = new Date();
+				var this_month = today.getMonth()+1;
+				if( this_month <=10 ){
+					this_month = "0"+this_month;
+				}
+				var this_date = today.getDate();
+				if( this_date <= 10){
+					this_date = "0"+this_date;
+				}
+	        	var date = today.getFullYear()+'-'+this_month+'-'+this_date;
+	        	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	        	var datetime = date+" "+time;
+	        	return datetime;
+			}
+
+			function StreamData(){
+	        	
+	        	//GET ONGOING EVENT INFO
+	        	var input_parameter_current_datetime = GetCurrentDatetime();
+	        	var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var jsonData = JSON.parse(this.responseText);
+						
+						//var result = jsonData.result;
+						//var message = jsonData.message;
+
+						// alert(jsonData.message);
+						
+						
+		
+						if( jsonData.RESULT == 0 ){
+							alert('Could not connect to DISMI Server. Please contact our administrator.');
+						} else if( jsonData.RESULT == 1 ){
+						
+							localStorage.setItem("ID_EVENT", jsonData.ID);
+							localStorage.setItem("EVENT_FINISH", jsonData.EVENT_FINISH);
+							localStorage.setItem("IS_EXTENDED", jsonData.IS_EXTENDED);
+							
+							//console.log(jsonData.TROUBLESHOOT);
+
+							if( jsonData.IS_IDLE == 1 ){
+								document.getElementById('EVENT_TITLE').innerHTML = "";
+								document.getElementById('COUNTER_EVENT_START').innerHTML = "-";
+								document.getElementById('COUNTER_EVENT_FINISH').innerHTML = "-";
+								document.getElementById('COUNTER_PARTICIPANT').innerHTML = "-";
+								document.getElementById('COUNTER_ENERGY_CONSUMPTION').innerHTML = "-";
+								document.getElementById('COUNTER_TOTAL_INVITATION').innerHTML = "-";
+								document.getElementById('COUNTER_TOTAL_ATTENDEE').innerHTML = "-";
+								document.getElementById('PARTICIPANT_LIST').innerHTML = "";
+								localStorage.setItem('PIE_CHART_PERCENTAGE', 0);
+								
+								document.getElementById('DISPLAY_BUTTON_EXTEND').style.display = 'none';
+								document.getElementById('DISPLAY_BUTTON_STOP').style.display = 'none';
+									
+							} else {
+								document.getElementById('EVENT_TITLE').innerHTML = " - "+jsonData.TITLE;
+								document.getElementById('COUNTER_EVENT_START').innerHTML = jsonData.COUNTER_EVENT_START;
+								document.getElementById('COUNTER_EVENT_FINISH').innerHTML = jsonData.COUNTER_EVENT_FINISH;
+								document.getElementById('COUNTER_PARTICIPANT').innerHTML = jsonData.NUMBER_OF_PARTICIPANT;
+								document.getElementById('COUNTER_ENERGY_CONSUMPTION').innerHTML = jsonData.TOTAL_ACTUAL_ENERGY_CONSUMPTION;
+								document.getElementById('COUNTER_TOTAL_INVITATION').innerHTML = jsonData.NUMBER_OF_PARTICIPANT;
+								document.getElementById('COUNTER_TOTAL_ATTENDEE').innerHTML = jsonData.NUMBER_OF_ATTENDEE;
+								document.getElementById('PARTICIPANT_LIST').innerHTML = jsonData.ATTENDEE_LIST;
+								localStorage.setItem('PIE_CHART_PERCENTAGE', (jsonData.NUMBER_OF_ATTENDEE / jsonData.NUMBER_OF_PARTICIPANT));
+								
+								localStorage.setItem('ID_EVENT', jsonData.ID_EVENT);
+								
+								if( jsonData.NUMBER_OF_ATTENDEE > 0 && jsonData.NUMBER_OF_PARTICIPANT > 0 ){
+									localStorage.setItem('PIE_CHART_PERCENTAGE', (jsonData.NUMBER_OF_ATTENDEE / jsonData.NUMBER_OF_PARTICIPANT));
+								} else {
+									localStorage.setItem('PIE_CHART_PERCENTAGE', 0);
+								}
+								
+								
+								if( jsonData.ID_EVENT > 0 ){
+									document.getElementById('DISPLAY_BUTTON_EXTEND').style.display = 'inline';
+									document.getElementById('DISPLAY_BUTTON_STOP').style.display = 'inline';
+								}
+								
+								
+							}
+				
+				
+						}
+					}
+				};
+				xhttp.open("POST", localStorage.getItem('API_URL'), true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("module=StreamEventPanelInfo&module_tablet=RetrieveEventInfoFromTablet&idroom="+localStorage.getItem('ID_ROOM')+"&curdatetime="+input_parameter_current_datetime);
+	        	
+	        	setTimeout(StreamData, 1000);
+	        	
+        	}
+			StreamData();
+
+
+
+			function StopEvent(){
+				
+				window.location='popup.html?action=StopEvent&eid='+localStorage.getItem("ID_EVENT")+'&uid=0';
+				
+			}
+
+			function ExtendEvent(){
+				
+				window.location='popup.html?action=ExtendEvent&eid='+localStorage.getItem("ID_EVENT")+'&uid=0';
+				
+			}
+
+				
+
+
+
+			//GET ATTENDEE PERCENTAGE
+			GetAttendeePercentage();
+			function GetAttendeePercentage(){				
+
+				$(function() {
+				  'use strict'
+
+				  var gridLineColor = 'rgba(77, 138, 240, .1)';
+
+				  var colors = {
+					primary:         "#727cf5",
+					secondary:       "#7987a1",
+					success:         "#42b72a",
+					info:            "#68afff",
+					warning:         "#fbbc06",
+					danger:          "#ff3366",
+					light:           "#ececec",
+					dark:            "#282f3a",
+					muted:           "#686868"
+				  }
+
+				  // Dashbaord date start
+				  if($('#dashboardDate').length) {
+					var date = new Date();
+					var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+					$('#dashboardDate').datepicker({
+					  format: "dd-MM-yyyy",
+					  todayHighlight: true,
+					  autoclose: true
+					});
+					$('#dashboardDate').datepicker('setDate', today);
+				  }
+				  // Dashbaord date end
+
+				  
+
+				  // Progressgar1 start
+				  if($('#progressbar1').length) {
+					var bar = new ProgressBar.Circle(progressbar1, {
+					  color: colors.primary,
+					  trailColor: gridLineColor,
+					  // This has to be the same size as the maximum width to
+					  // prevent clipping
+					  strokeWidth: 4,
+					  trailWidth: 1,
+					  easing: 'easeInOut',
+					  duration: 1400,
+					  text: {
+						autoStyleContainer: false
+					  },
+					  from: { color: colors.primary, width: 1 },
+					  to: { color: colors.primary, width: 4 },
+					  // Set default step function for all animate calls
+					  step: function(state, circle) {
+						circle.path.setAttribute('stroke', state.color);
+						circle.path.setAttribute('stroke-width', state.width);
+					
+						// var value = Math.round(circle.value() * 100);
+						var value = localStorage.getItem('PIE_CHART_PERCENTAGE') * 100;
+						if (value === 0) {
+						  circle.setText('');
+						} else {
+						  circle.setText(value + '%');
+						}
+					
+					  }
+					});
+					bar.text.style.fontFamily = "'Overpass', sans-serif;";
+					bar.text.style.fontSize = '3rem';
+					
+					bar.animate(localStorage.getItem('PIE_CHART_PERCENTAGE'));
+				  }
+				  // Progressgar1 start
+
+				});
+			}
+			// END GET ATTENDEE PERCENTAGE
+        	
+
+
+
+
+
+			
+
+
+
+		</script>
+
+		<script>
+		// Get the modal
+		var modal = document.getElementById("myModal");
+
+		// Get the button that opens the modal
+		var btn = document.getElementById("myBtn");
+
+		// Get the <span> element that closes the modal
+		var span = document.getElementsByClassName("close")[0];
+
+		// When the user clicks the button, open the modal 
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
+		</script>
+
+		<script>
+			function AddCode(int_number){
+				calc_typed = document.getElementById('calc_typed');
+				calc_typed.innerHTML = calc_typed.innerHTML+""+int_number;
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var jsonData = JSON.parse(this.responseText);
+						
+						//var result = jsonData.result;
+						//var message = jsonData.message;
+
+						// alert(jsonData.message);
+
+						if( jsonData.RESULT == 2 ){
+							alert(jsonData.MESSAGE);
+							localStorage.setItem("ID_ROOM", jsonData.ID_ROOM);
+							document.getElementById('ROOM_NAME').innerHTML = jsonData.ROOM_NAME;
+							document.getElementById('calc_typed').innerHTML = '';
+						}
+		
+					}
+				};
+				xhttp.open("POST", localStorage.getItem('API_URL'), true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("module=CheckRoomCode&roomcode="+calc_typed.innerHTML);
+
+			}
+
+			function ClearCode(){
+				document.getElementById('calc_typed').innerHTML = '';
+			}
+			
+			
+			function InitiateStopEvent(){
+				location.assign('popup.html?action=STOPEVENT&eid='+localStorage.getItem('ID_EVENT'));
+			}
+			
+			function InitiateExtendEvent(){
+				location.assign('popup.html?action=EXTENDEVENT&eid='+localStorage.getItem('ID_EVENT'));
+			}
+		</script>
+
+
+	</body>
+</html>

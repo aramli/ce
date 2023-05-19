@@ -1,5 +1,7 @@
 					<?php
+					
 					include('qrlib.php'); 
+					// header("Content-type: image/png");
 					
 					// custom code rendering with GD2 
      	

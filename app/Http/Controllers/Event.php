@@ -43,7 +43,9 @@ class Event extends Controller
         $id = $id;
 
     	$category = DB::table('d3s3m_category')->get();
-    	$room = DB::table('d3s3m_room')->where('roo_IS_ACTIVE', 1)->get();
+    	// $room = DB::table('d3s3m_room')->where('roo_IS_ACTIVE', 1)->get();
+		$room = DB::table('d3s3m_room')->where('roo_IS_ACTIVE', 1)->where('roo_IS_SCHEDULED', '!=', 1)->get();
+		//print_r($room);exit;
 
         $basic_info = DB::table('d3s3m_event')->where('eve_ID', $id)->get();
 
@@ -101,6 +103,7 @@ class Event extends Controller
             $json_table['ATTENDEE_LIST'] = '{}';
         }
 
+		$array_existing_attendee = array();
         foreach( $attendee as $this_attendee ){
             $array_existing_attendee[] = $this_attendee->att_d3s3m_user_use_ID;
         }
@@ -201,11 +204,12 @@ class Event extends Controller
         DB::table('d3s3m_attendee')->insert([
             "att_d3s3m_event_eve_ID" => $id,
             "att_d3s3m_user_use_ID" => $id_attendee,
-            "att_COMMAND_SIGNAL" => 'AttendEvent',
+            "att_COMMAND_SIGNAL" => "AttendEvent",
             "att_IS_ATTEND" => 0
         ]);
 
         // CHECK FOR VIP
+        /*
         $vip_status = DB::table('d3s3m_user')->where('use_ID', $id_attendee)->get();
         foreach( $vip_status as $this_vip_status ){
             $this_vip_status = $this_vip_status;
@@ -216,6 +220,7 @@ class Event extends Controller
                 ]);
             }
         }
+        */
         // END CHECK FOR VIP
 
         Session::put('popup_status', 1);
@@ -399,7 +404,7 @@ class Event extends Controller
         return view('event.detail', compact('basic_info', 'attendee'));
     }
 
-    public function DeleteEvent($id){
+    public function DeleteEvent_old($id){
 
 
         DB::table('d3s3m_event')->where('ID', $id)->delete();
@@ -525,6 +530,7 @@ class Event extends Controller
 
     public function BlastInvitation($id){
 
+        $blast_indicator = 0;
         /*
         $event_detail = DB::select(DB::raw("
             select
@@ -589,21 +595,39 @@ class Event extends Controller
                 </table>
             </div>
             <div style="text-align:left;">
-                Please click the button below to generate your QR code. Scan it before you enter the room, in order to start and/or attend the event.
+                Please click the button below to generate your QR code. Scan it before you enter the room, in order to start and/or attend the event. Please turn off your NIGHT MODE on your Android phone, to ensure the QRCODE scanner works properly.
             </div>
             ';
             $parameter_CTA_text = 'Click here to generate your QR code';
-            $parameter_CTA_url = 'https://dismi-denso.com/app/public/LIBRARY/qrcode/QRG.php?action='.base64_encode($this_event_detail->att_COMMAND_SIGNAL).'&eid='.base64_encode($this_event_detail->eve_ID).'&uid='.base64_encode($this_event_detail->use_ID);
+            $parameter_CTA_url = 'https://192.168.3.240/public/LIBRARY/qrcode/QRG.php?action='.base64_encode($this_event_detail->att_COMMAND_SIGNAL).'&eid='.base64_encode($this_event_detail->eve_ID).'&uid='.base64_encode($this_event_detail->use_ID);
+            $parameter_CTA_url = 'https://192.168.3.240/public/GenerateQRCode/'.base64_encode($this_event_detail->att_COMMAND_SIGNAL).'/'.base64_encode($this_event_detail->eve_ID).'/'.base64_encode($this_event_detail->use_ID);
+            $parameter_CTA_url = 'https://dismi-denso.com/QRCODE/public/GenerateQRCode/'.base64_encode($this_event_detail->att_COMMAND_SIGNAL).'/'.base64_encode($this_event_detail->eve_ID).'/'.base64_encode($this_event_detail->use_ID);
 
             $data = array('name'=> $to_name , 'message_subheader' => $message_subheader, 'message_title' => $message_title, 'message_caption' => $message_caption, "parameter_CTA_text" => $parameter_CTA_text, 'parameter_CTA_url' => $parameter_CTA_url);
             
             Mail::send("emails.invitation.index", $data, function($message) use ($to_name, $to_email, $message_title) {
                 $message->to($to_email, $to_name)
                 ->subject("[NO-REPLY] Your e-invitation for event: ".$message_title);
+
+                // GET ALL SUPERADMINISTRATOR EMAIL FOR CC
+                $superadmin = DB::table('d3s3m_user')->where('use_d3s3m_role_rol_ID', 1)->get();
+                foreach( $superadmin as $this_superadmin ){
+                    $message->cc($this_superadmin->use_EMAIL);    
+                }
+                // $message->cc('hebert.hendrik@gmail.com');
+                // $message->cc('hebert.hendrik@jalangih.id');
                 $message->from("dismi.mailer@gmail.com","DISMI Mailer");
             });
 
+            $blast_indicator = 1;
 
+
+        }
+
+        if( $blast_indicator == 1 ){
+            DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+                "eve_IS_BLAST" => 1
+            ]);
         }
 
 
@@ -616,6 +640,20 @@ class Event extends Controller
         return redirect('/event/detail/'.$this_event_detail->eve_ID);
 
     }
+	
+	public function DeleteEvent($id){
+		
+		
+		DB::table('d3s3m_attendee')->where('att_d3s3m_event_eve_ID', $id)->delete();
+		DB::table('d3s3m_event')->where('eve_ID', $id)->delete();
+		
+		Session::put('popup_status', 1);
+        Session::put('popup_type', 'success');
+        Session::put('popup_title', 'Delete Event Success');
+        Session::put('popup_message', 'Event and participants has been removed from the system.');
+
+        return redirect('/event/all');
+	}
 
     public function EventPanel($id){
 
@@ -640,13 +678,26 @@ class Event extends Controller
             $this_basic_info = $this_basic_info;
         }
 
-        $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this_basic_info->eve_EVENT_FINISH);
-        $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this_basic_info->eve_EVENT_START);
-        $diff_in_minutes = $to->diffInMinutes($from);
-        $diff_in_hours = $diff_in_minutes/60;
+        //$to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this_basic_info->eve_EVENT_FINISH);
+        //$from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this_basic_info->eve_EVENT_START);
+        //$diff_in_minutes = $to->diffInMinutes($from);
+        //$diff_in_hours = $diff_in_minutes/60;
+		
+		
+		$datetime1 = strtotime($this_basic_info->eve_EVENT_START);
+		$datetime2 = strtotime($this_basic_info->eve_EVENT_FINISH);
+		$interval  = abs($datetime2 - $datetime1);
+		$minutes   = round($interval / 60);
+		$diff_in_minutes = $minutes;
+		$diff_in_hours = $diff_in_minutes/60;
 
+
+
+		
         $kwh_estimation = $diff_in_hours * $this_basic_info->roo_KWH_STANDARD;
         // END GET KWH ESTIMATION
+		
+		//echo $this_basic_info->roo_KWH_STANDARD;exit;
 
 
         return view('event.event_panel', compact('basic_info', 'attendee', 'kwh_estimation'));
@@ -662,9 +713,8 @@ class Event extends Controller
     public function Panel_StartEvent($id){
 
         DB::table('d3s3m_event')->where('eve_ID', $id)->update([
-            "eve_STATUS" => 6,
-            "eve_IS_START" => 1,
-            "eve_DATE_START" => date('Y-m-d H:i:s')
+            "eve_STATUS" => 2,
+            "eve_IS_START" => 1
         ]);
 
         Session::put('popup_status', 1);
@@ -731,13 +781,25 @@ class Event extends Controller
         }
 
         if( isset($final_array_energy_log_start[$address_kwh_listrik]) ){
-            $kwh_listrik_start = $final_array_energy_log_start[$address_kwh_listrik];
+			$hex_address_plus_satu = dechex($final_array_energy_log_start[$address_kwh_listrik+1]);			
+			$hex_address_plus_nol = dechex($final_array_energy_log_start[$address_kwh_listrik]);
+			$hex_final = $hex_address_plus_satu.$hex_address_plus_nol;
+			$final_kwh_listrik_start = hexdec($hex_final);
+			
+            // $kwh_listrik_start = $final_array_energy_log_start[$address_kwh_listrik];
+			$kwh_listrik_start = $final_kwh_listrik_start;
         } else {
             $kwh_listrik_start = 0;
         }
 
         if( isset($final_array_energy_log_start[$address_kwh_ac]) ){
-            $kwh_ac_start = $final_array_energy_log_start[$address_kwh_ac];
+			$hex_address_plus_satu = dechex($final_array_energy_log_start[$address_kwh_ac+1]);			
+			$hex_address_plus_nol = dechex($final_array_energy_log_start[$address_kwh_ac]);
+			$hex_final = $hex_address_plus_satu.$hex_address_plus_nol;
+			$final_kwh_ac_start = hexdec($hex_final);
+			
+            // $kwh_ac_start = $final_array_energy_log_start[$address_kwh_ac];
+			$kwh_ac_start = $final_kwh_ac_start;
         } else {
             $kwh_ac_start = 0;
         }
@@ -765,13 +827,25 @@ class Event extends Controller
         
 
         if( isset($final_array_energy_log_end[$address_kwh_listrik]) ){
-            $kwh_listrik_end = $final_array_energy_log_end[$address_kwh_listrik];
+			$hex_address_plus_satu = dechex($final_array_energy_log_end[$address_kwh_listrik+1]);			
+			$hex_address_plus_nol = dechex($final_array_energy_log_end[$address_kwh_listrik]);
+			$hex_final = $hex_address_plus_satu.$hex_address_plus_nol;
+			$final_kwh_listrik_end = hexdec($hex_final);
+			
+            // $kwh_listrik_end = $final_array_energy_log_end[$address_kwh_listrik];
+			$kwh_listrik_end = $final_kwh_listrik_end;
         } else {
             $kwh_listrik_end = 0;
         }
 
         if( isset($final_array_energy_log_end[$address_kwh_ac]) ){
-            $kwh_ac_end = $final_array_energy_log_end[$address_kwh_ac];
+			$hex_address_plus_satu = dechex($final_array_energy_log_end[$address_kwh_ac+1]);			
+			$hex_address_plus_nol = dechex($final_array_energy_log_end[$address_kwh_ac]);
+			$hex_final = $hex_address_plus_satu.$hex_address_plus_nol;
+			$final_kwh_ac_end = hexdec($hex_final);
+			
+			$kwh_ac_end = $final_kwh_ac_end;
+			//echo $kwh_ac_end;exit;
         } else {
             $kwh_ac_end = 0;
         }
@@ -789,10 +863,12 @@ class Event extends Controller
 
         // UPDATE ACTUAL KWH TO DATABASE
         DB::table('d3s3m_event')->where('eve_ID', $id)->update([
-            "eve_ENERGY_CONSUMPTION" => $total_actual_kwh,
+            "eve_ENERGY_CONSUMPTION" => $total_actual_kwh/1000,
             "eve_STATUS" => 4,
-            "eve_IS_FINISH" => 1,
-            "eve_DATE_FINISH" => date('Y-m-d H:i:s')
+			"eve_KWH_LISTRIK_START" => $kwh_listrik_start/1000,
+			"eve_KWH_LISTRIK_END" => $kwh_listrik_end/1000,
+			"eve_KWH_AC_START" => $kwh_ac_start/1000,
+			"eve_KWH_AC_END" => $kwh_ac_end/1000
         ]);
         // END UPDATE ACTUAL KWH TO DATABASE
 
@@ -818,6 +894,7 @@ class Event extends Controller
         for( $i=0;$i<count($array_explode_id);$i++ ){
 
             $id = $array_explode_id[$i];
+			// $id = $array_explode_id[0];
 
             // UPDATE ACTUAL KWH TO DATABASE
             DB::table('d3s3m_event')->where('eve_ID', $id)->update([
@@ -923,8 +1000,21 @@ class Event extends Controller
 
 
             // UPDATE ACTUAL KWH TO DATABASE
+            /*
             DB::table('d3s3m_event')->where('eve_ID', $id)->update([
             "eve_ENERGY_CONSUMPTION" => $total_actual_kwh
+            ]);
+            */
+            // END UPDATE ACTUAL KWH TO DATABASE
+
+            // UPDATE ACTUAL KWH TO DATABASE
+            DB::table('d3s3m_event')->where('eve_ID', $id)->update([
+                "eve_ENERGY_CONSUMPTION" => $total_actual_kwh/1000,
+                "eve_STATUS" => 4,
+                "eve_KWH_LISTRIK_START" => $kwh_listrik_start/1000,
+                "eve_KWH_LISTRIK_END" => $kwh_listrik_end/1000,
+                "eve_KWH_AC_START" => $kwh_ac_start/1000,
+                "eve_KWH_AC_END" => $kwh_ac_end/1000
             ]);
             // END UPDATE ACTUAL KWH TO DATABASE
 

@@ -5,8 +5,7 @@
 foreach( $basic_info as $this_basic_info ){
 	$this_basic_info = $this_basic_info;
 }
-?>
-			
+?>			
 				<!--begin::Wrapper-->
 				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
 					<!--begin::Content-->
@@ -333,12 +332,13 @@ foreach( $basic_info as $this_basic_info ){
 				// console.log(jsonData.start__array_data[115]);
 				// console.log(jsonData.end__array_data[115]);
 
+				/*
 				var int_kwh_listrik = parseInt("<?php echo $this_basic_info->roo_KWH_ADDRESS; ?>");
 				var int_kwh_ac = parseInt("<?php echo $this_basic_info->roo_KWH_ADDRESS_AC; ?>");
 
+				var value_kwh_listrik_plus_satu = parseInt("<?php echo ($this_basic_info->roo_KWH_ADDRESS)+1; ?>");
 
-
-				if( jsonData.start__array_data[int_kwh_listrik] ){
+				if( jsonData.start__array_data[int_kwh_listrik] ){					
 					var kwh_listrik_start = parseInt(jsonData.start__array_data[int_kwh_listrik]);
 				} else {
 					var kwh_listrik_start = 0;
@@ -368,6 +368,11 @@ foreach( $basic_info as $this_basic_info ){
 
 				
 				var kwh_total_actual = total_kwh_listrik + total_kwh_ac;
+				*/
+				
+				var kwh_total_actual = jsonData.FINAL_ENERGY_CONSUMPTION;
+				console.log(kwh_total_actual);
+				// alert(kwh_total_actual);
 				document.getElementById('display_total_actual_kwh').innerHTML = kwh_total_actual;
 
 

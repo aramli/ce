@@ -52,36 +52,37 @@
 											<div class="card card-custom card-shadowless rounded-top-0">
 												<!--begin::Body-->
 												<div class="card-body p-0">
-													<div class="row justify-content-center py-8 px-8 py-lg-15 px-lg-10">
-														<div class="col-xl-12 col-xxl-10">
+													<div class="row justify-content-center py-8 px-8 py-lg-5 px-lg-5">
+														<div class="col-xl-14 col-xxl-12">
 															<!--begin::Wizard Form-->
 															<form class="form" id="kt_form" method="post" action="../../../../public/event/add/{{ $id }}/SaveNewEvent">
 																{{ csrf_field() }}
-																<div class="row justify-content-center">
-																	<div class="col-xl-9">
+
+																<div class="row">
+																	<div class="col">
 																		<!--begin::Wizard Step 1-->
-																		<div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
-																			<h5 class="text-dark font-weight-bold mb-10">BASIC INFORMATION</h5>
+																		<div class=" step" data-wizard-type="step-content" data-wizard-state="current">
+																			<h5 class="text-dark font-weight-bold ">BASIC INFORMATION</h5>
 																			<!--begin::Group-->
 																			<div class="form-group row">
-																				<label class="col-xl-3 col-lg-3 col-form-label">Organizer</label>
-																				<div class="col-lg-9 col-xl-9">
-																					<input class="form-control form-control-solid form-control-lg" type="text" value="{{ Session::get('FULLNAME') }}" disabled />
+																				<label class="col-xl-2 col-lg-3 col-form-label">Organizer</label>
+																				<div class="col-lg-9 col-xl-10">
+																					<input class="form-control form-control-solid form-control-lg" type="text" value="{{ Session::get('FULLNAME') }}" disabled style="color:#fff;background:grey;font-weight:bold;" />
 																				</div>
 																			</div>
 																			<!--end::Group-->
 																			<!--begin::Group-->
 																			<div class="form-group row">
-																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Title</label>
-																				<div class="col-lg-9 col-xl-9">
+																				<label class="col-xl-2 col-lg-1 col-form-label"><span style="color:red;">*</span> Event Title</label>
+																				<div class="col-lg-9 col-xl-10">
 																					<input class="form-control form-control-solid form-control-lg" name="TITLE" type="text" value="" required placeholder="Enter event name" />
 																				</div>
 																			</div>
 																			<!--end::Group-->
 																			<!--begin::Group-->
 																			<div class="form-group row">
-																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Training Package</label>
-																				<div class="col-lg-9 col-xl-9">
+																				<label class="col-xl-2 col-lg-3 col-form-label"><span style="color:red;">*</span> Training Package</label>
+																				<div class="col-lg-9 col-xl-10">
 																					<select class="form-control form-control-solid form-control-lg m-input" name="ID_CATEGORY" style="color:#333;" required>
 																						<option value="">--Choose Training Package--</option>
 																						@foreach( $category as $this_category )
@@ -97,46 +98,51 @@
 
 
 
-																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:50px!important;">DATE AND TIME</h5>
+																			<h5 class="text-dark font-weight-bold  mt-10" style="margin-top:50px!important;">DATE AND TIME</h5>
 																			<!--begin::Group-->
 																			<div class="form-group row">
-																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Date</label>
-																				<div class="col-lg-9 col-xl-9">
+																				<label class="col-xl-2 col-lg-3 col-form-label"><span style="color:red;">*</span>Start Date</label>
+																				<div class="col-xl-4 col-lg-3">
 																					<input class="form-control form-control-solid form-control-lg" name="EVENT_START_DATE" required type="date" />
 																				</div>
-																			</div>
-																			<!--end::Group-->
-																			<!--begin::Group-->
-																			<div class="form-group row">
-																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Start Time (format 24h)</label>
-																				<div class="col-lg-9 col-xl-9">
-																					<input class="form-control form-control-solid form-control-lg" name="EVENT_START_TIME" required type="time" />
+																				<label class="col-xl-2 col-lg-3 col-form-label"><span style="color:red;">*</span>Finish Date</label>
+																				<div class="col-xl-4 col-lg-3">
+																					<input class="form-control form-control-solid form-control-lg" name="_START_DATE" required type="date" />
 																				</div>
 																			</div>
+									
 																			<!--end::Group-->
 																			<!--begin::Group-->
 																			<div class="form-group row">
-																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Event Finish Time (format 24h)</label>
-																				<div class="col-lg-9 col-xl-9">
+																				<label class="col-xl-2 col-lg-3 col-form-label"><span style="color:red;">*</span>Start Time</label>
+																				<div class="col-lg-4 col-xl-4">
+																					<input class="form-control form-control-solid form-control-lg" name="EVENT_START_TIME" required type="time" />
+																				</div>
+																				<label class="col-xl-2 col-lg-3 col-form-label"><span style="color:red;">*</span>Finish Time</label>
+																				<div class="col-lg-5 col-xl-4">
 																					<input class="form-control form-control-solid form-control-lg" name="EVENT_FINISH_TIME" required type="time" />
 																				</div>
 																			</div>
 																			<!--end::Group-->
+																			
 																			<!--begin::Group-->
 																			<div class="form-group row">
 																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Preparation Time (minute)</label>
 																				<div class="col-lg-9 col-xl-9">
-																					<input class="form-control form-control-solid form-control-lg" name="EVENT_PREPARATION" required type="number" value="0" />
+																					<input class="form-control form-control-solid form-control-lg" name="EVENT_PREPARATION" required type="number" value="0" min="0" />
 																				</div>
 																			</div>
 																			<!--end::Group-->
 
 
 
+																		</div>
+																	</div>
+
+																		<div class="col">
 
 
-
-																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:50px!important;">VENUE</h5>
+																			<h5 class="text-dark font-weight-bold mt-2">VENUE</h5>
 																			<!--begin::Group-->
 																			<div class="form-group row">
 																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Room</label>
@@ -156,7 +162,7 @@
 
 
 
-																			<h5 class="text-dark font-weight-bold mb-10 mt-10" style="margin-top:50px!important;">SUMMARY</h5>
+																			<h5 class="text-dark font-weight-bold mt-10" style="margin-top:50px!important;">SUMMARY</h5>
 																			<!--begin::Group-->
 																			<div class="form-group row">
 																				<label class="col-xl-3 col-lg-3 col-form-label"><span style="color:red;">*</span> Summary</label>
@@ -182,7 +188,7 @@
 
 																		</div>
 																		<!--end::Wizard Step 1-->
-																	</div>
+															
 																</div>
 																<input type="hidden" name="currentID" value="{{ $id }}" />
 															</form>
@@ -207,7 +213,7 @@
 					@include('include_new.footer')
 				</div>
 				<!--end::Wrapper-->
-				@include('include_new.aside_secondary')
+				{{-- @include('include_new.aside_secondary') --}}
 				
 @endsection
 

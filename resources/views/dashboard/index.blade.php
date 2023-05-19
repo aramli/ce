@@ -174,18 +174,21 @@ if( $dashboard_name == 'category' ){
 									<div class="card card-custom" style="margin-bottom:50px;">
 										<div class="card-body">
 											<h1 style="text-align:center;">{{ $this_dashboard_list->dc_TITLE }}</h1>
-											<div id="wdr-component__{{ $this_dashboard_list->dc_ID }}"></div>
+											<div style="position:absolute;right:0;top:0px;">
+												<a href="../../../dashboard/action/DeleteDashboard/{{ $this_dashboard_list->dc_ID }}/{{ $dashboard_name }}" class="btn btn-sm btn-danger">Delete This Widget</a>
+											</div>
 											<div class="row">
-												<div class="col-md-12">
-													<div id="wdr-component__Event_creation"></div>
-												</div>
 												<div class="col-md-6">
 													<div id="fusionchartContainer__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
 												</div>
 												<div class="col-md-6">
 													<div id="fusionchartContainerBarChart__{{ $this_dashboard_list->dc_ID }}" style="margin-top:1px;"></div>
 												</div>
+												<div class="col-md-12">
+													<div id="wdr-component__Event_creation"></div>
+												</div>
 											</div>
+											<div id="wdr-component__{{ $this_dashboard_list->dc_ID }}" style="display:none;"></div>
 										</div>
 									</div>
 									<script>
@@ -304,7 +307,7 @@ if( $dashboard_name == 'category' ){
 					@include('include_new.footer')
 				</div>
 				<!--end::Wrapper-->
-				@include('include_new.aside_secondary')
+				
 
 
 			<!-- Modal-->
